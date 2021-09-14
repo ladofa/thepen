@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="ThePen.Setting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:pixi="clr-namespace:ColorPicker;assembly=ColorPicker"
+
+             xmlns:local="clr-namespace:ThePen"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Background="White">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock" x:Key="Title">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Margin" Value="0 20 0 5"/>
+        </Style>
+        <Style TargetType="pixi:PortableColorPicker">
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Margin" Value="0 0 10 0"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <TextBlock Text="Setting" FontSize="30" Margin="20"/>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="15 70 0 20">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Style="{StaticResource Title}" Text="Pens" Margin="0 0 10 0"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Pen1" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                    <local:SettingPen/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Pen2" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                    <local:SettingPen/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Pen3" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                    <local:SettingPen/>
+                </StackPanel>
+                <TextBlock Style="{StaticResource Title}" Text="Colors"/>
+                <StackPanel Orientation="Horizontal" Height="20">
+                    <TextBlock Text="1 : "/>
+                    <pixi:PortableColorPicker/>
+                    <TextBlock Text="2 : "/>
+                    <pixi:PortableColorPicker/>
+                    <TextBlock Text="3 : "/>
+                    <pixi:PortableColorPicker/>
+                    <TextBlock Text="4 : "/>
+                    <pixi:PortableColorPicker/>
+                    <TextBlock Text="5 : "/>
+                    <pixi:PortableColorPicker/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="6 : "/>
+                    <pixi:PortableColorPicker/>
+                    <TextBlock Text="7 : "/>
+                    <pixi:PortableColorPicker/>
+                    <TextBlock Text="8 : "/>
+                    <pixi:PortableColorPicker/>
+                    <TextBlock Text="9 : "/>
+                    <pixi:PortableColorPicker/>
+                    <TextBlock Text="0 : "/>
+                    <pixi:PortableColorPicker/>
+                </StackPanel>
+                
+                <TextBlock Style="{StaticResource Title}" Text="Shortcuts"/>
+                <TextBlock Text="Pen1"/>
+                <TextBlock Text="Pen2"/>
+                <TextBlock Text="Pen3"/>
+                <TextBlock Text="Eraser"/>
+                <TextBlock Text="Disable"/>
+                <TextBlock Text="Drawing"/>
+                <TextBlock Text="Drawing"/>
+                <TextBlock Text="Overlay1"/>
+                <TextBlock Text="Overlay2"/>
+                <TextBlock Text="Overlay3"/>
+                <TextBlock Text="Overlay4"/>
+                <TextBlock Text="Minimize/Restore"/>
+                <TextBlock Text="Color1"/>
+                <TextBlock Text="Color2"/>
+                <TextBlock Text="Color3"/>
+                <TextBlock Text="Color4"/>
+                <TextBlock Text="Color5"/>
+                <TextBlock Text="Color6"/>
+                <TextBlock Text="Color7"/>
+                <TextBlock Text="Color8"/>
+                <TextBlock Text="Color9"/>
+                <TextBlock Text="Color10"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

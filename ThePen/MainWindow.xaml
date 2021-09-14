@@ -1,0 +1,45 @@
+﻿<Window x:Class="ThePen.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ThePen"
+        
+        xmlns:pixi="clr-namespace:ColorPicker;assembly=ColorPicker"
+        
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Topmost="True" Loaded="Window_Loaded" Closed="Window_Closed"
+        WindowStyle="None" ResizeMode="CanMinimize">
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.CommandBindings>
+            <CommandBinding Executed="Undo" Command="ApplicationCommands.Undo"/>
+            <CommandBinding Executed="Redo" Command="ApplicationCommands.Redo"/>
+        </Grid.CommandBindings>
+        <StackPanel Width="180">
+            <Rectangle Name="border" Width="30" Height="30" Fill="BLACK" PreviewMouseMove="border_PreviewMouseMove" Cursor="Hand" MouseRightButtonDown="border_MouseRightButtonDown"/>
+            <Button Content="exit" Click="Button_Click"/>
+            <Button Content="Draw Mode" Click="Button_Click_1"/>
+            <Button Content="Point Mode" Click="Button_Click_2"/>
+            <Button Content="Clear All" Name="ClearAll" Click="ClearAll_Click"/>
+            <Button Content="Test" Name="TestButton" Click="TestButton_Click"/>
+            <Button Content="Hook" Name="Hook" Click="Hook_Click"/>
+            <Button Content="Unhook" Name="Unhook" Click="Unhook_Click"/>
+            <pixi:PortableColorPicker Name="TestPicker"/>
+            <ComboBox>
+                <ComboBoxItem>Normal Item</ComboBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Other: " VerticalAlignment="Center"/>
+                    <TextBox>Enter text...</TextBox>
+                </StackPanel>
+            </ComboBox>
+
+
+        </StackPanel>
+    </Grid>
+</Window>
