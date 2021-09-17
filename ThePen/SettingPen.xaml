@@ -17,12 +17,17 @@
     <Grid>
         <StackPanel Orientation="Horizontal" Height="20">
             <TextBlock Text="Color : " VerticalAlignment="Center"/>
-            <pixi:PortableColorPicker VerticalAlignment="Center" Height="20" Margin="0 0 10 0" Name="ColorPicker"/>
+            <local:SettingColor VerticalAlignment="Center" Height="20" Margin="0 0 10 0" x:Name="Picker"/>
             <CheckBox Content="FitToCurve" Name="FitToCurve"/>
             <CheckBox Content="Highlighter" Name="Highlighter"/>
             <CheckBox Content="Ignore Presure" Name="IgnorePresure"/>
-            <TextBlock Text="Size : " VerticalAlignment="Center"/>
-            <TextBox Width="40" Text="3" Name="Size" TextChanged="Size_TextChanged"/>
+            <TextBlock Text="Width : " VerticalAlignment="Center"/>
+            <TextBox Width="40" Text="3" Name="Width" TextChanged="Size_TextChanged" Margin="0 0 10 0"/>
+            <TextBlock Text="Height : " VerticalAlignment="Center"/>
+            <TextBox Width="40" Text="3" Name="Height" TextChanged="Size_TextChanged" Margin="0 0 10 0"/>
+            <TextBlock Text="Angle : " VerticalAlignment="Center"/>
+            <TextBox Width="40" Text="3" Name="Angle" TextChanged="Size_TextChanged"/>
+            
         </StackPanel>
     </Grid>
 </UserControl>

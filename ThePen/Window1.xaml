@@ -7,11 +7,27 @@
         mc:Ignorable="d"
         Title="Window1" Height="450" Width="800" WindowStyle="None"  AllowsTransparency="True"  Topmost="True" Background="#00000000"
         >
-    <Grid StylusInAirMove="Grid_StylusInAirMove">
+    <Grid>
         <Grid.CommandBindings>
             <CommandBinding Executed="Undo" Command="ApplicationCommands.Undo"/>
             <CommandBinding Executed="Redo" Command="ApplicationCommands.Redo"/>
         </Grid.CommandBindings>
-        <InkCanvas Name="Canvas" Background="#00000000" UseCustomCursor="True" Cursor="Pen"/>
+        <Grid x:Name="GridBoard" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Rectangle x:Name="BackBoard" Fill="#00000000"/>
+            <InkCanvas Name="Board" Background="#00000000" UseCustomCursor="True" Cursor="Pen" PreviewMouseMove="Board_PreviewMouseMove" PreviewStylusInAirMove="Board_PreviewStylusInAirMove" PreviewStylusMove="Board_PreviewStylusMove" />
+            <Rectangle x:Name="AutoDrawAreaLeft" Fill="#01000000" HorizontalAlignment="Left" Width="5" StylusEnter="AutoDrawAreaLeft_StylusEnter"/>
+            <Rectangle x:Name="AutoDrawAreaRight" Fill="#01000000" HorizontalAlignment="Right" Width="5" StylusEnter="AutoDrawAreaRight_StylusEnter"/>
+            <Rectangle x:Name="AutoDrawAreaTop" Fill="#01000000" VerticalAlignment="Top" Height="5" StylusEnter="AutoDrawAreaTop_StylusEnter"/>
+            <Rectangle x:Name="AutoDrawAreaBottom" Fill="#01000000" VerticalAlignment="Bottom" Height="20" StylusEnter="AutoDrawAreaBottom_StylusEnter"/>
+            
+        </Grid>
+
+        <Canvas Name="Overlay">
+            <Grid Name="MouseEffectGroup" Width="100" Height="100">
+                <Ellipse Fill="#00000000" StrokeThickness="8" Stroke="#80FF0000" Width="30" Height="30" Name="MouseEffectMove" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Ellipse Fill="#00000000" StrokeThickness="8" Stroke="#8000ff00" Width="30" Height="30" Name="MouseEffectLeftDown" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+                <Ellipse Fill="#00000000" StrokeThickness="8" Stroke="#800000ff" Width="30" Height="30" Name="MouseEffectRightDown" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+            </Grid>
+        </Canvas>
     </Grid>
 </Window>

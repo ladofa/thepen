@@ -29,50 +29,39 @@ namespace ThePen
 		{
 			set
 			{
-				ColorPicker.Color.A = value.Color.A;
-				ColorPicker.Color.RGB_R = value.Color.R;
-				ColorPicker.Color.RGB_G = value.Color.G;
-				ColorPicker.Color.RGB_B = value.Color.B;
-
+				Picker.Value = value.Color;
 				FitToCurve.IsChecked = value.FitToCurve;
 				Highlighter.IsChecked = value.IsHighlighter;
 				IgnorePresure.IsChecked = value.IgnorePressure;
-				Size.Text = value.Width.ToString();
-
+				Width.Text = value.Width.ToString();
+				Height.Text = value.Height.ToString();
+				Angle.Text = Global.GetAngle(value.StylusTipTransform).ToString();
 			}
 
 			get
-			{
-				var color = new Color()
-				{
-					A = (byte)ColorPicker.Color.A,
-					R = (byte)ColorPicker.Color.RGB_R,
-					G = (byte)ColorPicker.Color.RGB_G,
-					B = (byte)ColorPicker.Color.RGB_B,
-				};
-
-				var size = Int32.Parse(Size.Text);
-
-
+			{ 
 				return new System.Windows.Ink.DrawingAttributes()
 				{
-					Color = color,
+					Color = Picker.Value,
 					FitToCurve = FitToCurve.IsChecked.Value,
 					IsHighlighter = Highlighter.IsChecked.Value,
 					IgnorePressure = IgnorePresure.IsChecked.Value,
-					Width = size,
-					Height = size,
-					StylusTip = System.Windows.Ink.StylusTip.Ellipse
+					Width = double.Parse(Width.Text),
+					Height = double.Parse(Height.Text),
+					StylusTip = System.Windows.Ink.StylusTip.Ellipse,
+					StylusTipTransform = Global.GetMatrix(double.Parse(Angle.Text)),
 				};
 			}
 		}
 
 		private void Size_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			bool succeed = Int32.TryParse(Size.Text, out int result);
+			TextBox textBox = sender as TextBox;
+
+			bool succeed = Double.TryParse(textBox.Text, out double result);
 			if (!succeed)
 			{
-				Size.Text = "";
+				textBox.Text = "";
 			}
 		}
 	}

@@ -9,27 +9,91 @@
         
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Topmost="True" Loaded="Window_Loaded" Closed="Window_Closed"
-        WindowStyle="None" ResizeMode="CanMinimize">
+        WindowStyle="None" ResizeMode="CanMinimize" AllowsTransparency="True" MouseLeave="Window_MouseLeave" LostFocus="Window_LostFocus">
+    <Window.Background>
+        <SolidColorBrush Opacity="0" Color="White"/>
+    </Window.Background>
     <Window.Resources>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Height" Value="30"/>
             <Setter Property="Margin" Value="5"/>
         </Style>
+        <Style TargetType="{x:Type TextBlock}" x:Key="Overlay">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <Style TargetType="{x:Type local:MainButton}">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="ToolTipService.InitialShowDelay" Value="0"/>
+        </Style>
+        <Style TargetType="Rectangle" x:Key="Pallette" >
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+        </Style>
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="MainGrid">
+        <Grid.Effect>
+            <DropShadowEffect BlurRadius="12" Direction="-90"
+                              RenderingBias="Quality" ShadowDepth="2" Opacity="0.6"/>
+        </Grid.Effect>
         <Grid.CommandBindings>
             <CommandBinding Executed="Undo" Command="ApplicationCommands.Undo"/>
             <CommandBinding Executed="Redo" Command="ApplicationCommands.Redo"/>
         </Grid.CommandBindings>
-        <StackPanel Width="180">
-            <Rectangle Name="border" Width="30" Height="30" Fill="BLACK" PreviewMouseMove="border_PreviewMouseMove" Cursor="Hand" MouseRightButtonDown="border_MouseRightButtonDown"/>
-            <Button Content="exit" Click="Button_Click"/>
-            <Button Content="Draw Mode" Click="Button_Click_1"/>
-            <Button Content="Point Mode" Click="Button_Click_2"/>
-            <Button Content="Clear All" Name="ClearAll" Click="ClearAll_Click"/>
-            <Button Content="Test" Name="TestButton" Click="TestButton_Click"/>
-            <Button Content="Hook" Name="Hook" Click="Hook_Click"/>
-            <Button Content="Unhook" Name="Unhook" Click="Unhook_Click"/>
+        <StackPanel x:Name="MainStackPanel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40">
+            <Image x:Name="Hat" Source="/Images/hat.png" Width="32" Height="32" PreviewMouseMove="Hat_PreviewMouseMove"
+                   Cursor="Hand"  ToolTipService.InitialShowDelay="0"
+                   MouseLeftButtonDown="Hat_MouseLeftButtonDown" MouseLeftButtonUp="Hat_MouseLeftButtonUp"
+                   MouseRightButtonDown="Hat_MouseRightButtonDown" MouseRightButtonUp="Hat_MouseRightButtonUp">
+                <Image.ToolTip >
+                    <TextBlock Text="Drag to MOVE,Click to open OPTION MENU."/>
+                </Image.ToolTip>
+            </Image>
+            <StackPanel x:Name="MainButtonsStackPanel">
+                <local:MainButton x:Name="SelectButton" Click="SelectButton_Click">
+                    <local:MainButton.Image>
+                        <Image Source="pack://application:,,,/Images/arrow.png"/>
+                    </local:MainButton.Image>
+                    <local:MainButton.ToolTip>
+                        <TextBlock Text="Normal mode"/>
+                    </local:MainButton.ToolTip>
+                </local:MainButton>
+                <local:MainButton x:Name="DrawButton" Click="DrawButton_Click">
+                    <local:MainButton.Image>
+                        <Image Source="/Images/pen.png"/>
+                    </local:MainButton.Image>
+                </local:MainButton>
+                <local:MainButton x:Name="EraseButon" Click="EraseButon_Click">
+                    <local:MainButton.Image>
+                        <Image Source="/images/eraser.png"/>
+                    </local:MainButton.Image>
+                </local:MainButton>
+                <local:MainButton x:Name="ClearButton" Click="ClearButton_Click">
+                    <local:MainButton.Image>
+                        <Image Source="images/clear.png"/>
+                    </local:MainButton.Image>
+                </local:MainButton>
+                <local:MainButton x:Name="OverlayButton" Click="OverlayButton_Click">
+                    <local:MainButton.Image>
+                        <Image Source="images/overlay.png"/>
+                    </local:MainButton.Image>
+                </local:MainButton>
+                <local:MainButton x:Name="ColorButton" Click="ColorButton_Click">
+                    <local:MainButton.Image>
+                        <Rectangle Width="20" Height="20" Fill="Orange" Stroke="Black" StrokeThickness="2"/>
+                    </local:MainButton.Image>
+                </local:MainButton>
+                
+            </StackPanel>
+
+
+
+            <!--<Button Content="Test" Name="TestButton" Click="TestButton_Click"/>
+            
             <pixi:PortableColorPicker Name="TestPicker"/>
             <ComboBox>
                 <ComboBoxItem>Normal Item</ComboBoxItem>
@@ -37,9 +101,104 @@
                     <TextBlock Text="Other: " VerticalAlignment="Center"/>
                     <TextBox>Enter text...</TextBox>
                 </StackPanel>
-            </ComboBox>
+            </ComboBox>-->
+
+        </StackPanel>
+
+        <StackPanel x:Name="HatPopup" Margin="192 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <local:MainButton x:Name="HatSettingButton" Click="HatSettingButton_Click">
+                <local:MainButton.Image>
+                    <Image Source="/Images/setting.png"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="HatInfoButton" Click="HatInfoButton_Click">
+                <local:MainButton.Image>
+                    <Image Source="/Images/info.png"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="HatExitButton" Click="HatExitButton_Click">
+                <local:MainButton.Image>
+                    <Image Source="/Images/exit.png"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+        </StackPanel>
+
+        <StackPanel x:Name="DrawPopup" Margin="64 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <local:MainButton x:Name="DrawButton1" Click="DrawButton1_Click">
+                <local:MainButton.Image>
+                    <local:PenRepresenter/>
+                </local:MainButton.Image>
+                
+            </local:MainButton>
+            <local:MainButton x:Name="DrawButton2" Click="DrawButton2_Click">
+                <local:MainButton.Image>
+                    <local:PenRepresenter/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="DrawButton3" Click="DrawButton3_Click">
+                <local:MainButton.Image>
+                    <local:PenRepresenter/>
+                </local:MainButton.Image>
+            </local:MainButton>
+        </StackPanel>
+
+        <StackPanel x:Name="OverlayPopup" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <local:MainButton x:Name="OverlayButton1" Click="OverlayButton1_Click">
+                <local:MainButton.Image>
+                    <TextBlock Text="1" Style="{StaticResource Overlay}"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="OverlayButton2" Click="OverlayButton2_Click">
+                <local:MainButton.Image>
+                    <TextBlock Text="2" Style="{StaticResource Overlay}"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="OverlayButton3" Click="OverlayButton3_Click">
+                <local:MainButton.Image>
+                    <TextBlock Text="3" Style="{StaticResource Overlay}"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="OverlayButton4" Click="OverlayButton4_Click">
+                <local:MainButton.Image>
+                    <TextBlock Text="4" Style="{StaticResource Overlay}"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+        </StackPanel>
+
+        <StackPanel x:Name="ColorPopup" Margin="128, 0, 0, 0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <local:MainButton x:Name="ColorButton1" Click="ColorButton1_Click">
+                <local:MainButton.Image>
+                    <Rectangle Style="{StaticResource Pallette}" Fill="Red"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="ColorButton2" Click="ColorButton2_Click">
+                <local:MainButton.Image>
+                    <Rectangle Style="{StaticResource Pallette}" Fill="Orange"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="ColorButton3" Click="ColorButton3_Click">
+                <local:MainButton.Image>
+                    <Rectangle Style="{StaticResource Pallette}" Fill="Yellow"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="ColorButton4" Click="ColorButton4_Click">
+                <local:MainButton.Image>
+                    <Rectangle Style="{StaticResource Pallette}" Fill="Green"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="ColorButton5" Click="ColorButton5_Click">
+                <local:MainButton.Image>
+                    <Rectangle Style="{StaticResource Pallette}" Fill="Blue"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="ColorButton6" Click="ColorButton6_Click">
+                <local:MainButton.Image>
+                    <Rectangle Style="{StaticResource Pallette}" Fill="Magenta"/>
+                </local:MainButton.Image>
+            </local:MainButton>
 
 
         </StackPanel>
+
     </Grid>
 </Window>

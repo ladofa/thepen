@@ -7,10 +7,15 @@ using System.Threading.Tasks;
 using System.Windows.Ink;
 using System.Windows.Media;
 
+using System.Windows.Input;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Diagnostics;
+
 namespace ThePen
 {
 	/*
-
+	Stamp
 	::Presets
 	Preset1 - Type, Size, Color, 
 	Preset2
@@ -57,14 +62,150 @@ namespace ThePen
 	*/
 	public static class Global
 	{
-		public static DrawingAttributes CurrentDrawingAttributes;
-		public static List<DrawingAttributes> Presets;
-		public static List<Color> Colors;
-		
-		public static void asdf()
+		public static double GetAngle(System.Windows.Media.Matrix m)
 		{
-				
+			return Math.Round(Math.Acos(m.M11) / Math.PI * 180, 2);
 		}
 
+		public static Matrix GetMatrix(double angle)
+		{
+			Matrix m = Matrix.Identity;
+			m.Rotate(angle);
+			return m;
+		}
+
+
+		static Global()
+		{
+
+		}
+
+		public static SettingData SettingData = new SettingData();
+		public static int CurrentPen = 1;
+
+		public static void SaveToReg()
+		{
+			foreach (var prop in typeof(SettingData).GetFields())
+			{
+				dynamic val = prop.GetValue(SettingData);
+				if (val is System.Windows.Ink.DrawingAttributes _drawing)
+				{
+					Reg.Write(prop.Name, _drawing);
+				}
+				else if (val is Color _color)
+				{
+					Reg.Write(prop.Name, _color);
+				}
+				else if (val is ValueTuple<uint, uint> _key)
+				{
+					Reg.Write(prop.Name, _key);
+				}
+				else if (val is uint _uint)
+				{
+					Reg.Write(prop.Name, _uint);
+				}
+				else if (val is double _double)
+				{
+					Reg.Write(prop.Name, _double);
+				}
+				else if (val is int _int)
+				{
+					Reg.Write(prop.Name, _int);
+				}
+				else if (val is bool _bool)
+				{
+					Reg.Write(prop.Name, _bool);
+				}
+				else if (val is Key _one)
+				{
+					Reg.Write(prop.Name, _one);
+				}
+				else
+				{
+					System.Windows.MessageBox.Show(val.ToString());
+				}
+			}
+
+			Reg.Write(nameof(CurrentPen), CurrentPen);
+
+			SettingChanged?.Invoke(null, null);
+		}
+
+		public static void LoadFromReg()
+		{
+			try
+			{
+				foreach (var prop in typeof(SettingData).GetFields())
+				{
+					var val = prop.GetValue(SettingData);
+
+					if (val == null)
+					{
+						System.Windows.MessageBox.Show(prop.Name);
+					}
+					if (val is System.Windows.Ink.DrawingAttributes _drawing)
+					{
+						Reg.Read(prop.Name, out _drawing);
+						prop.SetValue(SettingData, _drawing);
+					}
+					else if (val is Color _color)
+					{
+						Reg.Read(prop.Name, out _color);
+						prop.SetValue(SettingData, _color);
+					}
+					else if (val is ValueTuple<uint, uint> _key)
+					{
+						Reg.Read(prop.Name, out _key);
+						prop.SetValue(SettingData, _key);
+					}
+					else if (val is uint _uint)
+					{
+						Reg.Read(prop.Name, out _uint);
+						prop.SetValue(SettingData, _uint);
+					}
+					else if (val is double _double)
+					{
+						Reg.Read(prop.Name, out _double);
+						prop.SetValue(SettingData, _double);
+					}
+					else if (val is int _int)
+					{
+						Reg.Read(prop.Name, out _int);
+						prop.SetValue(SettingData, _int);
+					}
+					else if (val is bool _bool)
+					{
+						Reg.Read(prop.Name, out _bool);
+						prop.SetValue(SettingData, _bool);
+					}
+					else if (val is Key _one)
+					{
+						Reg.Read(prop.Name, out _one);
+						prop.SetValue(SettingData, _one);
+					}
+					else
+					{
+						System.Windows.MessageBox.Show(val.ToString());
+					}
+				}
+
+				Reg.Read(nameof(CurrentPen), out CurrentPen);
+			}
+			catch (Exception e)
+			{
+				
+			}
+
+			SettingChanged?.Invoke(null, null);
+		}
+
+		public static void SetAsDefault()
+		{
+			SettingData = new SettingData();
+			SettingChanged?.Invoke(null, null);
+			CurrentPen = 1;
+		}
+
+		public static event EventHandler SettingChanged;
 	}
 }

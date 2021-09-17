@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="ThePen.MainButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ThePen"
+             mc:Ignorable="d" 
+             d:DesignHeight="32" d:DesignWidth="32">
+    <Grid MouseLeftButtonDown="Grid_MouseLeftButtonDown" MouseLeftButtonUp="Grid_MouseLeftButtonUp" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave" Cursor="Hand" Background="White">
+        <Grid x:Name="GridContent">
+            
+        </Grid>
+        <Rectangle x:Name="Hover" Stroke="Gray" StrokeThickness="2" Visibility="Hidden"/>
+        <Rectangle x:Name="RectChecked" Fill="#8068B4D1" Visibility="Hidden"/>
+    </Grid>
+</UserControl>

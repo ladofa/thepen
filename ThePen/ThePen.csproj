@@ -1,19 +1,49 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<OutputType>WinExe</OutputType>
 		<TargetFramework>net5.0-windows</TargetFramework>
 		<UseWPF>true</UseWPF>
 		<ApplicationIcon />
+		<OutputType>WinExe</OutputType>
 		<StartupObject />
+		<Win32Resource />
+
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <DocumentationFile></DocumentationFile>
+		<DocumentationFile></DocumentationFile>
+		<Optimize>false</Optimize>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="PixiEditor.ColorPicker" Version="3.1.0" />
+		<PackageReference Include="PixiEditor.ColorPicker" Version="3.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="Images/hat.png" />
+		<Resource Include="Images/arrow.png" />
+		<Resource Include="Images/pen.png" />
+		<Resource Include="Images/eraser.png" />
+		<Resource Include="Images/clear.png" />
+		<Resource Include="Images/overlay.png" />
+		<Resource Include="Images/setting.png" />
+		<Resource Include="Images/exit.png" />
+		<Resource Include="Images/info.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 	</ItemGroup>
 
 </Project>

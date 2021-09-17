@@ -1,91 +1,166 @@
-﻿<UserControl x:Class="ThePen.Setting"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:pixi="clr-namespace:ColorPicker;assembly=ColorPicker"
-
-             xmlns:local="clr-namespace:ThePen"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Background="White">
-    <UserControl.Resources>
+﻿<Window x:Class="ThePen.Setting"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ThePen"
+        
+        mc:Ignorable="d"
+        Title="Setting" Height="1300" Width="800" Topmost="True" Closing="Window_Closing">
+    <Window.Resources>
         <Style TargetType="TextBlock" x:Key="Title">
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="Margin" Value="0 20 0 5"/>
         </Style>
-        <Style TargetType="pixi:PortableColorPicker">
+        
+        <Style TargetType="local:SettingColor">
             <Setter Property="Height" Value="20"/>
             <Setter Property="Margin" Value="0 0 10 0"/>
         </Style>
-    </UserControl.Resources>
+        <Style TargetType="TextBlock" x:Key="HotKey">
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Margin" Value="0 6 0 0"/>
+        </Style>
+        <Style TargetType="local:SettingHotKey">
+            <Setter Property="Height" Value="30"/>
+        </Style>
+        <Style TargetType="local:SettingOneKey">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="80"/>
+        </Style>
+    </Window.Resources>
     <Grid>
-        <TextBlock Text="Setting" FontSize="30" Margin="20"/>
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="15 70 0 20">
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="15 0 0 50">
             <StackPanel Orientation="Vertical">
                 <TextBlock Style="{StaticResource Title}" Text="Pens" Margin="0 0 10 0"/>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Height="30">
                     <TextBlock Text="Pen1" VerticalAlignment="Center" Margin="0 0 10 0"/>
-                    <local:SettingPen/>
+                    <local:SettingPen x:Name="SettingPen1"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Height="30">
                     <TextBlock Text="Pen2" VerticalAlignment="Center" Margin="0 0 10 0"/>
-                    <local:SettingPen/>
+                    <local:SettingPen x:Name="SettingPen2"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Height="30">
                     <TextBlock Text="Pen3" VerticalAlignment="Center" Margin="0 0 10 0"/>
-                    <local:SettingPen/>
+                    <local:SettingPen x:Name="SettingPen3"/>
                 </StackPanel>
                 <TextBlock Style="{StaticResource Title}" Text="Colors"/>
                 <StackPanel Orientation="Horizontal" Height="20">
                     <TextBlock Text="1 : "/>
-                    <pixi:PortableColorPicker/>
+                    <local:SettingColor x:Name="Palette1"/>
                     <TextBlock Text="2 : "/>
-                    <pixi:PortableColorPicker/>
+                    <local:SettingColor x:Name="Palette2"/>
                     <TextBlock Text="3 : "/>
-                    <pixi:PortableColorPicker/>
+                    <local:SettingColor x:Name="Palette3"/>
                     <TextBlock Text="4 : "/>
-                    <pixi:PortableColorPicker/>
+                    <local:SettingColor x:Name="Palette4"/>
                     <TextBlock Text="5 : "/>
-                    <pixi:PortableColorPicker/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                    <local:SettingColor x:Name="Palette5"/>
                     <TextBlock Text="6 : "/>
-                    <pixi:PortableColorPicker/>
-                    <TextBlock Text="7 : "/>
-                    <pixi:PortableColorPicker/>
-                    <TextBlock Text="8 : "/>
-                    <pixi:PortableColorPicker/>
-                    <TextBlock Text="9 : "/>
-                    <pixi:PortableColorPicker/>
-                    <TextBlock Text="0 : "/>
-                    <pixi:PortableColorPicker/>
+                    <local:SettingColor x:Name="Palette6"/>
                 </StackPanel>
-                
+
                 <TextBlock Style="{StaticResource Title}" Text="Shortcuts"/>
-                <TextBlock Text="Pen1"/>
-                <TextBlock Text="Pen2"/>
-                <TextBlock Text="Pen3"/>
-                <TextBlock Text="Eraser"/>
-                <TextBlock Text="Disable"/>
-                <TextBlock Text="Drawing"/>
-                <TextBlock Text="Drawing"/>
-                <TextBlock Text="Overlay1"/>
-                <TextBlock Text="Overlay2"/>
-                <TextBlock Text="Overlay3"/>
-                <TextBlock Text="Overlay4"/>
-                <TextBlock Text="Minimize/Restore"/>
-                <TextBlock Text="Color1"/>
-                <TextBlock Text="Color2"/>
-                <TextBlock Text="Color3"/>
-                <TextBlock Text="Color4"/>
-                <TextBlock Text="Color5"/>
-                <TextBlock Text="Color6"/>
-                <TextBlock Text="Color7"/>
-                <TextBlock Text="Color8"/>
-                <TextBlock Text="Color9"/>
-                <TextBlock Text="Color10"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Style="{StaticResource HotKey}" Text="Select"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Pen1"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Pen2"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Pen3"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Erase"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Clear"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Overlay1"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Overlay2"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Overlay3"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Overlay4"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Color1"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Color2"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Color3"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Color4"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Color5"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Color6"/>
+
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <local:SettingHotKey x:Name="HotKeySelect"/>
+                        <local:SettingHotKey x:Name="HotKeyPen1"/>
+                        <local:SettingHotKey x:Name="HotKeyPen2"/>
+                        <local:SettingHotKey x:Name="HotKeyPen3"/>
+                        <local:SettingHotKey x:Name="HotKeyErase"/>
+                        <local:SettingHotKey x:Name="HotKeyClear"/>
+                        <local:SettingHotKey x:Name="HotKeyOverlay1"/>
+                        <local:SettingHotKey x:Name="HotKeyOverlay2"/>
+                        <local:SettingHotKey x:Name="HotKeyOverlay3"/>
+                        <local:SettingHotKey x:Name="HotKeyOverlay4"/>
+                        <local:SettingHotKey x:Name="HotKeyColor1"/>
+                        <local:SettingHotKey x:Name="HotKeyColor2"/>
+                        <local:SettingHotKey x:Name="HotKeyColor3"/>
+                        <local:SettingHotKey x:Name="HotKeyColor4"/>
+                        <local:SettingHotKey x:Name="HotKeyColor5"/>
+                        <local:SettingHotKey x:Name="HotKeyColor6"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <local:SettingOneKey x:Name="OneKeySelect"/>
+                        <local:SettingOneKey x:Name="OneKeyPen1"/>
+                        <local:SettingOneKey x:Name="OneKeyPen2"/>
+                        <local:SettingOneKey x:Name="OneKeyPen3"/>
+                        <local:SettingOneKey x:Name="OneKeyErase"/>
+                        <local:SettingOneKey x:Name="OneKeyClear"/>
+                        <local:SettingOneKey x:Name="OneKeyOverlay1"/>
+                        <local:SettingOneKey x:Name="OneKeyOverlay2"/>
+                        <local:SettingOneKey x:Name="OneKeyOverlay3"/>
+                        <local:SettingOneKey x:Name="OneKeyOverlay4"/>
+                        <local:SettingOneKey x:Name="OneKeyColor1"/>
+                        <local:SettingOneKey x:Name="OneKeyColor2"/>
+                        <local:SettingOneKey x:Name="OneKeyColor3"/>
+                        <local:SettingOneKey x:Name="OneKeyColor4"/>
+                        <local:SettingOneKey x:Name="OneKeyColor5"/>
+                        <local:SettingOneKey x:Name="OneKeyColor6"/>
+                    </StackPanel>
+                    <StackPanel>
+
+                    </StackPanel>
+                </Grid>
+
+
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <TextBlock Text="One Key Shortcut mode :  " VerticalAlignment="Center"/>
+                    <RadioButton x:Name="ImmeRadioButton" Content="Immediatly change    or    " VerticalAlignment="Center"/>
+                    <RadioButton x:Name="TempRadioButton" Content="Temporally change while pressed" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <TextBlock Style="{StaticResource Title}" Text="Easy Switch"/>
+
+                <TextBlock Style="{StaticResource Title}" Text="Drawing Display"/>
+
+                <TextBlock Style="{StaticResource Title}" Text="Mouse Effect"/>
+
+                <TextBlock Style="{StaticResource Title}" Text="Overlay"/>
+                <Grid Height="30" VerticalAlignment="Center">
+                    <TextBlock Text="Comming Soon... ??"/>
+                </Grid>
+
+
             </StackPanel>
         </ScrollViewer>
+        <StackPanel Orientation="Horizontal" Height="30" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+            <Button x:Name="CancelButton" Content="Cancel" Width="60" Margin="0 0 10 0" Click="CancelButton_Click"/>
+            <Button x:Name="SaveButton" Content="Save and Close" Width="100" Click="SaveButton_Click"/>
+            
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Height="30" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+            <Button x:Name="DefaultButton" Content="Set As Default" Margin="0 0 10 0" Width="100" Click="DefaultButton_Click"/>
+
+        </StackPanel>
     </Grid>
-</UserControl>
+</Window>

@@ -13,7 +13,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Interop;
 
+using System.Windows.Ink;
+
 using System.Diagnostics;
+
+
 
 namespace ThePen
 {
@@ -26,38 +30,163 @@ namespace ThePen
 		{
 			InitializeComponent();
 
-			Canvas.DefaultDrawingAttributes = new System.Windows.Ink.DrawingAttributes()
-			{
-				Color = Colors.Red,
-				Width = 10
-			};
+			//for undo/redo
+			Board.Strokes.StrokesChanged += Strokes_StrokesChanged;
 
-			SetDrawing(false);
+			//for mouse effect
+			MouseHook.MouseHookEvent += MouseHook_MouseHookEvent;
+			MouseHook.Start();
 
-
-			Canvas.Strokes.StrokesChanged += Strokes_StrokesChanged;
-
-			InputManager.Current.PreProcessInput += Current_PreProcessInput;
+			AdoptSetting();
 		}
 
-		int pp = 0;
-
-		private void Current_PreProcessInput(object sender, PreProcessInputEventArgs e)
+		private void AdoptSetting()
 		{
-			var a = e.PeekInput();
-			if (a == null)
+			SettingData data = Global.SettingData;
+			mainPen = data.Pen1;
+
+			//init mouse click effect
+			if (Global.SettingData.MouseEffectMove)
 			{
-				Debug.WriteLine("null??");
-				return;
+				MouseEffectMove.Visibility = Visibility.Visible;
 			}
 			else
 			{
-				Debug.WriteLine(a.ToString());
-				Debug.WriteLine(pp.ToString());
-				pp++;
+				MouseEffectMove.Visibility = Visibility.Collapsed;
+			}
+		}
+
+		DrawingAttributes mainPen;
+		public delegate void MainPenChangedEventHandler(object sender, int num);
+		public event MainPenChangedEventHandler MainPenChanged;
+
+		public void ChangeMainPen(int num)
+		{
+			List<DrawingAttributes> pens = new()
+			{
+				Global.SettingData.Pen1,
+				Global.SettingData.Pen2,
+				Global.SettingData.Pen3,
+			};
+			mainPen = pens[num - 1];
+			Board.DefaultDrawingAttributes = mainPen;
+			previousPen = mainPen.Clone();
+			MainPenChanged?.Invoke(this, num);
+		}
+
+		public delegate void ColorChangedEventHandler(object sender, Color color);
+		public event ColorChangedEventHandler ColorChanged;
+		public void ChangeColor(Color color)
+		{
+			mainPen.Color = color;
+			ColorChanged?.Invoke(this, color);
+		}
+
+		private DrawingAttributes previousPen;
+
+		bool isPressed = false;
+		protected override void OnPreviewKeyDown(KeyEventArgs e)
+		{
+			base.OnPreviewKeyDown(e);
+
+			if (isPressed) return;
+
+			var data = Global.SettingData;
+
+			if (e.Key == data.OneErase)
+			{
+				Board.EditingMode = InkCanvasEditingMode.EraseByStroke;
 			}
 
+			if (!data.OneKeyImme)
+			{
+				previousPen = Board.DefaultDrawingAttributes.Clone();
+			}
+
+			if (e.Key == data.OneColor1)
+			{
+				Board.DefaultDrawingAttributes.Color = data.Palette1;
+				Debug.WriteLine(previousPen.Color);
+				Debug.WriteLine(Board.DefaultDrawingAttributes.Color);
+			}
+
+			isPressed = true;
 		}
+
+		protected override void OnLostFocus(RoutedEventArgs e)
+		{
+			base.OnLostFocus(e);
+			isPressed = false;
+			Board.DefaultDrawingAttributes = previousPen;
+		}
+
+		protected override void OnPreviewKeyUp(KeyEventArgs e)
+		{
+			base.OnPreviewKeyUp(e);
+
+			var data = Global.SettingData;
+
+			if (e.Key == data.OneErase)
+			{
+				Board.EditingMode = InkCanvasEditingMode.Ink;
+			}
+
+			if (!data.OneKeyImme)
+			{
+				Board.DefaultDrawingAttributes = previousPen.Clone();
+			}
+
+			isPressed = false;
+		}
+
+		#region mouse effect
+		private void MouseHook_MouseHookEvent(object sender, MouseHook.MouseHookEventArgs e)
+		{
+			var p = new Point(e.Point.x, e.Point.y);
+			var message = e.Message;
+
+			if (message == MouseHook.MouseMessages.WM_MOUSEMOVE)
+			{
+				Canvas.SetLeft(MouseEffectGroup, p.X - 50);
+				Canvas.SetTop(MouseEffectGroup, p.Y - 50);
+				//MouseEffectMove.Margin = new Thickness() { Left = p.X - 15, Top = p.Y - 15 };
+			}
+
+			if (message == MouseHook.MouseMessages.WM_LBUTTONDOWN && Global.SettingData.MouseEffectLeftDown)
+			{
+				MouseEffectLeftDown.Visibility = Visibility.Visible;
+
+				if (Global.SettingData.MouseEffectMove)
+				{
+					MouseEffectMove.Visibility = Visibility.Collapsed;
+				}
+			}
+			else if (message == MouseHook.MouseMessages.WM_LBUTTONUP && Global.SettingData.MouseEffectLeftDown)
+			{
+				MouseEffectLeftDown.Visibility = Visibility.Collapsed;
+				if (Global.SettingData.MouseEffectMove)
+				{
+					MouseEffectMove.Visibility = Visibility.Visible;
+				}
+			}
+			else if (message == MouseHook.MouseMessages.WM_RBUTTONDOWN && Global.SettingData.MouseEffectRightDown)
+			{
+				MouseEffectRightDown.Visibility = Visibility.Visible;
+				if (Global.SettingData.MouseEffectMove)
+				{
+					MouseEffectMove.Visibility = Visibility.Collapsed;
+				}
+			}
+			else if (message == MouseHook.MouseMessages.WM_RBUTTONUP && Global.SettingData.MouseEffectRightDown)
+			{
+				MouseEffectRightDown.Visibility = Visibility.Collapsed;
+				if (Global.SettingData.MouseEffectMove)
+				{
+					MouseEffectMove.Visibility = Visibility.Visible;
+				}
+			}
+		}
+		#endregion
 
 
 		//private void Window_SourceInitialized(object sender, EventArgs e)
@@ -67,74 +196,96 @@ namespace ThePen
 		//    WindowsService.SetWindowExTransparent(hwnd);
 		//}
 
-		protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
+		
+
+		//--------------------------------------------------------------------------
+
+		public void SetDrawingArea(Rect rect)
 		{
-			base.OnPreviewMouseLeftButtonDown(e);
+			GridBoard.Margin = new Thickness() { Left = rect.X, Top = rect.Y };
+			GridBoard.Width = rect.Width;
+			GridBoard.Height = rect.Height;
+		}
 
-			if (Keyboard.IsKeyDown(Key.LeftShift))
-			{
-				Canvas.DefaultDrawingAttributes = new System.Windows.Ink.DrawingAttributes()
-				{
-					Width = 100,
-					Height = 100
-				};
-				Canvas.EditingMode = InkCanvasEditingMode.EraseByStroke;
-			}
-			else
-			{
-				Canvas.DefaultDrawingAttributes = new System.Windows.Ink.DrawingAttributes()
-				{
-					Color = Colors.Red,
-					Width = 5,
-					Height = 5,
-				};
+		public enum DrawingModes
+		{
+			Select,
+			Draw,
+			Erase
+		}
 
-				Canvas.EditingMode = InkCanvasEditingMode.Ink;
+		DrawingModes drawingMode = DrawingModes.Select;
+
+		public event EventHandler DrawingModeChanged;
+		public DrawingModes DrawingMode
+		{
+			get => drawingMode;
+			set
+			{
+				bool drawing = true;
+				if (value == DrawingModes.Select)
+				{
+					drawing = false;
+				}
+
+				if (drawing)
+				{
+					BackBoard.Fill = new SolidColorBrush(Color.FromArgb(1, 0, 0, 0));
+					Overlay.Visibility = Visibility.Collapsed;
+				}
+				else
+				{
+					BackBoard.Fill = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+					Overlay.Visibility = Visibility.Visible;
+				}
+
+				//IsHitTestVisible = drawing;
+				Board.IsHitTestVisible = drawing;
+				//IsEnabled = drawing;
+				Board.IsEnabled = drawing;
+				Focusable = drawing;
+				//Board.Focusable = drawing;
+
+				drawingMode = value;
+				DrawingModeChanged?.Invoke(this, new EventArgs());
 			}
 		}
 
-
-
-		public void SetDrawing(bool val = true)
+		public bool DrawingVisibility
 		{
-			if (val)
-			{
-				Canvas.Background = new SolidColorBrush(Color.FromArgb(128, 0, 0, 0));
-			}
-			else
-			{
-				Canvas.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
-			}
+			get => Board.Visibility == Visibility.Visible;
 
-			IsHitTestVisible = val;
-			Canvas.IsHitTestVisible = val;
-			IsEnabled = val;
-			Canvas.IsEnabled = val;
-			Focusable = val;
-			Canvas.Focusable = val;
+			set
+			{
+				if (value)
+				{
+					Board.Visibility = Visibility.Visible;
+				}
+				else
+				{
+					Board.Visibility = Visibility.Hidden;
+				}
+			}
 		}
+
 
 		public void ClearAll()
 		{
-			Canvas.Strokes.Clear();
+			Board.Strokes.Clear();
 
-			var s = new System.Windows.Ink.Stroke(new StylusPointCollection(new List<Point> {
-				new Point(0, 0), new Point(100, 100)}))
-			{
+			//var s = new System.Windows.Ink.Stroke(new StylusPointCollection(new List<Point> {
+			//	new Point(0, 0), new Point(100, 100)}))
+			//{
 
-				DrawingAttributes = Canvas.DefaultDrawingAttributes.Clone()
-			};
+			//	DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+			//};
 
-			Canvas.Strokes.Add(s);
+			//Board.Strokes.Add(s);
 		}
 
-		private void Grid_StylusInAirMove(object sender, StylusEventArgs e)
-		{
-			Debug.WriteLine( "MOVE");
-		}
 
 		#region undo/redo
-		//thanks to https://stackoverflow.com/questions/6368517/undo-redo-command-stack-for-inkcanvas/52911463#52911463
+		//thanks to https://stackoverflow.com/questions/6368517/undo-redo-command-stack-for-inkBoard/52911463#52911463
 
 		List<System.Windows.Ink.StrokeCollection> _added = new();
 		List<System.Windows.Ink.StrokeCollection> _removed = new();
@@ -161,8 +312,8 @@ namespace ThePen
 			handle = false;
 			var a = _added.Last();
 			var r = _removed.Last();
-			Canvas.Strokes.Remove(a);
-			Canvas.Strokes.Add(r);
+			Board.Strokes.Remove(a);
+			Board.Strokes.Add(r);
 			_added_redo.Add(a);
 			_removed_redo.Add(r);
 			_added.RemoveAt(_added.Count - 1);
@@ -176,13 +327,62 @@ namespace ThePen
 			handle = false;
 			var a = _added_redo.Last();
 			var r = _removed_redo.Last();
-			Canvas.Strokes.Add(a);
-			Canvas.Strokes.Remove(r);
+			Board.Strokes.Add(a);
+			Board.Strokes.Remove(r);
 			_added.Add(a);
 			_removed.Add(r);
 			_added_redo.RemoveAt(_added_redo.Count - 1);
 			_removed_redo.RemoveAt(_removed_redo.Count - 1);
 			handle = true;
+		}
+		#endregion
+
+
+		#region EasySwitch
+		private void AutoDrawAreaLeft_StylusEnter(object sender, StylusEventArgs e)
+		{
+			if (Global.SettingData.EasySwitch)
+				DrawingMode = DrawingModes.Draw;
+		}
+
+		private void AutoDrawAreaRight_StylusEnter(object sender, StylusEventArgs e)
+		{
+			if (Global.SettingData.EasySwitch)
+				DrawingMode = DrawingModes.Draw;
+		}
+
+		private void AutoDrawAreaTop_StylusEnter(object sender, StylusEventArgs e)
+		{
+			if (Global.SettingData.EasySwitch)
+				DrawingMode = DrawingModes.Draw;
+		}
+
+		private void AutoDrawAreaBottom_StylusEnter(object sender, StylusEventArgs e)
+		{
+			if (Global.SettingData.EasySwitch)
+				DrawingMode = DrawingModes.Draw;
+		}
+
+		int mouseMoveCount = 0;
+
+		private void Board_PreviewMouseMove(object sender, MouseEventArgs e)
+		{
+			mouseMoveCount++;
+			if (mouseMoveCount > 10)
+			{
+				if (Global.SettingData.EasySwitch)
+					DrawingMode = DrawingModes.Select;
+			}
+		}
+
+		private void Board_PreviewStylusInAirMove(object sender, StylusEventArgs e)
+		{
+			mouseMoveCount = 0;
+		}
+
+		private void Board_PreviewStylusMove(object sender, StylusEventArgs e)
+		{
+			mouseMoveCount = 0;
 		}
 		#endregion
 	}

@@ -37,6 +37,7 @@ namespace ThePen
 		//https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 		public static Dictionary<string, uint> TrigKeys = new Dictionary<string, uint>
 		{
+			{"None", 0x00 },
 			{"ESC",0x1B},
 			{"Backspace",0x08},
 			{"Tab",0x09},
@@ -116,21 +117,34 @@ namespace ThePen
 			{"PrintScreen",0x2c},
 			{"NumLock", 0x90 },
 		};
-		public enum TrigKeysXX : uint
-		{
-			//MouseButtonLeft = 0x01,
-			//MouseButtonRight = 0x02,
-			//Cancel = 0x03,
-			//MouseButtonMiddle = 0x04,
-			//XButton1 = 0x05,
-			//XButton2 = 0x06,
-			
-		}
+
+		public static Dictionary<uint, string> TrigKeysInv;
+		public static List<string> TrigKeyStrings;
+		public static List<string> OneKeyStrings;
 
 		static List<(uint, uint, Action)> hotkeys;
+		
 
 		static Hotkey()
 		{
+			TrigKeysInv = new();
+			foreach (var pair in TrigKeys)
+			{
+				TrigKeysInv.Add(pair.Value, pair.Key);
+			}
+
+			TrigKeyStrings = new();
+			foreach (var item in Hotkey.TrigKeys)
+			{
+				TrigKeyStrings.Add(item.Key);
+			}
+
+			OneKeyStrings = new();
+			var enumValues = Enum.GetValues(typeof(System.Windows.Input.Key));
+			foreach (System.Windows.Input.Key enumValue in (System.Windows.Input.Key[])enumValues)
+			{
+				OneKeyStrings.Add(enumValue.ToString());
+			}
 
 		}
 
@@ -167,6 +181,8 @@ namespace ThePen
 
 		public static void unhook()
 		{
+			if (_source == null) return;
+
 			_source.RemoveHook(HwndHook);
 
 			for (int i = 0; i < hotkeys.Count; i++)
