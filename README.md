@@ -1,5 +1,5 @@
 # ThePen
-ThePen is a screen drawing utility for online lectures. It started just for me.
+ThePen is a software for drawing on screen in Windows. It started just for my online lectures.
 
 ## Reference
 Epic Pen : https://epic-pen.com/
