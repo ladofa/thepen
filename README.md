@@ -11,9 +11,10 @@ Alpha1 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/ThePe
 ## Reference
  * Epic Pen : https://epic-pen.com/
  * Panser Pen : https://kinfolksoft.com/%EB%B8%8C%EB%A6%AC%ED%95%91%ED%8E%9Cbriefing-pen-2/
+ * And others : I refered them in source codes.
 
 ## Development Environment
- * .Net 5
+ * WPF C# on .NET 5.0
  * PixiEditor.colorPicker (3.1.0) - MIT License
 
 ## Future Works
