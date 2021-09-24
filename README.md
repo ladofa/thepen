@@ -1,14 +1,14 @@
-#ToDo List
+# ThePen
+ThePen is a screen drawing utility for online lectures. It started just for me.
 
-모드 선택
-펜 종류 선택
-타이머
+## Reference
+Epic Pen : https://epic-pen.com/
+Panser Pen : https://kinfolksoft.com/%EB%B8%8C%EB%A6%AC%ED%95%91%ED%8E%9Cbriefing-pen-2/
 
+## Development Environment
+ * .Net 5
+ * PixiEditor.colorPicker (3.1.0) - MIT License
 
-
-
-- 모니터 선택
-- 단축키
- PushToggle 펜 상태 변환
-- 
-- UI
+## Important Features
+ * One Key Sourtcut : Push only one keyboard button to change your pen type and color.
+ * Easy Switch : Just by lifting the stylus pen, it switches to drawing mode. And just move your mouse to escape drawing mode.
