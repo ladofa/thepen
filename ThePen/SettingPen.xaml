@@ -22,12 +22,12 @@
             <CheckBox Content="Highlighter" Name="Highlighter"/>
             <CheckBox Content="Ignore Presure" Name="IgnorePresure"/>
             <TextBlock Text="Width : " VerticalAlignment="Center"/>
-            <TextBox Width="40" Text="3" Name="Width" TextChanged="Size_TextChanged" Margin="0 0 10 0"/>
+            <local:NumericTextBox Width="40" Text="3" x:Name="Width" Margin="0 0 10 0"/>
             <TextBlock Text="Height : " VerticalAlignment="Center"/>
-            <TextBox Width="40" Text="3" Name="Height" TextChanged="Size_TextChanged" Margin="0 0 10 0"/>
+            <local:NumericTextBox Width="40" Text="3" x:Name="Height" Margin="0 0 10 0"/>
             <TextBlock Text="Angle : " VerticalAlignment="Center"/>
-            <TextBox Width="40" Text="3" Name="Angle" TextChanged="Size_TextChanged"/>
-            
+            <local:NumericTextBox Width="40" Text="3" x:Name="Angle"/>
+
         </StackPanel>
     </Grid>
 </UserControl>

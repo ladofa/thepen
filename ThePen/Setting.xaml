@@ -28,6 +28,7 @@
         <Style TargetType="local:SettingOneKey">
             <Setter Property="Height" Value="30"/>
             <Setter Property="Width" Value="80"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
         </Style>
     </Window.Resources>
     <Grid>
@@ -66,10 +67,11 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="70"/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="355"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0">
+                        <TextBlock Style="{StaticResource HotKey}" Text=""/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Select"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Pen1"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Pen2"/>
@@ -90,6 +92,7 @@
                     </StackPanel>
 
                     <StackPanel Grid.Column="1">
+                        <TextBlock Style="{StaticResource HotKey}" Text="Mod Key Shortcuts"/>
                         <local:SettingHotKey x:Name="HotKeySelect"/>
                         <local:SettingHotKey x:Name="HotKeyPen1"/>
                         <local:SettingHotKey x:Name="HotKeyPen2"/>
@@ -109,6 +112,7 @@
                     </StackPanel>
 
                     <StackPanel Grid.Column="2">
+                        <TextBlock Style="{StaticResource HotKey}" Text="One Key Shortcuts"/>
                         <local:SettingOneKey x:Name="OneKeySelect"/>
                         <local:SettingOneKey x:Name="OneKeyPen1"/>
                         <local:SettingOneKey x:Name="OneKeyPen2"/>
@@ -134,16 +138,31 @@
 
                 <StackPanel Orientation="Horizontal" Height="30">
                     <TextBlock Text="One Key Shortcut mode :  " VerticalAlignment="Center"/>
-                    <RadioButton x:Name="ImmeRadioButton" Content="Immediatly change    or    " VerticalAlignment="Center"/>
-                    <RadioButton x:Name="TempRadioButton" Content="Temporally change while pressed" VerticalAlignment="Center"/>
+                    <RadioButton GroupName="ShortcutMode" x:Name="ImmeRadioButton" Content="Immediatly change    or    " VerticalAlignment="Center"/>
+                    <RadioButton GroupName="ShortcutMode" x:Name="TempRadioButton" Content="Temporally change while pressed" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <TextBlock Style="{StaticResource Title}" Text="Easy Switch"/>
+                <StackPanel Orientation="Horizontal" Height="20">
+                    <CheckBox x:Name="EasySwitch" Content="Enable" VerticalAlignment="Center" Margin="0 2 10 0"/>
+                    <TextBlock Text="Edge Width : " VerticalAlignment="Center"/>
+                    <local:NumericTextBox Width="40" x:Name="EasySwitchWidth" Margin="0 0 10 0" Text="5" Height="20" />
+                </StackPanel>
 
                 <TextBlock Style="{StaticResource Title}" Text="Drawing Display"/>
+                <StackPanel Orientation="Horizontal" Height="20">
+                    <CheckBox x:Name="Display1" Content="Display1" VerticalAlignment="Center" Margin="0 2 10 0"/>
+                    <CheckBox x:Name="Display2" Content="Display2" VerticalAlignment="Center" Margin="0 2 10 0"/>
+                    <CheckBox x:Name="Display3" Content="Display3" VerticalAlignment="Center" Margin="0 2 10 0"/>
+                    <CheckBox x:Name="Display4" Content="Display4" VerticalAlignment="Center" Margin="0 2 10 0"/>
+                </StackPanel>
 
                 <TextBlock Style="{StaticResource Title}" Text="Mouse Effect"/>
-
+                <StackPanel Orientation="Horizontal" Height="20">
+                    <CheckBox x:Name="MouseEffectMove" Content="Move" VerticalAlignment="Center" Margin="0 2 10 0"/>
+                    <CheckBox x:Name="MouseEffectLeftDown" Content="Left Down" VerticalAlignment="Center" Margin="0 2 10 0"/>
+                    <CheckBox x:Name="MouseEffectRightDown" Content="Right Down" VerticalAlignment="Center" Margin="0 2 10 0"/>
+                </StackPanel>
                 <TextBlock Style="{StaticResource Title}" Text="Overlay"/>
                 <Grid Height="30" VerticalAlignment="Center">
                     <TextBlock Text="Comming Soon... ??"/>

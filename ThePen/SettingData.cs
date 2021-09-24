@@ -42,10 +42,10 @@ namespace ThePen
 		public Color Palette5 = Colors.SkyBlue;
 		public Color Palette6 = Colors.Violet;
 
-		public bool Screen1 = false;
-		public bool Screen2 = true;
-		public bool Screen3 = true;
-		public bool Screen4 = true;
+		public bool Display1 = true;
+		public bool Display2 = true;
+		public bool Display3 = true;
+		public bool Display4 = true;
 
 		public bool MouseEffectMove = false;
 		public bool MouseEffectLeftDown = true;
@@ -54,9 +54,9 @@ namespace ThePen
 		public bool OneKeyImme = false;
 
 		public bool EasySwitch = false;
-		public int EasySwitchEdgeWidth = 5;
+		public double EasySwitchEdgeWidth = 5;
 
-		public (uint, uint) HotErase = (0, 0);
+		public (uint, uint) HotErase = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["1"]);
 		public (uint, uint) HotSelect = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["2"]);
 		public (uint, uint) HotClear = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["7"]);
 		public (uint, uint) HotPen1 = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["3"]);
@@ -75,9 +75,9 @@ namespace ThePen
 		public (uint, uint) HotOverlay3 = (0, 0);
 		public (uint, uint) HotOverlay4 = (0, 0);
 
-		public Key OneSelect = Key.None;
+		public Key OneSelect = Key.Escape;
 		public Key OneErase = Key.R;
-		public Key OneClear = Key.T;
+		public Key OneClear = Key.OemTilde;
 		public Key OnePen1 = Key.Q;
 		public Key OnePen2 = Key.W;
 		public Key OnePen3 = Key.E;
@@ -87,7 +87,6 @@ namespace ThePen
 		public Key OneOverlay3 = Key.None;
 		public Key OneOverlay4 = Key.None;
 
-		public Key OneColor0 = Key.OemTilde;
 		public Key OneColor1 = Key.D1;
 		public Key OneColor2 = Key.D2;
 		public Key OneColor3 = Key.D3;

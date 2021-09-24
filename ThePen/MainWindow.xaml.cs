@@ -116,41 +116,46 @@ namespace ThePen
 				return new Rect() { X = minX, Y = minY, Width = maxX - minX, Height = maxY - minY };
 			}
 
-			var rect = getRect(screens);
-			var win = new Window1();
-			win.Show();
-			this.Owner = win;
-			canvasWindows.Add(win);
-			win.Left = rect.X;
-			win.Top = rect.Y;
-			win.Width = rect.Width;
-			win.Height = rect.Height;
-			//win.WindowState = WindowState.Maximized;
+			
 
 			//size of drawing
 			List<Monitors.Screen> drawingScreen = new();
-			if (Global.SettingData.Screen1 && screens.Count >= 1)
+			if (Global.SettingData.Display1 && screens.Count >= 1)
 			{
 				drawingScreen.Add(screens[0]);
 			}
-			if (Global.SettingData.Screen2 && screens.Count >= 2)
+			if (Global.SettingData.Display2 && screens.Count >= 2)
 			{
 				drawingScreen.Add(screens[1]);
 			}
-			if (Global.SettingData.Screen3 && screens.Count >= 3)
+			if (Global.SettingData.Display3 && screens.Count >= 3)
 			{
 				drawingScreen.Add(screens[2]);
 			}
-			if (Global.SettingData.Screen4 && screens.Count >= 4)
+			if (Global.SettingData.Display4 && screens.Count >= 4)
 			{
 				drawingScreen.Add(screens[3]);
 			}
 
-			rect = getRect(drawingScreen);
-			win.SetDrawingArea(rect);
-			win.MainPenChanged += Win_MainPenChanged;
-			win.DrawingModeChanged += Win_DrawingModeChanged;
-			win.ColorChanged += Win_ColorChanged;
+			if (drawingScreen.Count >= 1)
+			{
+				var rect = getRect(screens);
+				var win = new Window1();
+				win.Show();
+				this.Owner = win;
+				canvasWindows.Add(win);
+				win.Left = rect.X;
+				win.Top = rect.Y;
+				win.Width = rect.Width;
+				win.Height = rect.Height;
+				//win.WindowState = WindowState.Maximized;
+
+				rect = getRect(drawingScreen);
+				win.SetDrawingArea(rect);
+				win.MainPenChanged += Win_MainPenChanged;
+				win.DrawingModeChanged += Win_DrawingModeChanged;
+				win.ColorChanged += Win_ColorChanged;
+			}
 		}
 
 		private void Win_MainPenChanged(object sender, int num)

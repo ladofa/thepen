@@ -76,10 +76,34 @@ namespace ThePen
 					OneKeyPen3.Value = value.OnePen3;
 					OneKeySelect.Value = value.OneSelect;
 					OneKeyClear.Value = value.OneClear;
-
 					ImmeRadioButton.IsChecked = value.OneKeyImme;
 					TempRadioButton.IsChecked = !value.OneKeyImme;
-				}catch(Exception e)
+
+					EasySwitch.IsChecked = value.EasySwitch;
+					EasySwitchWidth.Value = value.EasySwitchEdgeWidth;
+
+					Display1.IsChecked = value.Display1;
+					Display2.IsChecked = value.Display2;
+					Display3.IsChecked = value.Display3;
+					Display4.IsChecked = value.Display4;
+
+					var screens = Monitors.GetScreens();
+					if (screens.Count < 4)
+					{
+						Display4.IsEnabled = false;
+					}
+
+					if (screens.Count < 3)
+					{
+						Display3.IsEnabled = false;
+					}
+
+					if (screens.Count < 2)
+					{
+						Display2.IsEnabled = false;
+					}
+				}
+				catch(Exception e)
 				{
 					MessageBox.Show("Error occured while load settings from registry.");
 				}
@@ -132,6 +156,12 @@ namespace ThePen
 				OneSelect = OneKeySelect.Value,
 				OneClear = OneKeyClear.Value,
 				OneKeyImme = ImmeRadioButton.IsChecked.Value,
+				EasySwitch = EasySwitch.IsChecked.Value,
+				EasySwitchEdgeWidth = EasySwitchWidth.Value,
+				Display1 = Display1.IsChecked.Value,
+				Display2 = Display2.IsChecked.Value,
+				Display3 = Display3.IsChecked.Value,
+				Display4 = Display4.IsChecked.Value,
 			};
 		}
 
@@ -167,5 +197,6 @@ namespace ThePen
 			Global.SetAsDefault();
 			Value = Global.SettingData;
 		}
+
 	}
 }

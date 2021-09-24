@@ -40,13 +40,14 @@ namespace ThePen
 			AdoptSetting();
 		}
 
+		SettingData setting;
+
 		private void AdoptSetting()
 		{
-			SettingData data = Global.SettingData;
-			mainPen = data.Pen1;
+			setting = Global.SettingData;
 
 			//init mouse click effect
-			if (Global.SettingData.MouseEffectMove)
+			if (setting.MouseEffectMove)
 			{
 				MouseEffectMove.Visibility = Visibility.Visible;
 			}
@@ -56,7 +57,6 @@ namespace ThePen
 			}
 		}
 
-		DrawingAttributes mainPen;
 		public delegate void MainPenChangedEventHandler(object sender, int num);
 		public event MainPenChangedEventHandler MainPenChanged;
 
@@ -64,13 +64,12 @@ namespace ThePen
 		{
 			List<DrawingAttributes> pens = new()
 			{
-				Global.SettingData.Pen1,
-				Global.SettingData.Pen2,
-				Global.SettingData.Pen3,
+				setting.Pen1,
+				setting.Pen2,
+				setting.Pen3,
 			};
-			mainPen = pens[num - 1];
-			Board.DefaultDrawingAttributes = mainPen;
-			previousPen = mainPen.Clone();
+			Board.DefaultDrawingAttributes = pens[num - 1].Clone();
+			previousPen = Board.DefaultDrawingAttributes.Clone();
 			MainPenChanged?.Invoke(this, num);
 		}
 
@@ -78,37 +77,121 @@ namespace ThePen
 		public event ColorChangedEventHandler ColorChanged;
 		public void ChangeColor(Color color)
 		{
-			mainPen.Color = color;
+			Board.DefaultDrawingAttributes.Color = color;
 			ColorChanged?.Invoke(this, color);
 		}
 
 		private DrawingAttributes previousPen;
 
 		bool isPressed = false;
+		InkCanvasEditingMode prevEditingMode;
 		protected override void OnPreviewKeyDown(KeyEventArgs e)
 		{
 			base.OnPreviewKeyDown(e);
-
 			if (isPressed) return;
 
-			var data = Global.SettingData;
+			//all code must be behind here.
 
-			if (e.Key == data.OneErase)
+			previousPen = Board.DefaultDrawingAttributes.Clone();
+			Debug.WriteLine(previousPen.Color.ToString());
+
+			if (e.Key == setting.OneErase)
 			{
+				prevEditingMode = Board.EditingMode;
 				Board.EditingMode = InkCanvasEditingMode.EraseByStroke;
 			}
 
-			if (!data.OneKeyImme)
+			else if (e.Key == setting.OneClear)
 			{
-				previousPen = Board.DefaultDrawingAttributes.Clone();
+				ClearAll();
 			}
 
-			if (e.Key == data.OneColor1)
+			else if (e.Key == setting.OneSelect)
 			{
-				Board.DefaultDrawingAttributes.Color = data.Palette1;
-				Debug.WriteLine(previousPen.Color);
-				Debug.WriteLine(Board.DefaultDrawingAttributes.Color);
+				DrawingMode = DrawingModes.Select;
 			}
+			//pen changes
+			else if (!setting.OneKeyImme)
+			{
+				if (e.Key == setting.OneColor1)
+				{
+					Board.DefaultDrawingAttributes.Color = setting.Palette1;
+				}
+				if (e.Key == setting.OneColor2)
+				{
+					Board.DefaultDrawingAttributes.Color = setting.Palette2;
+				}
+				if (e.Key == setting.OneColor3)
+				{
+					Board.DefaultDrawingAttributes.Color = setting.Palette3;
+				}
+				if (e.Key == setting.OneColor4)
+				{
+					Board.DefaultDrawingAttributes.Color = setting.Palette4;
+				}
+				if (e.Key == setting.OneColor5)
+				{
+					Board.DefaultDrawingAttributes.Color = setting.Palette5;
+				}
+				if (e.Key == setting.OneColor6)
+				{
+					Board.DefaultDrawingAttributes.Color = setting.Palette6;
+				}
+				if (e.Key == setting.OnePen1)
+				{
+					Board.DefaultDrawingAttributes = setting.Pen1.Clone();
+				}
+				if (e.Key == setting.OnePen2)
+				{
+					Board.DefaultDrawingAttributes = setting.Pen2.Clone();
+				}
+				if (e.Key == setting.OnePen3)
+				{
+					Board.DefaultDrawingAttributes = setting.Pen3.Clone();
+				}
+			}
+			else
+			{
+
+				if (e.Key == setting.OneColor1)
+				{
+					ChangeColor(setting.Palette1);
+				}
+				if (e.Key == setting.OneColor2)
+				{
+					ChangeColor(setting.Palette2);
+				}
+				if (e.Key == setting.OneColor3)
+				{
+					ChangeColor(setting.Palette3);
+				}
+				if (e.Key == setting.OneColor4)
+				{
+					ChangeColor(setting.Palette4);
+				}
+				if (e.Key == setting.OneColor5)
+				{
+					ChangeColor(setting.Palette5);
+				}
+				if (e.Key == setting.OneColor6)
+				{
+					ChangeColor(setting.Palette6);
+				}
+				if (e.Key == setting.OnePen1)
+				{
+					ChangeMainPen(1);
+				}
+				if (e.Key == setting.OnePen2)
+				{
+					ChangeMainPen(2);
+				}
+				if (e.Key == setting.OnePen3)
+				{
+					ChangeMainPen(3);
+				}
+			}
+
+			
 
 			isPressed = true;
 		}
@@ -117,23 +200,25 @@ namespace ThePen
 		{
 			base.OnLostFocus(e);
 			isPressed = false;
-			Board.DefaultDrawingAttributes = previousPen;
+			if (!setting.OneKeyImme)
+			{
+				Board.DefaultDrawingAttributes = previousPen.Clone();
+			}
 		}
 
 		protected override void OnPreviewKeyUp(KeyEventArgs e)
 		{
 			base.OnPreviewKeyUp(e);
 
-			var data = Global.SettingData;
-
-			if (e.Key == data.OneErase)
+			if (e.Key == setting.OneErase)
 			{
-				Board.EditingMode = InkCanvasEditingMode.Ink;
+				Board.EditingMode = prevEditingMode;
 			}
 
-			if (!data.OneKeyImme)
+			if (!setting.OneKeyImme)
 			{
 				Board.DefaultDrawingAttributes = previousPen.Clone();
+				Debug.WriteLine(previousPen.Color.ToString());
 			}
 
 			isPressed = false;
@@ -152,35 +237,35 @@ namespace ThePen
 				//MouseEffectMove.Margin = new Thickness() { Left = p.X - 15, Top = p.Y - 15 };
 			}
 
-			if (message == MouseHook.MouseMessages.WM_LBUTTONDOWN && Global.SettingData.MouseEffectLeftDown)
+			if (message == MouseHook.MouseMessages.WM_LBUTTONDOWN && setting.MouseEffectLeftDown)
 			{
 				MouseEffectLeftDown.Visibility = Visibility.Visible;
 
-				if (Global.SettingData.MouseEffectMove)
+				if (setting.MouseEffectMove)
 				{
 					MouseEffectMove.Visibility = Visibility.Collapsed;
 				}
 			}
-			else if (message == MouseHook.MouseMessages.WM_LBUTTONUP && Global.SettingData.MouseEffectLeftDown)
+			else if (message == MouseHook.MouseMessages.WM_LBUTTONUP && setting.MouseEffectLeftDown)
 			{
 				MouseEffectLeftDown.Visibility = Visibility.Collapsed;
-				if (Global.SettingData.MouseEffectMove)
+				if (setting.MouseEffectMove)
 				{
 					MouseEffectMove.Visibility = Visibility.Visible;
 				}
 			}
-			else if (message == MouseHook.MouseMessages.WM_RBUTTONDOWN && Global.SettingData.MouseEffectRightDown)
+			else if (message == MouseHook.MouseMessages.WM_RBUTTONDOWN && setting.MouseEffectRightDown)
 			{
 				MouseEffectRightDown.Visibility = Visibility.Visible;
-				if (Global.SettingData.MouseEffectMove)
+				if (setting.MouseEffectMove)
 				{
 					MouseEffectMove.Visibility = Visibility.Collapsed;
 				}
 			}
-			else if (message == MouseHook.MouseMessages.WM_RBUTTONUP && Global.SettingData.MouseEffectRightDown)
+			else if (message == MouseHook.MouseMessages.WM_RBUTTONUP && setting.MouseEffectRightDown)
 			{
 				MouseEffectRightDown.Visibility = Visibility.Collapsed;
-				if (Global.SettingData.MouseEffectMove)
+				if (setting.MouseEffectMove)
 				{
 					MouseEffectMove.Visibility = Visibility.Visible;
 				}
@@ -222,6 +307,15 @@ namespace ThePen
 			get => drawingMode;
 			set
 			{
+				if (value == DrawingModes.Erase)
+				{
+					Board.EditingMode = InkCanvasEditingMode.EraseByStroke;
+				}
+				else
+				{
+					Board.EditingMode = InkCanvasEditingMode.Ink;
+				}
+
 				bool drawing = true;
 				if (value == DrawingModes.Select)
 				{
@@ -232,11 +326,13 @@ namespace ThePen
 				{
 					BackBoard.Fill = new SolidColorBrush(Color.FromArgb(1, 0, 0, 0));
 					Overlay.Visibility = Visibility.Collapsed;
+					Board.Focus();
 				}
 				else
 				{
 					BackBoard.Fill = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
 					Overlay.Visibility = Visibility.Visible;
+
 				}
 
 				//IsHitTestVisible = drawing;
@@ -341,25 +437,25 @@ namespace ThePen
 		#region EasySwitch
 		private void AutoDrawAreaLeft_StylusEnter(object sender, StylusEventArgs e)
 		{
-			if (Global.SettingData.EasySwitch)
+			if (setting.EasySwitch)
 				DrawingMode = DrawingModes.Draw;
 		}
 
 		private void AutoDrawAreaRight_StylusEnter(object sender, StylusEventArgs e)
 		{
-			if (Global.SettingData.EasySwitch)
+			if (setting.EasySwitch)
 				DrawingMode = DrawingModes.Draw;
 		}
 
 		private void AutoDrawAreaTop_StylusEnter(object sender, StylusEventArgs e)
 		{
-			if (Global.SettingData.EasySwitch)
+			if (setting.EasySwitch)
 				DrawingMode = DrawingModes.Draw;
 		}
 
 		private void AutoDrawAreaBottom_StylusEnter(object sender, StylusEventArgs e)
 		{
-			if (Global.SettingData.EasySwitch)
+			if (setting.EasySwitch)
 				DrawingMode = DrawingModes.Draw;
 		}
 
@@ -370,7 +466,7 @@ namespace ThePen
 			mouseMoveCount++;
 			if (mouseMoveCount > 10)
 			{
-				if (Global.SettingData.EasySwitch)
+				if (setting.EasySwitch)
 					DrawingMode = DrawingModes.Select;
 			}
 		}

@@ -33,35 +33,24 @@ namespace ThePen
 				FitToCurve.IsChecked = value.FitToCurve;
 				Highlighter.IsChecked = value.IsHighlighter;
 				IgnorePresure.IsChecked = value.IgnorePressure;
-				Width.Text = value.Width.ToString();
-				Height.Text = value.Height.ToString();
-				Angle.Text = Global.GetAngle(value.StylusTipTransform).ToString();
+				Width.Value = value.Width;
+				Height.Value = value.Height;
+				Angle.Value = Global.GetAngle(value.StylusTipTransform);
 			}
 
 			get
-			{ 
+			{
 				return new System.Windows.Ink.DrawingAttributes()
 				{
 					Color = Picker.Value,
 					FitToCurve = FitToCurve.IsChecked.Value,
 					IsHighlighter = Highlighter.IsChecked.Value,
 					IgnorePressure = IgnorePresure.IsChecked.Value,
-					Width = double.Parse(Width.Text),
-					Height = double.Parse(Height.Text),
+					Width = Width.Value,
+					Height = Height.Value,
 					StylusTip = System.Windows.Ink.StylusTip.Ellipse,
-					StylusTipTransform = Global.GetMatrix(double.Parse(Angle.Text)),
+					StylusTipTransform = Global.GetMatrix(Angle.Value),
 				};
-			}
-		}
-
-		private void Size_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			TextBox textBox = sender as TextBox;
-
-			bool succeed = Double.TryParse(textBox.Text, out double result);
-			if (!succeed)
-			{
-				textBox.Text = "";
 			}
 		}
 	}
