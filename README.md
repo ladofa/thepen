@@ -2,8 +2,8 @@
 ThePen is a software for drawing on screen in Windows. It started just for my online lectures.
 
 ## Reference
-Epic Pen : https://epic-pen.com/
-Panser Pen : https://kinfolksoft.com/%EB%B8%8C%EB%A6%AC%ED%95%91%ED%8E%9Cbriefing-pen-2/
+ * Epic Pen : https://epic-pen.com/
+ * Panser Pen : https://kinfolksoft.com/%EB%B8%8C%EB%A6%AC%ED%95%91%ED%8E%9Cbriefing-pen-2/
 
 ## Development Environment
  * .Net 5
