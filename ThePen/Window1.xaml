@@ -14,11 +14,10 @@
         </Grid.CommandBindings>
         <Grid x:Name="GridBoard" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Rectangle x:Name="BackBoard" Fill="#00000000"/>
-            <InkCanvas Name="Board" Background="#00000000" UseCustomCursor="True" Cursor="Pen" PreviewMouseMove="Board_PreviewMouseMove" PreviewStylusInAirMove="Board_PreviewStylusInAirMove" PreviewStylusMove="Board_PreviewStylusMove" />
-            <Rectangle x:Name="AutoDrawAreaLeft" Fill="#01000000" HorizontalAlignment="Left" Width="5" StylusEnter="AutoDrawAreaLeft_StylusEnter"/>
-            <Rectangle x:Name="AutoDrawAreaRight" Fill="#01000000" HorizontalAlignment="Right" Width="5" StylusEnter="AutoDrawAreaRight_StylusEnter"/>
-            <Rectangle x:Name="AutoDrawAreaTop" Fill="#01000000" VerticalAlignment="Top" Height="5" StylusEnter="AutoDrawAreaTop_StylusEnter"/>
-            <Rectangle x:Name="AutoDrawAreaBottom" Fill="#01000000" VerticalAlignment="Bottom" Height="20" StylusEnter="AutoDrawAreaBottom_StylusEnter"/>
+            <InkCanvas Name="Board" Background="#00000000" UseCustomCursor="True" Cursor="Pen"/>
+            <Rectangle x:Name="AutoDrawAreaLeft" Fill="#01000000" HorizontalAlignment="Left" Width="5" />
+            <Rectangle x:Name="AutoDrawAreaRight" Fill="#01000000" HorizontalAlignment="Right" Width="5" />
+            <Rectangle x:Name="AutoDrawAreaBottom" Fill="#01000000" VerticalAlignment="Bottom" Height="5" />
             
         </Grid>
 

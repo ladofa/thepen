@@ -80,7 +80,9 @@ namespace ThePen
 					TempRadioButton.IsChecked = !value.OneKeyImme;
 
 					EasySwitch.IsChecked = value.EasySwitch;
-					EasySwitchWidth.Value = value.EasySwitchEdgeWidth;
+					ShakeToClearAll.IsChecked = value.ShakeToClearAll;
+
+					BlockTouch.IsChecked = value.BlockTouch;
 
 					Display1.IsChecked = value.Display1;
 					Display2.IsChecked = value.Display2;
@@ -157,7 +159,8 @@ namespace ThePen
 				OneClear = OneKeyClear.Value,
 				OneKeyImme = ImmeRadioButton.IsChecked.Value,
 				EasySwitch = EasySwitch.IsChecked.Value,
-				EasySwitchEdgeWidth = EasySwitchWidth.Value,
+				ShakeToClearAll = ShakeToClearAll.IsChecked.Value,
+				BlockTouch = BlockTouch.IsChecked.Value,
 				Display1 = Display1.IsChecked.Value,
 				Display2 = Display2.IsChecked.Value,
 				Display3 = Display3.IsChecked.Value,

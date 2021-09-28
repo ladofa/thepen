@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ThePen"
         
         mc:Ignorable="d"
-        Title="Setting" Height="1300" Width="800" Topmost="True" Closing="Window_Closing">
+        Title="Setting" Height="500" Width="800" Topmost="True" Closing="Window_Closing">
     <Window.Resources>
         <Style TargetType="TextBlock" x:Key="Title">
             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -144,9 +144,26 @@
 
                 <TextBlock Style="{StaticResource Title}" Text="Easy Switch"/>
                 <StackPanel Orientation="Horizontal" Height="20">
-                    <CheckBox x:Name="EasySwitch" Content="Enable" VerticalAlignment="Center" Margin="0 2 10 0"/>
-                    <TextBlock Text="Edge Width : " VerticalAlignment="Center"/>
-                    <local:NumericTextBox Width="40" x:Name="EasySwitchWidth" Margin="0 0 10 0" Text="5" Height="20" />
+                    <CheckBox x:Name="EasySwitch" Content="Easy Switch" VerticalAlignment="Center" Margin="0 2 10 0" ToolTipService.InitialShowDelay="1">
+                        <CheckBox.ToolTip>
+                            <ToolTip>
+                                <TextBlock Text="Just hold a stylus pen to draw, move a mouse to switch back."/>
+                            </ToolTip>
+                        </CheckBox.ToolTip>
+                    </CheckBox>
+
+                    <CheckBox x:Name="ShakeToClearAll" Content="Shake To Clear All" VerticalAlignment="Center" Margin="0 2 10 0" ToolTipService.InitialShowDelay="1">
+                        <CheckBox.ToolTip>
+                            <ToolTip>
+                                <TextBlock Text="Shake a mouse or a stylus pen about 3~4 times rapidly to clear all drawing."/>
+                            </ToolTip>
+                        </CheckBox.ToolTip>
+                    </CheckBox>
+                </StackPanel>
+
+                <TextBlock Style="{StaticResource Title}" Text="Block Touch Event"/>
+                <StackPanel Orientation="Horizontal" Height="20">
+                    <CheckBox x:Name="BlockTouch" Content="Enable" VerticalAlignment="Center" Margin="0 2 10 0"/>
                 </StackPanel>
 
                 <TextBlock Style="{StaticResource Title}" Text="Drawing Display"/>
@@ -167,6 +184,8 @@
                 <Grid Height="30" VerticalAlignment="Center">
                     <TextBlock Text="Comming Soon... ??"/>
                 </Grid>
+
+                
 
 
             </StackPanel>

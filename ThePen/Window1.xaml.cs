@@ -35,10 +35,82 @@ namespace ThePen
 
 			//for mouse effect
 			MouseHook.MouseHookEvent += MouseHook_MouseHookEvent;
+			MouseHook.Shaked += MouseHook_Shaked;
 			MouseHook.Start();
 
 			AdoptSetting();
+
+
+			PreviewTouchDown += Window1_PreviewTouchDown;
+			PreviewTouchMove += Window1_PreviewTouchMove;
+			PreviewTouchUp += Window1_PreviewTouchUp;
+
+			
+			IntPtr handle = new WindowInteropHelper(Application.Current.MainWindow).Handle;
+			touchHook.Install(handle);
+
+			timer.Interval = TimeSpan.FromSeconds(1);
+			timer.Tick += Timer_Tick;
+			timer.Start();
+	
 		}
+
+		TouchHook touchHook = new TouchHook();
+
+
+		private void Timer_Tick(object sender, EventArgs e)
+		{
+			//touchHook.Run();
+			//Debug.WriteLine("------------------- timer -----------------------");
+			//Debug.WriteLine("Tablet Count : " + Tablet.TabletDevices.Count);
+			//foreach (TabletDevice tablet in Tablet.TabletDevices)
+			//{
+			//	Debug.WriteLine("  Stylus Count : " + tablet.StylusDevices.Count);
+			//	foreach (StylusDevice stylus in tablet.StylusDevices)
+			//	{
+			//		Debug.WriteLine("  ................................");
+			//		Debug.WriteLine("  " + stylus.Name);
+			//		Debug.WriteLine("  " + stylus.ActiveSource);
+			//		Debug.WriteLine("  " + stylus.DirectlyOver);
+			//		Debug.WriteLine("  " + stylus.GetPosition(this));
+			//		Debug.WriteLine("  " + stylus.InAir);
+			//		Debug.WriteLine("  " + stylus.InRange);
+			//		Debug.WriteLine("  " + stylus.Inverted);
+			//		Debug.WriteLine("  " + stylus.IsValid);
+			//		Debug.WriteLine("  " + stylus.Target);
+
+
+			//	}
+
+			//}
+
+			//Debug.WriteLine(Tablet.CurrentTabletDevice);
+			//Debug.WriteLine(Stylus.CurrentStylusDevice);
+
+		}
+
+		System.Windows.Threading.DispatcherTimer timer = new();
+
+
+
+		#region prevent touch
+
+		private void Window1_PreviewTouchUp(object sender, TouchEventArgs e)
+		{
+			e.Handled = setting.BlockTouch;
+		}
+
+		private void Window1_PreviewTouchMove(object sender, TouchEventArgs e)
+		{
+			e.Handled = setting.BlockTouch;
+		}
+
+		private void Window1_PreviewTouchDown(object sender, TouchEventArgs e)
+		{
+			e.Handled = setting.BlockTouch;
+		}
+
+		#endregion
 
 		SettingData setting;
 
@@ -93,7 +165,6 @@ namespace ThePen
 			//all code must be behind here.
 
 			previousPen = Board.DefaultDrawingAttributes.Clone();
-			Debug.WriteLine(previousPen.Color.ToString());
 
 			if (e.Key == setting.OneErase)
 			{
@@ -218,11 +289,23 @@ namespace ThePen
 			if (!setting.OneKeyImme)
 			{
 				Board.DefaultDrawingAttributes = previousPen.Clone();
-				Debug.WriteLine(previousPen.Color.ToString());
 			}
 
 			isPressed = false;
 		}
+
+		#region shake to clear all
+		private void MouseHook_Shaked(object sender, EventArgs e)
+		{
+			
+			if (Mouse.LeftButton != MouseButtonState.Pressed)
+			{
+				ClearAll();
+
+			}
+
+		}
+		#endregion
 
 		#region mouse effect
 		private void MouseHook_MouseHookEvent(object sender, MouseHook.MouseHookEventArgs e)
@@ -268,6 +351,24 @@ namespace ThePen
 				if (setting.MouseEffectMove)
 				{
 					MouseEffectMove.Visibility = Visibility.Visible;
+				}
+			}
+
+			if (setting.EasySwitch)
+			{
+				if (e.ExtraInfo == (IntPtr)(0))
+				{
+					if (drawingMode != DrawingModes.Select)
+					{
+						DrawingMode = DrawingModes.Select;
+					}
+				}
+				else
+				{
+					if (drawingMode == DrawingModes.Select)
+					{
+						DrawingMode = DrawingModes.Draw;
+					}
 				}
 			}
 		}
@@ -433,53 +534,5 @@ namespace ThePen
 		}
 		#endregion
 
-
-		#region EasySwitch
-		private void AutoDrawAreaLeft_StylusEnter(object sender, StylusEventArgs e)
-		{
-			if (setting.EasySwitch)
-				DrawingMode = DrawingModes.Draw;
-		}
-
-		private void AutoDrawAreaRight_StylusEnter(object sender, StylusEventArgs e)
-		{
-			if (setting.EasySwitch)
-				DrawingMode = DrawingModes.Draw;
-		}
-
-		private void AutoDrawAreaTop_StylusEnter(object sender, StylusEventArgs e)
-		{
-			if (setting.EasySwitch)
-				DrawingMode = DrawingModes.Draw;
-		}
-
-		private void AutoDrawAreaBottom_StylusEnter(object sender, StylusEventArgs e)
-		{
-			if (setting.EasySwitch)
-				DrawingMode = DrawingModes.Draw;
-		}
-
-		int mouseMoveCount = 0;
-
-		private void Board_PreviewMouseMove(object sender, MouseEventArgs e)
-		{
-			mouseMoveCount++;
-			if (mouseMoveCount > 10)
-			{
-				if (setting.EasySwitch)
-					DrawingMode = DrawingModes.Select;
-			}
-		}
-
-		private void Board_PreviewStylusInAirMove(object sender, StylusEventArgs e)
-		{
-			mouseMoveCount = 0;
-		}
-
-		private void Board_PreviewStylusMove(object sender, StylusEventArgs e)
-		{
-			mouseMoveCount = 0;
-		}
-		#endregion
 	}
 }

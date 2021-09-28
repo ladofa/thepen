@@ -41,20 +41,38 @@ namespace ThePen
 		}
 
 		private delegate IntPtr LowLevelMouseProc(int nCode, IntPtr wParam, IntPtr lParam);
+		private delegate IntPtr MouseProc(int nCode, IntPtr wParam, IntPtr lParam);
 
 		private static IntPtr HookCallback(
 			int nCode, IntPtr wParam, IntPtr lParam)
 		{
 			MouseMessages message = (MouseMessages)wParam;
+
 			if (nCode >= 0)
 			{
-				
 				MSLLHOOKSTRUCT hookStruct = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
-				MouseHookEvent?.Invoke(null, new MouseHookEventArgs() { Message = message, Point = hookStruct.pt });
+				MouseHookEvent?.Invoke(null, new MouseHookEventArgs() { 
+					Message = message, Point = hookStruct.pt, ExtraInfo = hookStruct.dwExtraInfo,
+				});
+
+				//Debug.WriteLine(wParam);
+				//Debug.WriteLine(hookStruct.dwExtraInfo);
+				//Debug.WriteLine(hookStruct.flags);
+				//Debug.WriteLine(hookStruct.mouseData);
+				//Debug.WriteLine(hookStruct.time);
+				//Debug.WriteLine(hookStruct.pt.x);
+
+
+				if (message == MouseMessages.WM_MOUSEMOVE && Global.SettingData.ShakeToClearAll)
+				{
+					if (System.Windows.Input.Mouse.LeftButton != System.Windows.Input.MouseButtonState.Pressed)
+						analyseGesture2(hookStruct);
+				}
 			}
 			return CallNextHookEx(_hookID, nCode, wParam, lParam);
 		}
 
+	
 		private const int WH_MOUSE_LL = 14;
 		private const int WH_MOUSE = 7;
 
@@ -65,6 +83,11 @@ namespace ThePen
 				get;set;
 			}
 			public POINT Point
+			{
+				get;set;
+			}
+
+			public IntPtr ExtraInfo
 			{
 				get;set;
 			}
@@ -114,5 +137,96 @@ namespace ThePen
 
 		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
 		private static extern IntPtr GetModuleHandle(string lpModuleName);
+
+		#region gesture
+
+		static List<uint> hsTime = new();
+		static List<POINT> hsPoint = new();
+		static List<(double, double, uint)> hsVector = new();
+
+		public static event EventHandler Shaked;
+
+		private static void analyseGesture2(MSLLHOOKSTRUCT hookStruct)
+		{
+			POINT p = hookStruct.pt;
+			uint t = hookStruct.time;
+
+			if (hsPoint.Count >= 3)
+			{
+				var pt = hsTime[0];
+				double dt = t - pt;
+				if (dt == 0) return;
+
+				double dx = p.x - hsPoint[0].x;
+				double dy = p.y - hsPoint[0].y;
+				if (dx == 0 && dy == 0)return;
+
+				double len = Math.Sqrt(dx * dx + dy * dy);
+				var vel =  len / (double)dt;
+				double dnx = dx / len;
+				double dny = dy / len;
+
+				if (vel > 2.5)
+				{
+					void _check()
+					{
+						if (hsVector.Count >= 5)
+						{
+							if (t - hsVector[0].Item3 < 700)
+							{
+								Shaked?.Invoke(null, null);
+							}
+							hsVector.RemoveAt(0);
+						}
+					}
+
+					while (hsVector.Count != 0)
+					{
+						(_, _, var lt) = hsVector.Last();
+						if (t - lt > 500)
+						{
+							hsVector.RemoveAt(hsVector.Count - 1);
+						}
+						else
+						{
+							break;
+						}
+					}
+
+					if (hsVector.Count == 0)
+					{
+						hsVector.Add((dnx, dny, t));
+						_check();
+					}
+					else
+					{
+						(var pdnx, var pdny, _) = hsVector.Last();
+						var sx = pdnx + dnx;
+						var sy = pdny + dny;
+						var s = sx * sx + sy * sy;
+
+						
+						if (s < 0.005)
+						{
+							hsVector.Add((dnx, dny, t));
+							_check();
+						}
+					}
+				}
+
+				hsPoint.RemoveAt(0);
+				hsTime.RemoveAt(0);
+
+			}
+
+
+			hsPoint.Add(p);
+			hsTime.Add(t);
+		}
+
+
+
+
+		#endregion
 	}
 }

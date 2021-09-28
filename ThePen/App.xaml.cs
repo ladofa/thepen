@@ -17,7 +17,7 @@ namespace ThePen
 	/// </summary>
 	public partial class App : System.Windows.Application
 	{
-		
 
-	}
+
+    }
 }
