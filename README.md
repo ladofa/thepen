@@ -1,7 +1,7 @@
 # ThePen
 ThePen is a software for drawing on screen in Windows. It started just for my online lectures. I don't have any specific plan to push this work. But I really hope it used widely and be helpful for you.
 
-## Download Latest Version
+## Download the Latest Version
 Alpha2 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/thepen-alpha2.zip
 
 ## Important Features
