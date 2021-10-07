@@ -46,8 +46,8 @@ namespace ThePen
 			PreviewTouchUp += Window1_PreviewTouchUp;
 
 			
-			IntPtr handle = new WindowInteropHelper(Application.Current.MainWindow).Handle;
-			touchHook.Install(handle);
+			//IntPtr handle = new WindowInteropHelper(Application.Current.MainWindow).Handle;
+			//touchHook.Install(handle);
 
 			timer.Interval = TimeSpan.FromSeconds(1);
 			timer.Tick += Timer_Tick;
@@ -55,7 +55,7 @@ namespace ThePen
 	
 		}
 
-		TouchHook touchHook = new TouchHook();
+		//TouchHook touchHook = new TouchHook();
 
 
 		private void Timer_Tick(object sender, EventArgs e)

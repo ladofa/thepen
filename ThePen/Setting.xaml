@@ -142,7 +142,7 @@
                     <RadioButton GroupName="ShortcutMode" x:Name="TempRadioButton" Content="Temporally change while pressed" VerticalAlignment="Center"/>
                 </StackPanel>
 
-                <TextBlock Style="{StaticResource Title}" Text="Easy Switch"/>
+                <TextBlock Style="{StaticResource Title}" Text="Easy Switch and Gesture"/>
                 <StackPanel Orientation="Horizontal" Height="20">
                     <CheckBox x:Name="EasySwitch" Content="Easy Switch" VerticalAlignment="Center" Margin="0 2 10 0" ToolTipService.InitialShowDelay="1">
                         <CheckBox.ToolTip>

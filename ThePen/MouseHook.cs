@@ -60,7 +60,7 @@ namespace ThePen
 				//Debug.WriteLine(hookStruct.flags);
 				//Debug.WriteLine(hookStruct.mouseData);
 				//Debug.WriteLine(hookStruct.time);
-				//Debug.WriteLine(hookStruct.pt.x);
+				//Debug.WriteLine(hookStruct.pt.x + ", " + hookStruct.pt.y);
 
 
 				if (message == MouseMessages.WM_MOUSEMOVE && Global.SettingData.ShakeToClearAll)
