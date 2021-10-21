@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ThePen"
         
         mc:Ignorable="d"
-        Title="Setting" Height="500" Width="800" Topmost="True" Closing="Window_Closing">
+        Title="Setting" Height="1300" Width="800" Topmost="True" Closing="Window_Closing">
     <Window.Resources>
         <Style TargetType="TextBlock" x:Key="Title">
             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -78,16 +78,20 @@
                         <TextBlock Style="{StaticResource HotKey}" Text="Pen3"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Erase"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Clear"/>
-                        <TextBlock Style="{StaticResource HotKey}" Text="Overlay1"/>
-                        <TextBlock Style="{StaticResource HotKey}" Text="Overlay2"/>
-                        <TextBlock Style="{StaticResource HotKey}" Text="Overlay3"/>
-                        <TextBlock Style="{StaticResource HotKey}" Text="Overlay4"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color1"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color2"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color3"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color4"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color5"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color6"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Stamp X"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Stamp ○"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Stamp △"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Stamp ㅁ"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Overlay1"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Overlay2"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Overlay3"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Overlay4"/>
 
                     </StackPanel>
 
@@ -99,16 +103,20 @@
                         <local:SettingHotKey x:Name="HotKeyPen3"/>
                         <local:SettingHotKey x:Name="HotKeyErase"/>
                         <local:SettingHotKey x:Name="HotKeyClear"/>
-                        <local:SettingHotKey x:Name="HotKeyOverlay1"/>
-                        <local:SettingHotKey x:Name="HotKeyOverlay2"/>
-                        <local:SettingHotKey x:Name="HotKeyOverlay3"/>
-                        <local:SettingHotKey x:Name="HotKeyOverlay4"/>
                         <local:SettingHotKey x:Name="HotKeyColor1"/>
                         <local:SettingHotKey x:Name="HotKeyColor2"/>
                         <local:SettingHotKey x:Name="HotKeyColor3"/>
                         <local:SettingHotKey x:Name="HotKeyColor4"/>
                         <local:SettingHotKey x:Name="HotKeyColor5"/>
                         <local:SettingHotKey x:Name="HotKeyColor6"/>
+                        <local:SettingHotKey x:Name="HotKeyStampO"/>
+                        <local:SettingHotKey x:Name="HotKeyStampX"/>
+                        <local:SettingHotKey x:Name="HotKeyStampTri"/>
+                        <local:SettingHotKey x:Name="HotKeyStampDot"/>
+                        <local:SettingHotKey x:Name="HotKeyOverlay1"/>
+                        <local:SettingHotKey x:Name="HotKeyOverlay2"/>
+                        <local:SettingHotKey x:Name="HotKeyOverlay3"/>
+                        <local:SettingHotKey x:Name="HotKeyOverlay4"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="2">
@@ -119,16 +127,20 @@
                         <local:SettingOneKey x:Name="OneKeyPen3"/>
                         <local:SettingOneKey x:Name="OneKeyErase"/>
                         <local:SettingOneKey x:Name="OneKeyClear"/>
-                        <local:SettingOneKey x:Name="OneKeyOverlay1"/>
-                        <local:SettingOneKey x:Name="OneKeyOverlay2"/>
-                        <local:SettingOneKey x:Name="OneKeyOverlay3"/>
-                        <local:SettingOneKey x:Name="OneKeyOverlay4"/>
                         <local:SettingOneKey x:Name="OneKeyColor1"/>
                         <local:SettingOneKey x:Name="OneKeyColor2"/>
                         <local:SettingOneKey x:Name="OneKeyColor3"/>
                         <local:SettingOneKey x:Name="OneKeyColor4"/>
                         <local:SettingOneKey x:Name="OneKeyColor5"/>
                         <local:SettingOneKey x:Name="OneKeyColor6"/>
+                        <local:SettingOneKey x:Name="OneKeyStampX"/>
+                        <local:SettingOneKey x:Name="OneKeyStampO"/>
+                        <local:SettingOneKey x:Name="OneKeyStampTri"/>
+                        <local:SettingOneKey x:Name="OneKeyStampDot"/>
+                        <local:SettingOneKey x:Name="OneKeyOverlay1"/>
+                        <local:SettingOneKey x:Name="OneKeyOverlay2"/>
+                        <local:SettingOneKey x:Name="OneKeyOverlay3"/>
+                        <local:SettingOneKey x:Name="OneKeyOverlay4"/>
                     </StackPanel>
                     <StackPanel>
 
@@ -143,7 +155,7 @@
                 </StackPanel>
 
                 <TextBlock Style="{StaticResource Title}" Text="Easy Switch and Gesture"/>
-                <StackPanel Orientation="Horizontal" Height="20">
+                <StackPanel Orientation="Horizontal" Height="30">
                     <CheckBox x:Name="EasySwitch" Content="Easy Switch" VerticalAlignment="Center" Margin="0 2 10 0" ToolTipService.InitialShowDelay="1">
                         <CheckBox.ToolTip>
                             <ToolTip>
@@ -152,22 +164,26 @@
                         </CheckBox.ToolTip>
                     </CheckBox>
 
-                    <CheckBox x:Name="ShakeToClearAll" Content="Shake To Clear All" VerticalAlignment="Center" Margin="0 2 10 0" ToolTipService.InitialShowDelay="1">
-                        <CheckBox.ToolTip>
-                            <ToolTip>
-                                <TextBlock Text="Shake a mouse or a stylus pen about 3~4 times rapidly to clear all drawing."/>
-                            </ToolTip>
-                        </CheckBox.ToolTip>
-                    </CheckBox>
+                    
+
+                    <TextBlock Text="Edge Width For Switch :  " VerticalAlignment="Center" Margin="10 0 0 0"/>
+                    <local:NumericTextBox Width="40" Text="3" x:Name="EdgeWidth" Height="20"/>
                 </StackPanel>
+                <CheckBox x:Name="ShakeToClearAll" Content="Shake To Clear All" VerticalAlignment="Center" Margin="0 2 10 0" ToolTipService.InitialShowDelay="1" Height="30" VerticalContentAlignment="Center">
+                    <CheckBox.ToolTip>
+                        <ToolTip>
+                            <TextBlock Text="Shake a mouse or a stylus pen about 3~4 times rapidly to clear all drawing."/>
+                        </ToolTip>
+                    </CheckBox.ToolTip>
+                </CheckBox>
 
                 <TextBlock Style="{StaticResource Title}" Text="Block Touch Event"/>
-                <StackPanel Orientation="Horizontal" Height="20">
+                <StackPanel Orientation="Horizontal" Height="30">
                     <CheckBox x:Name="BlockTouch" Content="Enable" VerticalAlignment="Center" Margin="0 2 10 0"/>
                 </StackPanel>
 
                 <TextBlock Style="{StaticResource Title}" Text="Drawing Display"/>
-                <StackPanel Orientation="Horizontal" Height="20">
+                <StackPanel Orientation="Horizontal" Height="30">
                     <CheckBox x:Name="Display1" Content="Display1" VerticalAlignment="Center" Margin="0 2 10 0"/>
                     <CheckBox x:Name="Display2" Content="Display2" VerticalAlignment="Center" Margin="0 2 10 0"/>
                     <CheckBox x:Name="Display3" Content="Display3" VerticalAlignment="Center" Margin="0 2 10 0"/>
@@ -175,17 +191,27 @@
                 </StackPanel>
 
                 <TextBlock Style="{StaticResource Title}" Text="Mouse Effect"/>
-                <StackPanel Orientation="Horizontal" Height="20">
+                <StackPanel Orientation="Horizontal" Height="30">
                     <CheckBox x:Name="MouseEffectMove" Content="Move" VerticalAlignment="Center" Margin="0 2 10 0"/>
                     <CheckBox x:Name="MouseEffectLeftDown" Content="Left Down" VerticalAlignment="Center" Margin="0 2 10 0"/>
                     <CheckBox x:Name="MouseEffectRightDown" Content="Right Down" VerticalAlignment="Center" Margin="0 2 10 0"/>
                 </StackPanel>
+
+                <TextBlock Style="{StaticResource Title}" Text="Stamp"/>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <TextBlock Text="Stamp Size :  " VerticalAlignment="Center"/>
+                    <local:NumericTextBox Width="40" Text="3" x:Name="StampWidth" Height="20"/>
+                </StackPanel>
+
+
                 <TextBlock Style="{StaticResource Title}" Text="Overlay"/>
                 <Grid Height="30" VerticalAlignment="Center">
                     <TextBlock Text="Comming Soon... ??"/>
                 </Grid>
 
                 
+
+
 
 
             </StackPanel>

@@ -49,6 +49,10 @@ namespace ThePen
 					HotKeyColor4.Value = value.HotColor4;
 					HotKeyColor5.Value = value.HotColor5;
 					HotKeyColor6.Value = value.HotColor6;
+					HotKeyStampX.Value = value.HotStampX;
+					HotKeyStampO.Value = value.HotStampO;
+					HotKeyStampTri.Value = value.HotStampTri;
+					HotKeyStampDot.Value = value.HotStampDot;
 					HotKeyErase.Value = value.HotErase;
 					HotKeyOverlay1.Value = value.HotOverlay1;
 					HotKeyOverlay2.Value = value.HotOverlay2;
@@ -71,6 +75,10 @@ namespace ThePen
 					OneKeyOverlay2.Value = value.OneOverlay2;
 					OneKeyOverlay3.Value = value.OneOverlay3;
 					OneKeyOverlay4.Value = value.OneOverlay4;
+					OneKeyStampX.Value = value.OneStampX;
+					OneKeyStampO.Value = value.OneStampO;
+					OneKeyStampTri.Value = value.OneStampTri;
+					OneKeyStampDot.Value = value.OneStampDot;
 					OneKeyPen1.Value = value.OnePen1;
 					OneKeyPen2.Value = value.OnePen2;
 					OneKeyPen3.Value = value.OnePen3;
@@ -80,6 +88,7 @@ namespace ThePen
 					TempRadioButton.IsChecked = !value.OneKeyImme;
 
 					EasySwitch.IsChecked = value.EasySwitch;
+					EdgeWidth.Value = value.EdgeWidth;
 					ShakeToClearAll.IsChecked = value.ShakeToClearAll;
 
 					BlockTouch.IsChecked = value.BlockTouch;
@@ -88,6 +97,10 @@ namespace ThePen
 					Display2.IsChecked = value.Display2;
 					Display3.IsChecked = value.Display3;
 					Display4.IsChecked = value.Display4;
+
+					MouseEffectMove.IsChecked = value.MouseEffectMove;
+					MouseEffectLeftDown.IsChecked = value.MouseEffectLeftDown;
+					MouseEffectRightDown.IsChecked = value.MouseEffectRightDown;
 
 					var screens = Monitors.GetScreens();
 					if (screens.Count < 4)
@@ -104,6 +117,8 @@ namespace ThePen
 					{
 						Display2.IsEnabled = false;
 					}
+
+					StampWidth.Value = value.StampWidth;
 				}
 				catch(Exception e)
 				{
@@ -130,6 +145,10 @@ namespace ThePen
 				HotColor4 = HotKeyColor4.Value,
 				HotColor5 = HotKeyColor5.Value,
 				HotColor6 = HotKeyColor6.Value,
+				HotStampX = HotKeyStampX.Value,
+				HotStampO = HotKeyStampO.Value,
+				HotStampTri = HotKeyStampTri.Value,
+				HotStampDot = HotKeyStampDot.Value,
 				HotErase = HotKeyErase.Value,
 				HotOverlay1 = HotKeyOverlay1.Value,
 				HotOverlay2 = HotKeyOverlay2.Value,
@@ -152,6 +171,10 @@ namespace ThePen
 				OneOverlay2 = OneKeyOverlay2.Value,
 				OneOverlay3 = OneKeyOverlay3.Value,
 				OneOverlay4 = OneKeyOverlay4.Value,
+				OneStampX = OneKeyStampX.Value,
+				OneStampO = OneKeyStampO.Value,
+				OneStampTri = OneKeyStampTri.Value,
+				OneStampDot = OneKeyStampDot.Value,
 				OnePen1 = OneKeyPen1.Value,
 				OnePen2 = OneKeyPen2.Value,
 				OnePen3 = OneKeyPen3.Value,
@@ -159,12 +182,17 @@ namespace ThePen
 				OneClear = OneKeyClear.Value,
 				OneKeyImme = ImmeRadioButton.IsChecked.Value,
 				EasySwitch = EasySwitch.IsChecked.Value,
+				EdgeWidth = EdgeWidth.Value,
 				ShakeToClearAll = ShakeToClearAll.IsChecked.Value,
 				BlockTouch = BlockTouch.IsChecked.Value,
 				Display1 = Display1.IsChecked.Value,
 				Display2 = Display2.IsChecked.Value,
 				Display3 = Display3.IsChecked.Value,
 				Display4 = Display4.IsChecked.Value,
+				MouseEffectMove = MouseEffectMove.IsChecked.Value,
+				MouseEffectLeftDown = MouseEffectLeftDown.IsChecked.Value,
+				MouseEffectRightDown = MouseEffectRightDown.IsChecked.Value,
+				StampWidth = StampWidth.Value,
 			};
 		}
 

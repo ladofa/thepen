@@ -7,6 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="32" d:DesignWidth="32">
     <Grid Background="White">
-        <Ellipse x:Name="Dot" Width="3" Height="3" Fill="Black"/>
+        <Ellipse x:Name="Dot" Width="3" Height="3" Fill="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Grid>
 </UserControl>

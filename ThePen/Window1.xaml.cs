@@ -40,60 +40,12 @@ namespace ThePen
 
 			AdoptSetting();
 
-
 			PreviewTouchDown += Window1_PreviewTouchDown;
 			PreviewTouchMove += Window1_PreviewTouchMove;
 			PreviewTouchUp += Window1_PreviewTouchUp;
-
-			
-			//IntPtr handle = new WindowInteropHelper(Application.Current.MainWindow).Handle;
-			//touchHook.Install(handle);
-
-			timer.Interval = TimeSpan.FromSeconds(1);
-			timer.Tick += Timer_Tick;
-			timer.Start();
-	
 		}
 
-		//TouchHook touchHook = new TouchHook();
-
-
-		private void Timer_Tick(object sender, EventArgs e)
-		{
-			//touchHook.Run();
-			//Debug.WriteLine("------------------- timer -----------------------");
-			//Debug.WriteLine("Tablet Count : " + Tablet.TabletDevices.Count);
-			//foreach (TabletDevice tablet in Tablet.TabletDevices)
-			//{
-			//	Debug.WriteLine("  Stylus Count : " + tablet.StylusDevices.Count);
-			//	foreach (StylusDevice stylus in tablet.StylusDevices)
-			//	{
-			//		Debug.WriteLine("  ................................");
-			//		Debug.WriteLine("  " + stylus.Name);
-			//		Debug.WriteLine("  " + stylus.ActiveSource);
-			//		Debug.WriteLine("  " + stylus.DirectlyOver);
-			//		Debug.WriteLine("  " + stylus.GetPosition(this));
-			//		Debug.WriteLine("  " + stylus.InAir);
-			//		Debug.WriteLine("  " + stylus.InRange);
-			//		Debug.WriteLine("  " + stylus.Inverted);
-			//		Debug.WriteLine("  " + stylus.IsValid);
-			//		Debug.WriteLine("  " + stylus.Target);
-
-
-			//	}
-
-			//}
-
-			//Debug.WriteLine(Tablet.CurrentTabletDevice);
-			//Debug.WriteLine(Stylus.CurrentStylusDevice);
-
-		}
-
-		System.Windows.Threading.DispatcherTimer timer = new();
-
-
-
-		#region prevent touch
+		#region block touch
 
 		private void Window1_PreviewTouchUp(object sender, TouchEventArgs e)
 		{
@@ -127,6 +79,10 @@ namespace ThePen
 			{
 				MouseEffectMove.Visibility = Visibility.Collapsed;
 			}
+
+			AutoDrawAreaLeft.Width = setting.EdgeWidth;
+			AutoDrawAreaRight.Width = setting.EdgeWidth;
+			AutoDrawAreaBottom.Height = setting.EdgeWidth;
 		}
 
 		public delegate void MainPenChangedEventHandler(object sender, int num);
@@ -156,10 +112,12 @@ namespace ThePen
 		private DrawingAttributes previousPen;
 
 		bool isPressed = false;
-		InkCanvasEditingMode prevEditingMode;
 		protected override void OnPreviewKeyDown(KeyEventArgs e)
 		{
 			base.OnPreviewKeyDown(e);
+
+			if (DrawingMode != DrawingModes.Draw) return;
+
 			if (isPressed) return;
 
 			//all code must be behind here.
@@ -168,8 +126,7 @@ namespace ThePen
 
 			if (e.Key == setting.OneErase)
 			{
-				prevEditingMode = Board.EditingMode;
-				Board.EditingMode = InkCanvasEditingMode.EraseByStroke;
+				DrawingMode = DrawingModes.Erase;
 			}
 
 			else if (e.Key == setting.OneClear)
@@ -180,6 +137,22 @@ namespace ThePen
 			else if (e.Key == setting.OneSelect)
 			{
 				DrawingMode = DrawingModes.Select;
+			}
+			else if (e.Key == setting.OneStampX)
+			{
+				StampX();
+			}
+			else if (e.Key == setting.OneStampO)
+			{
+				StampO();
+			}
+			else if (e.Key == setting.OneStampTri)
+			{
+				StampTri();
+			}
+			else if (e.Key == setting.OneStampDot)
+			{
+				StampDot();
 			}
 			//pen changes
 			else if (!setting.OneKeyImme)
@@ -220,10 +193,10 @@ namespace ThePen
 				{
 					Board.DefaultDrawingAttributes = setting.Pen3.Clone();
 				}
+
 			}
 			else
 			{
-
 				if (e.Key == setting.OneColor1)
 				{
 					ChangeColor(setting.Palette1);
@@ -250,14 +223,17 @@ namespace ThePen
 				}
 				if (e.Key == setting.OnePen1)
 				{
+					DrawingMode = DrawingModes.Draw;
 					ChangeMainPen(1);
 				}
 				if (e.Key == setting.OnePen2)
 				{
+					DrawingMode = DrawingModes.Draw;
 					ChangeMainPen(2);
 				}
 				if (e.Key == setting.OnePen3)
 				{
+					DrawingMode = DrawingModes.Draw;
 					ChangeMainPen(3);
 				}
 			}
@@ -270,11 +246,8 @@ namespace ThePen
 		protected override void OnLostFocus(RoutedEventArgs e)
 		{
 			base.OnLostFocus(e);
-			isPressed = false;
-			if (!setting.OneKeyImme)
-			{
-				Board.DefaultDrawingAttributes = previousPen.Clone();
-			}
+
+			DrawingMode = DrawingModes.Select;
 		}
 
 		protected override void OnPreviewKeyUp(KeyEventArgs e)
@@ -283,7 +256,7 @@ namespace ThePen
 
 			if (e.Key == setting.OneErase)
 			{
-				Board.EditingMode = prevEditingMode;
+				DrawingMode = DrawingModes.Draw;
 			}
 
 			if (!setting.OneKeyImme)
@@ -499,6 +472,12 @@ namespace ThePen
 				_removed.Add(e.Removed);
 				_added_redo.Clear();
 				_removed_redo.Clear();
+
+				if (_added.Count > 1000)
+				{
+					_added.RemoveAt(0);
+					_removed.RemoveAt(0);
+				}
 			}
 		}
 
@@ -533,6 +512,191 @@ namespace ThePen
 			handle = true;
 		}
 		#endregion
+
+		#region stamp
+
+		private void StampX()
+		{
+			double width = setting.StampWidth;
+			double w2 = width / 2;
+			var center = Mouse.GetPosition(Board);
+			double left = center.X - w2;
+			double top = center.Y - w2;
+			double right = left + width;
+			double bottom = top + width;
+
+			var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(new List<Point>
+			{
+					new Point(left, top), new Point(right, bottom),
+			}))
+			{
+
+				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+			};
+
+			var s2 = new System.Windows.Ink.Stroke(new StylusPointCollection(new List<Point>
+			{
+					new Point(left, bottom), new Point(right, top),
+			}))
+			{
+
+				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+			};
+
+			Board.Strokes.Add(s1);
+			Board.Strokes.Add(s2);
+		}
+
+		private void StampO()
+		{
+			double width = setting.StampWidth;
+			double w2 = width / 2;
+			var center = Mouse.GetPosition(Board);
+			var cx = center.X;
+			var cy = center.Y;
+
+			List<Point> points = new();
+			for (double r = 0; r < Math.PI * 2; r += Math.PI / 8)
+			{
+				double vx = Math.Cos(r);
+				double vy = Math.Sin(r);
+
+				points.Add(new Point(cx + w2 * vx, cy + w2 * vy));
+			}
+			points.Add(points[0]);
+
+			var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
+				points
+			))
+			{
+
+				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+			};
+
+			Board.Strokes.Add(s1);
+		}
+
+		private void StampDot()
+		{
+			double width = setting.StampWidth;
+			double w2 = width / 2;
+			var center = Mouse.GetPosition(Board);
+			double left = center.X - w2;
+			double top = center.Y - w2;
+			double right = left + width;
+			double bottom = top + width;
+
+			var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(new List<Point>
+			{
+					new Point(left, top), new Point(right, top),
+					new Point(right, bottom), new Point(left, bottom), new Point(left, top)
+			}))
+			{
+
+				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+			};
+
+			Board.Strokes.Add(s1);
+		}
+
+		private void StampTri()
+		{
+			double width = setting.StampWidth;
+			double w2 = width / 2;
+			var center = Mouse.GetPosition(Board);
+			var cx = center.X;
+			var cy = center.Y;
+
+			List<Point> points = new();
+			for (double r = 0; r < Math.PI * 2; r += Math.PI / 1.5)
+			{
+				double vx = Math.Cos(r);
+				double vy = Math.Sin(r);
+
+				points.Add(new Point(cx + w2 * vx, cy + w2 * vy));
+			}
+			points.Add(points[0]);
+
+			var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
+				points
+			))
+			{
+				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+			};
+
+			Board.Strokes.Add(s1);
+		}
+
+		#endregion
+
+		#region shape
+
+
+		bool shapePushed = false;
+		Stroke shapeStroke;
+		Point shapeStartPoint;
+		private void ShapeLineArea_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (!shapePushed)
+				return;
+
+			var p = Mouse.GetPosition(Board);
+
+			if (true)
+			{
+				var len = (shapeStartPoint - p).Length;
+				var ang = Math.Atan2(p.Y - shapeStartPoint.Y, p.X - shapeStartPoint.X);
+				const double step = Math.PI / 32;
+				const double step2 = step / 2;
+
+				Debug.WriteLine("angle " + ang);
+
+				for (double c = step2 - Math.PI; c < Math.PI + step; c += step)
+				{
+					if (ang < c)
+					{
+						ang = c - step2;
+						break;
+					}
+				}
+
+				var dx = Math.Cos(ang) * len;
+				var dy = Math.Sin(ang) * len;
+				p = shapeStartPoint + new Vector(dx, dy);
+				
+			}
+
+			shapeStroke.StylusPoints[1] = new StylusPoint(p.X, p.Y);
+		}
+
+		private void ShapeLineArea_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			shapePushed = true;
+			var center = Mouse.GetPosition(Board);
+			var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
+				new List<Point>{ center, center}
+			))
+			{
+				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+			};
+
+			shapeStroke = s1;
+			shapeStartPoint = center;
+
+			Board.Strokes.Add(s1);
+		}
+
+		private void ShapeLineArea_MouseUp(object sender, MouseButtonEventArgs e)
+		{
+			shapePushed = false;
+		}
+		private void ShapeLineArea_MouseLeave(object sender, MouseEventArgs e)
+		{
+			shapePushed = false;
+		}
+
+		#endregion
+
 
 	}
 }

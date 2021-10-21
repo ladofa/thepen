@@ -14,11 +14,13 @@
         </Grid.CommandBindings>
         <Grid x:Name="GridBoard" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Rectangle x:Name="BackBoard" Fill="#00000000"/>
-            <InkCanvas Name="Board" Background="#00000000" UseCustomCursor="True" Cursor="Pen"/>
+            <InkCanvas Name="Board" Background="#00000000" Cursor="Pen"/>
+
+            <!--<Rectangle x:Name="ShapeLineArea" Fill="#01000000" Cursor="Pen" MouseMove="ShapeLineArea_MouseMove" MouseDown="ShapeLineArea_MouseDown" MouseUp="ShapeLineArea_MouseUp" MouseLeave="ShapeLineArea_MouseLeave"/>-->
+
             <Rectangle x:Name="AutoDrawAreaLeft" Fill="#01000000" HorizontalAlignment="Left" Width="5" />
             <Rectangle x:Name="AutoDrawAreaRight" Fill="#01000000" HorizontalAlignment="Right" Width="5" />
             <Rectangle x:Name="AutoDrawAreaBottom" Fill="#01000000" VerticalAlignment="Bottom" Height="5" />
-            
         </Grid>
 
         <Canvas Name="Overlay">
@@ -26,7 +28,9 @@
                 <Ellipse Fill="#00000000" StrokeThickness="8" Stroke="#80FF0000" Width="30" Height="30" Name="MouseEffectMove" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Ellipse Fill="#00000000" StrokeThickness="8" Stroke="#8000ff00" Width="30" Height="30" Name="MouseEffectLeftDown" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
                 <Ellipse Fill="#00000000" StrokeThickness="8" Stroke="#800000ff" Width="30" Height="30" Name="MouseEffectRightDown" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+                
             </Grid>
         </Canvas>
+        
     </Grid>
 </Window>

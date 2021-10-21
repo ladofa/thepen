@@ -14,7 +14,7 @@ namespace ThePen
 
 		public DrawingAttributes Pen1 = new DrawingAttributes()
 		{
-			Color = Color.FromArgb(0xff, 0xe1, 0x86, 0x3b),
+			Color = Color.FromArgb(0xff, 245, 158, 86),
 			Width = 3.5,
 			Height = 2,
 		};
@@ -31,15 +31,15 @@ namespace ThePen
 		public DrawingAttributes Pen3 = new DrawingAttributes()
 		{
 			Color = Color.FromArgb(255, 0xaf, 0xd1, 0xd3),
-			Width = 3.5,
-			Height = 3.5,
+			Width = 2,
+			Height = 2,
 		};
 
 		public Color Palette1 = Color.FromArgb(255, 0xdf, 0x58, 0x73);
-		public Color Palette2 = Color.FromArgb(255, 0x71, 0x76, 0xf2);
-		public Color Palette3 = Color.FromArgb(255, 0xb8, 0xad, 0x2e);
+		public Color Palette2 = Color.FromArgb(255, 0xc9, 0xbc, 0x1e);
+		public Color Palette3 = Color.FromArgb(255, 0x69, 0x9d, 0x00);
 		public Color Palette4 = Color.FromArgb(255, 0x1b, 0xa8, 0xa8);
-		public Color Palette5 = Color.FromArgb(255, 0x69, 0x9d, 0x00);
+		public Color Palette5 = Color.FromArgb(255, 0x71, 0x76, 0xf2);
 		public Color Palette6 = Color.FromArgb(255, 0xb0, 0x6d, 0xb9);
 
 		public bool Display1 = true;
@@ -48,16 +48,19 @@ namespace ThePen
 		public bool Display4 = true;
 
 		public bool MouseEffectMove = false;
-		public bool MouseEffectLeftDown = true;
-		public bool MouseEffectRightDown = true;
+		public bool MouseEffectLeftDown = false;
+		public bool MouseEffectRightDown = false;
 
 		public bool OneKeyImme = true;
 
 		public bool BlockTouch = true;
 
 		public bool EasySwitch = true;
+		public double EdgeWidth = 3;
 
 		public bool ShakeToClearAll = true;
+
+		public double StampWidth = 15;
 
 		public (uint, uint) HotErase = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["1"]);
 		public (uint, uint) HotSelect = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["2"]);
@@ -78,6 +81,11 @@ namespace ThePen
 		public (uint, uint) HotOverlay3 = (0, 0);
 		public (uint, uint) HotOverlay4 = (0, 0);
 
+		public (uint, uint) HotStampX = (0, 0);
+		public (uint, uint) HotStampO = (0, 0);
+		public (uint, uint) HotStampTri = (0, 0);
+		public (uint, uint) HotStampDot = (0, 0);
+
 		public Key OneSelect = Key.Escape;
 		public Key OneErase = Key.R;
 		public Key OneClear = Key.OemTilde;
@@ -96,6 +104,13 @@ namespace ThePen
 		public Key OneColor4 = Key.D4;
 		public Key OneColor5 = Key.D5;
 		public Key OneColor6 = Key.D6;
+
+		public Key OneStampX = Key.X;
+		public Key OneStampO = Key.C;
+		public Key OneStampTri = Key.V;
+		public Key OneStampDot = Key.B;
+
+		public Key OneShapeLine = Key.A;
 
 		//public List<string> InputKeys;
 
