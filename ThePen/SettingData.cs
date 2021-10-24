@@ -110,7 +110,10 @@ namespace ThePen
 		public Key OneStampTri = Key.V;
 		public Key OneStampDot = Key.B;
 
-		public Key OneShapeLine = Key.A;
+		public Key OneShapeLine1 = Key.A;
+		public Key OneShapeLine2 = Key.S;
+		public Key OneShapeCircle = Key.D;
+		public Key OneShapeRectangle = Key.F;
 
 		//public List<string> InputKeys;
 

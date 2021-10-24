@@ -78,16 +78,19 @@
                         <TextBlock Style="{StaticResource HotKey}" Text="Pen3"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Erase"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Clear"/>
+                        <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color1"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color2"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color3"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color4"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color5"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color6"/>
+                        <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Stamp X"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Stamp ○"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Stamp △"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Stamp ㅁ"/>
+                        <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Overlay1"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Overlay2"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Overlay3"/>
@@ -96,23 +99,26 @@
                     </StackPanel>
 
                     <StackPanel Grid.Column="1">
-                        <TextBlock Style="{StaticResource HotKey}" Text="Mod Key Shortcuts"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Global Shortcuts"/>
                         <local:SettingHotKey x:Name="HotKeySelect"/>
                         <local:SettingHotKey x:Name="HotKeyPen1"/>
                         <local:SettingHotKey x:Name="HotKeyPen2"/>
                         <local:SettingHotKey x:Name="HotKeyPen3"/>
                         <local:SettingHotKey x:Name="HotKeyErase"/>
                         <local:SettingHotKey x:Name="HotKeyClear"/>
+                        <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <local:SettingHotKey x:Name="HotKeyColor1"/>
                         <local:SettingHotKey x:Name="HotKeyColor2"/>
                         <local:SettingHotKey x:Name="HotKeyColor3"/>
                         <local:SettingHotKey x:Name="HotKeyColor4"/>
                         <local:SettingHotKey x:Name="HotKeyColor5"/>
                         <local:SettingHotKey x:Name="HotKeyColor6"/>
+                        <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <local:SettingHotKey x:Name="HotKeyStampO"/>
                         <local:SettingHotKey x:Name="HotKeyStampX"/>
                         <local:SettingHotKey x:Name="HotKeyStampTri"/>
                         <local:SettingHotKey x:Name="HotKeyStampDot"/>
+                        <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <local:SettingHotKey x:Name="HotKeyOverlay1"/>
                         <local:SettingHotKey x:Name="HotKeyOverlay2"/>
                         <local:SettingHotKey x:Name="HotKeyOverlay3"/>
@@ -120,23 +126,26 @@
                     </StackPanel>
 
                     <StackPanel Grid.Column="2">
-                        <TextBlock Style="{StaticResource HotKey}" Text="One Key Shortcuts"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Drawing Shortcuts"/>
                         <local:SettingOneKey x:Name="OneKeySelect"/>
                         <local:SettingOneKey x:Name="OneKeyPen1"/>
                         <local:SettingOneKey x:Name="OneKeyPen2"/>
                         <local:SettingOneKey x:Name="OneKeyPen3"/>
                         <local:SettingOneKey x:Name="OneKeyErase"/>
                         <local:SettingOneKey x:Name="OneKeyClear"/>
+                        <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <local:SettingOneKey x:Name="OneKeyColor1"/>
                         <local:SettingOneKey x:Name="OneKeyColor2"/>
                         <local:SettingOneKey x:Name="OneKeyColor3"/>
                         <local:SettingOneKey x:Name="OneKeyColor4"/>
                         <local:SettingOneKey x:Name="OneKeyColor5"/>
                         <local:SettingOneKey x:Name="OneKeyColor6"/>
+                        <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <local:SettingOneKey x:Name="OneKeyStampX"/>
                         <local:SettingOneKey x:Name="OneKeyStampO"/>
                         <local:SettingOneKey x:Name="OneKeyStampTri"/>
                         <local:SettingOneKey x:Name="OneKeyStampDot"/>
+                        <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <local:SettingOneKey x:Name="OneKeyOverlay1"/>
                         <local:SettingOneKey x:Name="OneKeyOverlay2"/>
                         <local:SettingOneKey x:Name="OneKeyOverlay3"/>

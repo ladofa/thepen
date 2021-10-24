@@ -14,7 +14,7 @@
         </Grid.CommandBindings>
         <Grid x:Name="GridBoard" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Rectangle x:Name="BackBoard" Fill="#00000000"/>
-            <InkCanvas Name="Board" Background="#00000000" Cursor="Pen"/>
+            <InkCanvas Name="Board" Background="#00000000" UseCustomCursor="True" Cursor="Pen"/>
 
             <!--<Rectangle x:Name="ShapeLineArea" Fill="#01000000" Cursor="Pen" MouseMove="ShapeLineArea_MouseMove" MouseDown="ShapeLineArea_MouseDown" MouseUp="ShapeLineArea_MouseUp" MouseLeave="ShapeLineArea_MouseLeave"/>-->
 
