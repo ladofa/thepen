@@ -40,6 +40,8 @@ namespace ThePen
 			HideAllPopup();
 
 			Global.SettingChanged += Global_SettingChanged;
+
+
 		}
 
 		private void Global_SettingChanged(object sender, EventArgs e)
@@ -79,7 +81,16 @@ namespace ThePen
 			canvasWindows.ForEach(w => w.Close());
 			canvasWindows.Clear();
 
-			screens = Monitors.GetScreens();
+			PresentationSource source = PresentationSource.FromVisual(this);
+
+			double dpiX = 0, dpiY = 0;
+			if (source != null)
+			{
+				dpiX = 96.0 * source.CompositionTarget.TransformToDevice.M11;
+				dpiY = 96.0 * source.CompositionTarget.TransformToDevice.M22;
+			}
+
+			screens = Monitors.GetScreens(source.CompositionTarget.TransformToDevice.M11);
 
 			//entire display size
 			Rect getRect(List<Monitors.Screen> screens)
@@ -137,7 +148,7 @@ namespace ThePen
 				drawingScreen.Add(screens[3]);
 			}
 
-			if (drawingScreen.Count >= 1)
+			if (drawingScreen.Count > 0)
 			{
 				var rect = getRect(screens);
 				var win = new Window1();
@@ -263,12 +274,12 @@ namespace ThePen
 
 			setHotkey(data.HotOverlay1, new Action(() =>
 			{
-				;
+				canvasWindows.ForEach(w => w.ToggleOverlay1());
 			}));
 
 			setHotkey(data.HotOverlay2, new Action(() =>
 			{
-				;
+				canvasWindows.ForEach(w => w.ToggleOverlay2());
 			}));
 
 			setHotkey(data.HotOverlay3, new Action(() =>
@@ -390,6 +401,18 @@ namespace ThePen
 			ShowPopup(OverlayButton, OverlayPopup);
 		}
 
+		private void ShapeButton_Click(object sender, RoutedEventArgs e)
+		{
+			HideAllPopup();
+			ShowPopup(ShapeButton, ShapePopup);
+		}
+
+		private void StampButton_Click(object sender, RoutedEventArgs e)
+		{
+			HideAllPopup();
+			ShowPopup(StampButton, StampPopup);
+		}
+
 		private void ColorButton_Click(object sender, RoutedEventArgs e)
 		{
 			HideAllPopup();
@@ -495,6 +518,8 @@ namespace ThePen
 			OverlayPopup.Visibility = Visibility.Hidden;
 			ColorPopup.Visibility = Visibility.Hidden;
 			HatPopup.Visibility = Visibility.Hidden;
+			ShapePopup.Visibility = Visibility.Hidden;
+			StampPopup.Visibility = Visibility.Hidden;
 		}
 
 		Thickness getMarginInScreen(UIElement element)
@@ -681,5 +706,32 @@ namespace ThePen
 			HideAllPopup();
 			Close();
 		}
+
+		private void ShapeLine1Button_Click(object sender, RoutedEventArgs e)
+		{
+			HideAllPopup();
+		}
+
+		private void ShapeLine2Button_Click(object sender, RoutedEventArgs e)
+		{
+			HideAllPopup();
+		}
+
+		private void ShapeEllipseButton_Click(object sender, RoutedEventArgs e)
+		{
+			HideAllPopup();
+		}
+
+		private void ShapeRectangleButton_Click(object sender, RoutedEventArgs e)
+		{
+			HideAllPopup();
+		}
+
+		private void ShapeGridButton_Click(object sender, RoutedEventArgs e)
+		{
+			HideAllPopup();
+		}
+
+		
 	}
 }

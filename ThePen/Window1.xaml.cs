@@ -115,7 +115,7 @@ namespace ThePen
 		protected override void OnPreviewKeyDown(KeyEventArgs e)
 		{
 			base.OnPreviewKeyDown(e);
-
+			
 			if (DrawingMode != DrawingModes.Draw) return;
 
 			if (isPressed) return;
@@ -140,114 +140,96 @@ namespace ThePen
 			}
 			else if (e.Key == setting.OneStampX)
 			{
-				StampX();
+				setStampMode(0);
 			}
 			else if (e.Key == setting.OneStampO)
 			{
-				StampO();
+				setStampMode(1);
 			}
 			else if (e.Key == setting.OneStampTri)
 			{
-				StampTri();
+				setStampMode(2);
 			}
 			else if (e.Key == setting.OneStampDot)
 			{
-				StampDot();
+				setStampMode(3);
+			}
+			else if (e.Key == setting.OneShapeLine1)
+			{
+				setShapeMode(0);
+			}
+			else if (e.Key == setting.OneShapeLine2)
+			{
+				setShapeMode(1);
+			}
+			else if (e.Key == setting.OneShapeEllipse)
+			{
+				setShapeMode(2);
+			}
+			else if (e.Key == setting.OneShapeRectangle)
+			{
+				setShapeMode(3);
+			}
+			else if (e.Key == setting.OneShapeGrid)
+			{
+				setShapeMode(4);
 			}
 			//pen changes
-			else if (!setting.OneKeyImme)
-			{
-				if (e.Key == setting.OneColor1)
-				{
-					Board.DefaultDrawingAttributes.Color = setting.Palette1;
-				}
-				if (e.Key == setting.OneColor2)
-				{
-					Board.DefaultDrawingAttributes.Color = setting.Palette2;
-				}
-				if (e.Key == setting.OneColor3)
-				{
-					Board.DefaultDrawingAttributes.Color = setting.Palette3;
-				}
-				if (e.Key == setting.OneColor4)
-				{
-					Board.DefaultDrawingAttributes.Color = setting.Palette4;
-				}
-				if (e.Key == setting.OneColor5)
-				{
-					Board.DefaultDrawingAttributes.Color = setting.Palette5;
-				}
-				if (e.Key == setting.OneColor6)
-				{
-					Board.DefaultDrawingAttributes.Color = setting.Palette6;
-				}
-				if (e.Key == setting.OnePen1)
-				{
-					Board.DefaultDrawingAttributes = setting.Pen1.Clone();
-				}
-				if (e.Key == setting.OnePen2)
-				{
-					Board.DefaultDrawingAttributes = setting.Pen2.Clone();
-				}
-				if (e.Key == setting.OnePen3)
-				{
-					Board.DefaultDrawingAttributes = setting.Pen3.Clone();
-				}
 
-			}
-			else
+			else if (e.Key == setting.OneColor1)
 			{
-				if (e.Key == setting.OneColor1)
-				{
-					ChangeColor(setting.Palette1);
-				}
-				if (e.Key == setting.OneColor2)
-				{
-					ChangeColor(setting.Palette2);
-				}
-				if (e.Key == setting.OneColor3)
-				{
-					ChangeColor(setting.Palette3);
-				}
-				if (e.Key == setting.OneColor4)
-				{
-					ChangeColor(setting.Palette4);
-				}
-				if (e.Key == setting.OneColor5)
-				{
-					ChangeColor(setting.Palette5);
-				}
-				if (e.Key == setting.OneColor6)
-				{
-					ChangeColor(setting.Palette6);
-				}
-				if (e.Key == setting.OnePen1)
-				{
-					DrawingMode = DrawingModes.Draw;
-					ChangeMainPen(1);
-				}
-				if (e.Key == setting.OnePen2)
-				{
-					DrawingMode = DrawingModes.Draw;
-					ChangeMainPen(2);
-				}
-				if (e.Key == setting.OnePen3)
-				{
-					DrawingMode = DrawingModes.Draw;
-					ChangeMainPen(3);
-				}
+				ChangeColor(setting.Palette1);
 			}
-
-			
+			else if (e.Key == setting.OneColor2)
+			{
+				ChangeColor(setting.Palette2);
+			}
+			else if (e.Key == setting.OneColor3)
+			{
+				ChangeColor(setting.Palette3);
+			}
+			else if (e.Key == setting.OneColor4)
+			{
+				ChangeColor(setting.Palette4);
+			}
+			else if (e.Key == setting.OneColor5)
+			{
+				ChangeColor(setting.Palette5);
+			}
+			else if (e.Key == setting.OneColor6)
+			{
+				ChangeColor(setting.Palette6);
+			}
+			else if (e.Key == setting.OnePen1)
+			{
+				DrawingMode = DrawingModes.Draw;
+				ChangeMainPen(1);
+			}
+			else if (e.Key == setting.OnePen2)
+			{
+				DrawingMode = DrawingModes.Draw;
+				ChangeMainPen(2);
+			}
+			else if (e.Key == setting.OnePen3)
+			{
+				DrawingMode = DrawingModes.Draw;
+				ChangeMainPen(3);
+			}
 
 			isPressed = true;
+			Global.KeyPressed = true;
 		}
+
+		
 
 		protected override void OnLostFocus(RoutedEventArgs e)
 		{
 			base.OnLostFocus(e);
-
-			DrawingMode = DrawingModes.Select;
+			if (setting.EasySwitch)
+			{ 
+				DrawingMode = DrawingModes.Select;
+			}
+			Global.KeyPressed = false;
 		}
 
 		protected override void OnPreviewKeyUp(KeyEventArgs e)
@@ -258,13 +240,45 @@ namespace ThePen
 			{
 				DrawingMode = DrawingModes.Draw;
 			}
-
-			if (!setting.OneKeyImme)
+			else if (e.Key == setting.OneStampX)
 			{
-				Board.DefaultDrawingAttributes = previousPen.Clone();
+				releaseStampMode();
+			}
+			else if (e.Key == setting.OneStampO)
+			{
+				releaseStampMode();
+			}
+			else if (e.Key == setting.OneStampDot)
+			{
+				releaseStampMode();
+			}
+			else if (e.Key == setting.OneStampTri)
+			{
+				releaseStampMode();
+			}
+			else if (e.Key == setting.OneShapeLine1)
+			{
+				releaseShapeMode();
+			}
+			else if (e.Key == setting.OneShapeLine2)
+			{
+				releaseShapeMode();
+			}
+			else if (e.Key == setting.OneShapeEllipse)
+			{
+				releaseShapeMode();
+			}
+			else if (e.Key == setting.OneShapeRectangle)
+			{
+				releaseShapeMode();
+			}
+			else if (e.Key == setting.OneShapeGrid)
+			{
+				releaseShapeMode();
 			}
 
 			isPressed = false;
+			Global.KeyPressed = false;
 		}
 
 		#region shake to clear all
@@ -416,6 +430,9 @@ namespace ThePen
 				Focusable = drawing;
 				//Board.Focusable = drawing;
 
+				this.Activate();
+				this.Focus();
+
 				drawingMode = value;
 				DrawingModeChanged?.Invoke(this, new EventArgs());
 			}
@@ -515,6 +532,38 @@ namespace ThePen
 
 		#region stamp
 
+		int stampKind = 0;
+		private void setStampMode(int stampKind)
+		{
+			this.stampKind = stampKind;
+			StampeArea.Visibility = Visibility.Visible;
+		}
+
+		private void releaseStampMode()
+		{
+			StampeArea.Visibility = Visibility.Hidden;
+		}
+
+		private void StampeArea_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			if (stampKind == 0)
+			{
+				StampX();
+			}
+			else if (stampKind == 1)
+			{
+				StampO();
+			}
+			else if (stampKind == 2)
+			{
+				StampDot();
+			}
+			else
+			{
+				StampTri();
+			}
+		}
+
 		private void StampX()
 		{
 			double width = setting.StampWidth;
@@ -608,7 +657,7 @@ namespace ThePen
 			var cy = center.Y;
 
 			List<Point> points = new();
-			for (double r = 0; r < Math.PI * 2; r += Math.PI / 1.5)
+			for (double r = Math.PI / 6; r < Math.PI * 2; r += Math.PI / 1.5)
 			{
 				double vx = Math.Cos(r);
 				double vy = Math.Sin(r);
@@ -632,6 +681,51 @@ namespace ThePen
 		#region shape
 
 
+		void setShapeMode(int shapeKind)
+		{
+			if (shapeKind == 0)
+			{
+				ShapeLineArea.Visibility = Visibility.Visible;
+			}
+			else if (shapeKind == 1)
+			{
+				ShapeLine2Area.Visibility = Visibility.Visible;
+			}
+			else if (shapeKind == 2)
+			{
+				ShapeEllipseArea.Visibility = Visibility.Visible;
+			}
+			else if (shapeKind == 3)
+			{
+				ShapeRectangleArea.Visibility = Visibility.Visible;
+			}
+			else if (shapeKind == 4)
+			{
+				ShapeGridArea.Visibility = Visibility.Visible;
+				BoardTemp.Visibility = Visibility.Visible;
+				BoardTemp.Strokes.Clear();
+				shapeGridCopyMode = false;
+			}
+		}
+
+		void releaseShapeMode()
+		{
+			ShapeLineArea.Visibility = Visibility.Collapsed;
+			ShapeLine2Area.Visibility = Visibility.Collapsed;
+			ShapeEllipseArea.Visibility = Visibility.Collapsed;
+			ShapeRectangleArea.Visibility = Visibility.Collapsed;
+			ShapeGridArea.Visibility = Visibility.Collapsed;
+			BoardTemp.Visibility = Visibility.Collapsed;
+
+			foreach (var stroke in BoardTemp.Strokes)
+			{
+				Board.Strokes.Add(stroke);
+			}
+
+			BoardTemp.Strokes.Clear();
+		}
+
+
 		bool shapePushed = false;
 		Stroke shapeStroke;
 		Point shapeStartPoint;
@@ -646,7 +740,7 @@ namespace ThePen
 			{
 				var len = (shapeStartPoint - p).Length;
 				var ang = Math.Atan2(p.Y - shapeStartPoint.Y, p.X - shapeStartPoint.X);
-				const double step = Math.PI / 32;
+				const double step = Math.PI / 8;
 				const double step2 = step / 2;
 
 				Debug.WriteLine("angle " + ang);
@@ -695,8 +789,366 @@ namespace ThePen
 			shapePushed = false;
 		}
 
+		//----
+
+
+		private void ShapeLine2Area_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (!shapePushed)
+				return;
+
+			var p = Mouse.GetPosition(Board);
+
+			shapeStroke.StylusPoints[1] = new StylusPoint(p.X, p.Y);
+		}
+
+		private void ShapeLine2Area_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+
+			shapePushed = true;
+			var center = Mouse.GetPosition(Board);
+			var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
+				new List<Point> { center, center }
+			))
+			{
+				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+			};
+
+			shapeStroke = s1;
+			shapeStartPoint = center;
+
+			Board.Strokes.Add(s1);
+		}
+
+		private void ShapeLine2Area_MouseUp(object sender, MouseButtonEventArgs e)
+		{
+			shapePushed = false;
+		}
+
+		private void ShapeLine2Area_MouseLeave(object sender, MouseEventArgs e)
+		{
+			shapePushed = false;
+		}
+
+		//----
+
+		List<double> ellipseVectorX;
+		List<double> ellipseVectorY;
+
+		private void ShapeEllipseArea_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (!shapePushed)
+				return;
+
+			var p = Mouse.GetPosition(Board);
+			var r = ((Vector)(p - shapeStartPoint)).Length / 2;
+
+			List<Point> points = new();
+			double pi2 = Math.PI * 2;
+			double step = Math.PI / 32;
+			double sx = (shapeStartPoint.X + p.X) / 2;
+			double sy = (shapeStartPoint.Y + p.Y) / 2;
+
+			if (ellipseVectorX == null)
+			{
+				ellipseVectorX = new();
+				ellipseVectorY = new();
+				for (double rad = 0; rad < Math.PI * 2; rad += step)
+				{
+					ellipseVectorX.Add(Math.Cos(rad));
+					ellipseVectorY.Add(Math.Sin(rad));
+				}
+			}
+
+			for (int i = 0; i < ellipseVectorX.Count; i++)
+			{
+				points.Add(new Point(ellipseVectorX[i] * r + sx, ellipseVectorY[i] * r + sy));
+			}
+
+			points.Add(points[0]);
+			shapeStroke.StylusPoints = new StylusPointCollection(points);
+		}
+
+		private void ShapeEllipseArea_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			shapePushed = true;
+			var center = Mouse.GetPosition(Board);
+
+			var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
+				new List<Point> { center, center }
+			))
+			{
+				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+			};
+
+			shapeStroke = s1;
+			shapeStartPoint = center;
+			Board.Strokes.Add(s1);
+		}
+
+		private void ShapeEllipseArea_MouseUp(object sender, MouseButtonEventArgs e)
+		{
+			shapePushed = false;
+		}
+
+		private void ShapeEllipseArea_MouseLeave(object sender, MouseEventArgs e)
+		{
+			shapePushed = false;
+		}
+
+		//----
+
+		private void ShapeRectangleArea_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (!shapePushed)
+				return;
+
+			var p = Mouse.GetPosition(Board);
+
+			double x1 = p.X;
+			double y1 = p.Y;
+			double x2 = shapeStartPoint.X;
+			double y2 = shapeStartPoint.Y;
+
+			List<Point> points = new()
+			{
+				new Point(x1, y1),
+				new Point(x2, y1),
+				new Point(x2, y2),
+				new Point(x1, y2)
+			};
+			points.Add(points[0]);
+
+			shapeStroke.StylusPoints = new StylusPointCollection(points);
+		}
+
+		private void ShapeRectangleArea_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			shapePushed = true;
+			var center = Mouse.GetPosition(Board);
+
+			var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
+				new List<Point> { center, center }
+			))
+			{
+				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+			};
+
+			shapeStroke = s1;
+			shapeStartPoint = center;
+			Board.Strokes.Add(s1);
+		}
+
+		private void ShapeRectangleArea_MouseUp(object sender, MouseButtonEventArgs e)
+		{
+			shapePushed = false;
+		}
+
+		private void ShapeRectangleArea_MouseLeave(object sender, MouseEventArgs e)
+		{
+			shapePushed = false;
+		}
+
+		//-----
+
+		bool shapeGridCopyMode;
+
+		List<List<Point>> shapeGridGetStrokes(int gx1, int gy1, int gx2, int gy2)
+		{
+			List<List<Point>> strokes = new();
+			double sx = shapeStartPoint.X;
+			double sy = shapeStartPoint.Y;
+			double left = gx1 * shapeGridW + sx;
+			double top = gy1 * shapeGridH + sy;
+			double right = (gx2 + 1) * shapeGridW + sx;
+			double bottom = (gy2 + 1) * shapeGridH + sy;
+
+			for (int gx = gx1; gx <= gx2 + 1; gx++)
+			{
+				double x = gx * shapeGridW + sx;
+				strokes.Add(new List<Point>
+				{
+					new Point(x, top),
+					new Point(x, bottom)
+				});
+			}
+
+			for (int gy = gy1; gy <= gy2 + 1; gy++)
+			{
+				double y = gy * shapeGridH + sy;
+				strokes.Add(new List<Point>
+				{
+					new Point(left, y),
+					new Point(right, y)
+				});
+			}
+
+			return strokes;
+		}
+
+		private void ShapeGridArea_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (shapeGridCopyMode)
+			{
+				//check current area
+				var p = Mouse.GetPosition(Board);
+				var v = p - shapeStartPoint;
+
+				int gx = (int)(v.X / shapeGridW);
+				int gy = (int)(v.Y / shapeGridH);
+
+				if (gx != shapeGridCurX || gy != shapeGridCurY)
+				{
+					BoardTemp.Strokes.Clear();
+
+					if (v.X < 0) gx += -1;
+					if (v.Y < 0) gy += -1;
+
+					int gx1 = Math.Min(gx, 0);
+					int gx2 = Math.Max(gx, 0);
+					int gy1 = Math.Min(gy, 0);
+					int gy2 = Math.Max(gy, 0);
+
+					var strokes = shapeGridGetStrokes(gx1, gy1, gx2, gy2);
+					foreach (var stroke in strokes)
+					{
+						var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
+						stroke
+						))
+						{
+							DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+						};
+						BoardTemp.Strokes.Add(s1);
+					}
+				}
+			}
+			else if (shapePushed)
+			{
+				var p = Mouse.GetPosition(Board);
+
+				double x1 = p.X;
+				double y1 = p.Y;
+				double x2 = shapeStartPoint.X;
+				double y2 = shapeStartPoint.Y;
+
+				List<Point> points = new()
+				{
+					new Point(x1, y1),
+					new Point(x2, y1),
+					new Point(x2, y2),
+					new Point(x1, y2)
+				};
+				points.Add(points[0]);
+
+				shapeStroke.StylusPoints = new StylusPointCollection(points);
+			}
+
+		}
+
+		private void ShapeGridArea_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			if (shapeGridCopyMode)
+			{
+				foreach (var stroke in BoardTemp.Strokes)
+				{
+					Board.Strokes.Add(stroke);
+				}
+
+				BoardTemp.Strokes.Clear();
+
+				return;
+			}
+
+			shapePushed = true;
+			shapeGridCopyMode = false;
+
+			var center = Mouse.GetPosition(Board);
+
+			var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
+				new List<Point> { center, center }
+			))
+			{
+				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+			};
+
+			shapeStroke = s1;
+			shapeStartPoint = center;
+			BoardTemp.Strokes.Add(s1);
+		}
+
+		double shapeGridW;
+		double shapeGridH;
+		int shapeGridCurX;
+		int shapeGridCurY;
+
+		private void ShapeGridArea_MouseUp(object sender, MouseButtonEventArgs e)
+		{
+			if (shapeGridCopyMode)
+			{
+				shapeGridCopyMode = false;
+				return;
+			}
+
+			shapePushed = false;
+			shapeGridCopyMode = true;
+
+			BoardTemp.Strokes.Clear();
+
+			var p = Mouse.GetPosition(Board);
+
+			shapeGridW = Math.Max(Math.Abs(p.X - shapeStartPoint.X), 15);
+			shapeGridH = Math.Max(Math.Abs(p.Y - shapeStartPoint.Y), 15);
+
+			shapeStartPoint.X = Math.Min(p.X, shapeStartPoint.X);
+			shapeStartPoint.Y = Math.Min(p.Y, shapeStartPoint.Y);
+
+			shapeGridCurX = -10000000;
+			shapeGridCurY = -10000000;
+		}
+
+		private void ShapeGridArea_MouseLeave(object sender, MouseEventArgs e)
+		{
+			shapePushed = false;
+			shapeGridCopyMode = false;
+		}
+
 		#endregion
 
+		#region overlay
 
+		public void ToggleOverlay1()
+		{
+			//if (Overlay1.Visibility == Visibility.Collapsed)
+			//{
+			//	TextInputDialog dialog = new();
+			//	dialog.TextBox.Text = Overlay1.MainText.Text;
+			//	dialog.ShowDialog();
+
+			//	Overlay1.MainText.Text = dialog.TextBox.Text;
+			//	Overlay1.Visibility = Visibility.Visible;
+			//}
+			//else
+			//{
+			//	Overlay1.Visibility = Visibility.Collapsed;
+			//}
+		}
+
+		public void ToggleOverlay2()
+		{
+			if (Overlay2.Visibility == Visibility.Collapsed)
+			{
+				Overlay2.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				Overlay2.Visibility = Visibility.Collapsed;
+			}
+		}
+
+
+
+		#endregion
+
+	
 	}
 }

@@ -83,6 +83,8 @@ namespace ThePen
 		public static SettingData SettingData = new SettingData();
 		public static int CurrentPen = 1;
 
+		public static bool KeyPressed = false;
+
 		public static void SaveToReg()
 		{
 			foreach (var prop in typeof(SettingData).GetFields())

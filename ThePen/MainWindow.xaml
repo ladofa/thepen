@@ -8,7 +8,7 @@
         xmlns:pixi="clr-namespace:ColorPicker;assembly=ColorPicker"
         
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Topmost="True" Loaded="Window_Loaded" Closed="Window_Closed"
+        Title="ThePen" Height="450" Width="800" Topmost="True" Loaded="Window_Loaded" Closed="Window_Closed"
         WindowStyle="None" ResizeMode="CanMinimize" AllowsTransparency="True" MouseLeave="Window_MouseLeave" LostFocus="Window_LostFocus">
     <Window.Background>
         <SolidColorBrush Opacity="0" Color="White"/>
@@ -82,6 +82,17 @@
                         <Image Source="images/overlay.png"/>
                     </local:MainButton.Image>
                 </local:MainButton>
+
+                <local:MainButton x:Name="ShapeButton" Click="ShapeButton_Click">
+                    <local:MainButton.Image>
+                        <Image Source="images/shape.png"/>
+                    </local:MainButton.Image>
+                </local:MainButton>
+                <local:MainButton x:Name="StampButton" Click="StampButton_Click">
+                    <local:MainButton.Image>
+                        <Image Source="images/stamp.png"/>
+                    </local:MainButton.Image>
+                </local:MainButton>
                 <local:MainButton x:Name="ColorButton" Click="ColorButton_Click">
                     <local:MainButton.Image>
                         <Rectangle Width="20" Height="20" Fill="Orange" Stroke="Black" StrokeThickness="2"/>
@@ -121,6 +132,58 @@
                     <Image Source="/Images/exit.png"/>
                 </local:MainButton.Image>
             </local:MainButton>
+        </StackPanel>
+
+        <StackPanel x:Name="ShapePopup" Margin="220 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <local:MainButton x:Name="ShapeLine1Button" Click="ShapeLine1Button_Click">
+                <local:MainButton.Image>
+                    <Image Source="/Images/shape_line1.png"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="ShapeLine2Button" Click="ShapeLine2Button_Click">
+                <local:MainButton.Image>
+                    <Image Source="/Images/shape_line2.png"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="ShapeEllipseButton" Click="ShapeEllipseButton_Click">
+                <local:MainButton.Image>
+                    <Image Source="/Images/shape_ellipse.png"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="ShapeRectangleButton" Click="ShapeRectangleButton_Click">
+                <local:MainButton.Image>
+                    <Image Source="/Images/shape_rect.png"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="ShapeGridButton" Click="ShapeGridButton_Click">
+                <local:MainButton.Image>
+                    <Image Source="/Images/shape_grid.png"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+        </StackPanel>
+
+        <StackPanel x:Name="StampPopup" Margin="250 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <local:MainButton x:Name="StampXButton" Click="ShapeLine1Button_Click">
+                <local:MainButton.Image>
+                    <Image Source="/Images/stamp_x.png"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="StampOButton" Click="ShapeLine2Button_Click">
+                <local:MainButton.Image>
+                    <Image Source="/Images/stamp_o.png"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="StampTriButton" Click="ShapeEllipseButton_Click">
+                <local:MainButton.Image>
+                    <Image Source="/Images/stamp_tri.png"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            <local:MainButton x:Name="StampRectButton" Click="ShapeRectangleButton_Click">
+                <local:MainButton.Image>
+                    <Image Source="/Images/stamp_rect.png"/>
+                </local:MainButton.Image>
+            </local:MainButton>
+            
         </StackPanel>
 
         <StackPanel x:Name="DrawPopup" Margin="64 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Top">

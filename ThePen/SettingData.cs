@@ -14,8 +14,8 @@ namespace ThePen
 
 		public DrawingAttributes Pen1 = new DrawingAttributes()
 		{
-			Color = Color.FromArgb(0xff, 245, 158, 86),
-			Width = 3.5,
+			Color = Color.FromArgb(0xff, 0x21, 0x8b, 0x44),
+			Width = 4.5,
 			Height = 2,
 		};
 
@@ -25,6 +25,7 @@ namespace ThePen
 			Width = 4,
 			Height = 10,
 			IsHighlighter = true,
+			IgnorePressure = true,
 			StylusTipTransform = Global.GetMatrix(30),
 		};
 
@@ -33,13 +34,14 @@ namespace ThePen
 			Color = Color.FromArgb(255, 0xaf, 0xd1, 0xd3),
 			Width = 2,
 			Height = 2,
+			FitToCurve = true,
 		};
 
-		public Color Palette1 = Color.FromArgb(255, 0xdf, 0x58, 0x73);
-		public Color Palette2 = Color.FromArgb(255, 0xc9, 0xbc, 0x1e);
+		public Color Palette1 = Color.FromArgb(255, 0xe4, 0x5c, 0x76);
+		public Color Palette2 = Color.FromArgb(255, 0xcc, 0xb3, 0x21);
 		public Color Palette3 = Color.FromArgb(255, 0x69, 0x9d, 0x00);
-		public Color Palette4 = Color.FromArgb(255, 0x1b, 0xa8, 0xa8);
-		public Color Palette5 = Color.FromArgb(255, 0x71, 0x76, 0xf2);
+		public Color Palette4 = Color.FromArgb(255, 0x46, 0xaa, 0xaa);
+		public Color Palette5 = Color.FromArgb(255, 0x57, 0xfa, 0xa8);
 		public Color Palette6 = Color.FromArgb(255, 0xb0, 0x6d, 0xb9);
 
 		public bool Display1 = true;
@@ -56,7 +58,7 @@ namespace ThePen
 		public bool BlockTouch = true;
 
 		public bool EasySwitch = true;
-		public double EdgeWidth = 3;
+		public double EdgeWidth = 5;
 
 		public bool ShakeToClearAll = true;
 
@@ -112,8 +114,9 @@ namespace ThePen
 
 		public Key OneShapeLine1 = Key.A;
 		public Key OneShapeLine2 = Key.S;
-		public Key OneShapeCircle = Key.D;
+		public Key OneShapeEllipse = Key.D;
 		public Key OneShapeRectangle = Key.F;
+		public Key OneShapeGrid = Key.G;
 
 		//public List<string> InputKeys;
 

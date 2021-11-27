@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="ThePen.BottomText"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ThePen"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Image Source="Images/logo_aiHub.png" Height="40" HorizontalAlignment="Right" Margin="0, 0, 15, 5"  RenderOptions.BitmapScalingMode="NearestNeighbor"
+       RenderOptions.EdgeMode="Aliased"/>
+            <StackPanel Orientation="Horizontal" Background="Black" Opacity="0.8">
+        <TextBlock Text=" 취업준비반(오전) 김기석 강사 ㅣ " x:Name="MainText" Foreground="White" FontSize="18"/>
+        <TextBlock Text="2015년 3월 1일 10:15" x:Name="CurrentTime" Foreground="White" FontSize="16"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

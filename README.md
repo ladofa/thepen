@@ -6,8 +6,13 @@ Alpha2 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/thepe
 
 ## Important Features
  * One Key Sourtcut : Push only one keyboard button to change your pen type and color.
+ ![alt text](images/onekey.jpg "Title")
  * Easy Switch : Just by lifting the stylus pen, it switches to drawing mode. And just move your mouse to escape drawing mode.
+   - It doesn't work on some applications(Chrome, Edge, VSCode, etc.). In this case, move your pen to edges of the monitor to switch mode.
+   ![alt text](images/edgearea.jpg "Title")
  * Shaking gesture to clear all drawing.
+ * Shapes : Line, Circle, Rectangle, Grid (One Key Shortcut Only)
+ * Stamp : Just push a key to put your stamps. (One Key Shortcut Only)
 
 ## Reference
  * Epic Pen : https://epic-pen.com/
@@ -20,7 +25,7 @@ Alpha2 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/thepe
 
 ## Future Works
  * Overlay - Display current time, text messages and images.
- * Drawing lines and other shapes.
  * More settings for the mouse effect.
- * And any idea?
+ * Offering Background To Draw
+ * Temporary hide
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace ThePen
 {
@@ -11,14 +12,25 @@ namespace ThePen
     {
         private static List<Monitors.Screen> Screens = null;
 
-        internal static List<Monitors.Screen> GetScreens()
+        internal static List<Monitors.Screen> GetScreens(double rate = 1)
         {
-            Monitors.Screens = new List<Monitors.Screen>();
+            Screens = new List<Monitors.Screen>();
 
             var handler = new NativeMethods.DisplayDevicesMethods.EnumMonitorsDelegate(Monitors.MonitorEnumProc);
             NativeMethods.DisplayDevicesMethods.EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero, handler, IntPtr.Zero); // should be sequential
 
-            return Monitors.Screens;
+			foreach (var screen in Screens)
+			{
+				screen.ApplyRate(rate);
+				if (!screen.IsPrimary)
+				{
+					screen.ApplyRate(rate);
+				}
+			}
+
+
+
+			return Screens;
         }
 
         private static bool MonitorEnumProc(IntPtr hMonitor, IntPtr hdcMonitor, NativeMethods.DisplayDevicesMethods.RECT rect, IntPtr dwData)
@@ -84,6 +96,14 @@ namespace ThePen
             /// Gets the height of the display.
             /// </summary>
             internal int Height { get; private set; }
+
+            internal void ApplyRate(double rate)
+			{
+                TopX = (int)(TopX / rate);
+                TopY = (int)(TopY / rate);
+                Width = (int)(Width / rate);
+                Height = (int)(Height / rate);
+            }
         }
     }
 

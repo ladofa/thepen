@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net5.0-windows</TargetFramework>
 		<UseWPF>true</UseWPF>
-		<ApplicationIcon />
+		<ApplicationIcon>Template.ico</ApplicationIcon>
 		<OutputType>WinExe</OutputType>
 		<StartupObject />
 		<Win32Resource />
@@ -32,6 +32,17 @@
 		<Resource Include="Images/setting.png" />
 		<Resource Include="Images/exit.png" />
 		<Resource Include="Images/info.png" />
+		<Resource Include="Images/shape.png" />
+		<Resource Include="Images/shape_line1.png" />
+		<Resource Include="Images/shape_line2.png" />
+		<Resource Include="Images/shape_rect.png" />
+		<Resource Include="Images/shape_ellipse.png" />
+		<Resource Include="Images/shape_grid.png" />
+		<Resource Include="Images/stamp.png" />
+		<Resource Include="Images/stamp_x.png" />
+		<Resource Include="Images/stamp_o.png" />
+		<Resource Include="Images/stamp_tri.png" />
+		<Resource Include="Images/stamp_rect.png" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ThePen"
         mc:Ignorable="d"
-        Title="Window1" Height="450" Width="800" WindowStyle="None"  AllowsTransparency="True"  Topmost="True" Background="#00000000"
+        Title="ThePen Canvas" Height="450" Width="800" WindowStyle="None"  AllowsTransparency="True"  Topmost="True" Background="#00000000"  ShowInTaskbar="False"
         >
     <Grid>
         <Grid.CommandBindings>
@@ -15,12 +15,22 @@
         <Grid x:Name="GridBoard" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Rectangle x:Name="BackBoard" Fill="#00000000"/>
             <InkCanvas Name="Board" Background="#00000000" UseCustomCursor="True" Cursor="Pen"/>
+            <InkCanvas Name="BoardTemp" Background="#00000000" UseCustomCursor="True" Cursor="Pen" Visibility="Collapsed"/>
 
-            <!--<Rectangle x:Name="ShapeLineArea" Fill="#01000000" Cursor="Pen" MouseMove="ShapeLineArea_MouseMove" MouseDown="ShapeLineArea_MouseDown" MouseUp="ShapeLineArea_MouseUp" MouseLeave="ShapeLineArea_MouseLeave"/>-->
+            <Rectangle x:Name="ShapeLineArea" Fill="#01000000" Visibility="Collapsed" Cursor="Hand" MouseMove="ShapeLineArea_MouseMove" MouseDown="ShapeLineArea_MouseDown" MouseUp="ShapeLineArea_MouseUp" MouseLeave="ShapeLineArea_MouseLeave"/>
+            <Rectangle x:Name="ShapeLine2Area" Fill="#01000000" Visibility="Collapsed" Cursor="Hand" MouseMove="ShapeLine2Area_MouseMove" MouseDown="ShapeLine2Area_MouseDown" MouseUp="ShapeLine2Area_MouseUp" MouseLeave="ShapeLine2Area_MouseLeave"/>
+            <Rectangle x:Name="ShapeEllipseArea" Fill="#01000000" Visibility="Collapsed" Cursor="Hand" MouseMove="ShapeEllipseArea_MouseMove" MouseDown="ShapeEllipseArea_MouseDown" MouseUp="ShapeEllipseArea_MouseUp" MouseLeave="ShapeEllipseArea_MouseLeave" />
+            <Rectangle x:Name="ShapeRectangleArea" Fill="#01000000" Visibility="Collapsed" Cursor="Hand" MouseMove="ShapeRectangleArea_MouseMove" MouseDown="ShapeRectangleArea_MouseDown" MouseUp="ShapeRectangleArea_MouseUp" MouseLeave="ShapeRectangleArea_MouseLeave" />
+            <Rectangle x:Name="ShapeGridArea" Fill="#01000000" Visibility="Collapsed" Cursor="Hand" MouseMove="ShapeGridArea_MouseMove" MouseDown="ShapeGridArea_MouseDown" MouseUp="ShapeGridArea_MouseUp" MouseLeave="ShapeGridArea_MouseLeave"/>
 
             <Rectangle x:Name="AutoDrawAreaLeft" Fill="#01000000" HorizontalAlignment="Left" Width="5" />
             <Rectangle x:Name="AutoDrawAreaRight" Fill="#01000000" HorizontalAlignment="Right" Width="5" />
             <Rectangle x:Name="AutoDrawAreaBottom" Fill="#01000000" VerticalAlignment="Bottom" Height="5" />
+
+            <Rectangle x:Name="StampeArea" Fill="#01000000" Visibility="Collapsed" MouseDown="StampeArea_MouseDown" Cursor="No"/>
+
+            
+            <local:BottomText x:Name="Overlay2"  Visibility="Collapsed"></local:BottomText>
         </Grid>
 
         <Canvas Name="Overlay">
@@ -28,7 +38,7 @@
                 <Ellipse Fill="#00000000" StrokeThickness="8" Stroke="#80FF0000" Width="30" Height="30" Name="MouseEffectMove" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Ellipse Fill="#00000000" StrokeThickness="8" Stroke="#8000ff00" Width="30" Height="30" Name="MouseEffectLeftDown" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
                 <Ellipse Fill="#00000000" StrokeThickness="8" Stroke="#800000ff" Width="30" Height="30" Name="MouseEffectRightDown" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
-                
+
             </Grid>
         </Canvas>
         

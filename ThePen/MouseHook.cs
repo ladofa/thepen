@@ -65,8 +65,17 @@ namespace ThePen
 
 				if (message == MouseMessages.WM_MOUSEMOVE && Global.SettingData.ShakeToClearAll)
 				{
-					if (System.Windows.Input.Mouse.LeftButton != System.Windows.Input.MouseButtonState.Pressed)
+					if (System.Windows.Input.Mouse.LeftButton != System.Windows.Input.MouseButtonState.Pressed && !Global.KeyPressed)
+					{
 						analyseGesture2(hookStruct);
+						//Debug.WriteLine("Anaylise");
+					}
+						
+					else
+					{
+						//Debug.WriteLine("???");
+						hsVector.Clear();
+					}
 				}
 			}
 			return CallNextHookEx(_hookID, nCode, wParam, lParam);
@@ -166,13 +175,13 @@ namespace ThePen
 				double dnx = dx / len;
 				double dny = dy / len;
 
-				if (vel > 2.5)
+				if (vel > 2.3)
 				{
 					void _check()
 					{
-						if (hsVector.Count >= 5)
+						if (hsVector.Count >= 4)
 						{
-							if (t - hsVector[0].Item3 < 700)
+							if (t - hsVector[0].Item3 < 400)
 							{
 								Shaked?.Invoke(null, null);
 							}
