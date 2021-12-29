@@ -66,10 +66,9 @@ namespace ThePen
 		public (uint, uint) HotErase = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["1"]);
 		public (uint, uint) HotSelect = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["2"]);
 		public (uint, uint) HotClear = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["7"]);
-		public (uint, uint) HotPen1 = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["3"]);
+		public (uint, uint) HotPen1 = (0, Hotkey.TrigKeys["~"]);
 		public (uint, uint) HotPen2 = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["4"]);
 		public (uint, uint) HotPen3 = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["5"]);
-
 		public (uint, uint) HotColor1 = (0, 0);
 		public (uint, uint) HotColor2 = (0, 0);
 		public (uint, uint) HotColor3 = (0, 0);
@@ -89,8 +88,8 @@ namespace ThePen
 
 		public Key OneSelect = Key.Escape;
 		public Key OneErase = Key.R;
-		public Key OneClear = Key.OemTilde;
-		public Key OnePen1 = Key.Q;
+		public Key OneClear = Key.T;
+		public Key OnePen1 = Key.None;
 		public Key OnePen2 = Key.W;
 		public Key OnePen3 = Key.E;
 
