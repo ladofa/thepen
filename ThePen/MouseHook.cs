@@ -22,7 +22,7 @@ namespace ThePen
 			_hookID = SetHook(_proc);
 		}
 
-		public static void stop()
+		public static void Stop()
 		{
 			UnhookWindowsHookEx(_hookID);
 		}

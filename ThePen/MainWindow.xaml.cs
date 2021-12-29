@@ -18,12 +18,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 
-/*
- * Setting
- * Info
- * 
- */
-
 namespace ThePen
 {
 	/// <summary>
@@ -32,6 +26,8 @@ namespace ThePen
 	public partial class MainWindow : Window
 	{
 		List<Window1> canvasWindows = new();
+
+		System.Windows.Forms.NotifyIcon notifyIcon = new();
 
 		public MainWindow()
 		{
@@ -42,6 +38,12 @@ namespace ThePen
 			Global.SettingChanged += Global_SettingChanged;
 
 
+			//-------------------------------------
+		}
+
+		private void NotifyIcon_Click(object sender, EventArgs e)
+		{
+			
 		}
 
 		private void Global_SettingChanged(object sender, EventArgs e)
@@ -223,7 +225,7 @@ namespace ThePen
 		public void Hook()
 		{
 			SettingData data = Global.SettingData;
-			Hotkey.unhook();
+			Hotkey.Unhook();
 			List<(uint, uint, Action)> hotkeys = new();
 
 			void setHotkey((uint, uint) key, Action action)
@@ -317,7 +319,7 @@ namespace ThePen
 
 			
 
-			Hotkey.hook(this, hotkeys);
+			Hotkey.Hook(this, hotkeys);
 		}
 
 
@@ -669,21 +671,25 @@ namespace ThePen
 
 		private void OverlayButton1_Click(object sender, RoutedEventArgs e)
 		{
+			canvasWindows.ForEach(w => w.ToggleOverlay1());
 			HideAllPopup();
 		}
 
 		private void OverlayButton2_Click(object sender, RoutedEventArgs e)
 		{
+			canvasWindows.ForEach(w => w.ToggleOverlay2());
 			HideAllPopup();
 		}
 
 		private void OverlayButton3_Click(object sender, RoutedEventArgs e)
 		{
+			canvasWindows.ForEach(w => w.ToggleOverlay3());
 			HideAllPopup();
 		}
 
 		private void OverlayButton4_Click(object sender, RoutedEventArgs e)
 		{
+			canvasWindows.ForEach(w => w.ToggleOverlay4());
 			HideAllPopup();
 		}
 
@@ -730,6 +736,11 @@ namespace ThePen
 		private void ShapeGridButton_Click(object sender, RoutedEventArgs e)
 		{
 			HideAllPopup();
+		}
+
+		public void GetCanvasActivate()
+		{
+			canvasWindows[0].Activate();
 		}
 
 		

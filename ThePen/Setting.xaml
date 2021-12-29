@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ThePen"
         
         mc:Ignorable="d"
-        Title="Setting" Height="1300" Width="800" Closing="Window_Closing">
+        Title="Setting" Height="800" Width="800" Closing="Window_Closing">
     <Window.Resources>
         <Style TargetType="TextBlock" x:Key="Title">
             <Setter Property="HorizontalAlignment" Value="Left"/>

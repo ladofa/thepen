@@ -30,7 +30,10 @@
             <Rectangle x:Name="StampeArea" Fill="#01000000" Visibility="Collapsed" MouseDown="StampeArea_MouseDown" Cursor="No"/>
 
             
-            <local:BottomText x:Name="Overlay2"  Visibility="Collapsed"></local:BottomText>
+            <local:Overlay x:Name="Overlay1"  Visibility="Collapsed"></local:Overlay>
+            <local:Overlay x:Name="Overlay2"  Visibility="Collapsed"></local:Overlay>
+            <local:Overlay x:Name="Overlay3"  Visibility="Collapsed"></local:Overlay>
+            <local:Overlay x:Name="Overlay4"  Visibility="Collapsed"></local:Overlay>
         </Grid>
 
         <Canvas Name="Overlay">

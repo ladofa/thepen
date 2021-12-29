@@ -201,13 +201,6 @@ namespace ThePen
 			SettingChanged?.Invoke(null, null);
 		}
 
-		public static void SetAsDefault()
-		{
-			SettingData = new SettingData();
-			SettingChanged?.Invoke(null, null);
-			CurrentPen = 1;
-		}
-
 		public static event EventHandler SettingChanged;
 	}
 }

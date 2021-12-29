@@ -37,12 +37,16 @@ namespace ThePen
 			MouseHook.MouseHookEvent += MouseHook_MouseHookEvent;
 			MouseHook.Shaked += MouseHook_Shaked;
 			MouseHook.Start();
+			//KeyboardHook.Start();
 
 			AdoptSetting();
 
 			PreviewTouchDown += Window1_PreviewTouchDown;
 			PreviewTouchMove += Window1_PreviewTouchMove;
 			PreviewTouchUp += Window1_PreviewTouchUp;
+
+
+			Overlay1.Apply("overlay1.txt");
 		}
 
 		#region block touch
@@ -431,7 +435,7 @@ namespace ThePen
 				//Board.Focusable = drawing;
 
 				this.Activate();
-				this.Focus();
+				Board.Focus();
 
 				drawingMode = value;
 				DrawingModeChanged?.Invoke(this, new EventArgs());
@@ -1118,19 +1122,16 @@ namespace ThePen
 
 		public void ToggleOverlay1()
 		{
-			//if (Overlay1.Visibility == Visibility.Collapsed)
-			//{
-			//	TextInputDialog dialog = new();
-			//	dialog.TextBox.Text = Overlay1.MainText.Text;
-			//	dialog.ShowDialog();
 
-			//	Overlay1.MainText.Text = dialog.TextBox.Text;
-			//	Overlay1.Visibility = Visibility.Visible;
-			//}
-			//else
-			//{
-			//	Overlay1.Visibility = Visibility.Collapsed;
-			//}
+			if (Overlay1.Visibility == Visibility.Collapsed)
+			{
+				Overlay1.Visibility = Visibility.Visible;
+				Overlay1.Show();
+			}
+			else
+			{
+				Overlay1.Visibility = Visibility.Collapsed;
+			}
 		}
 
 		public void ToggleOverlay2()
@@ -1138,6 +1139,7 @@ namespace ThePen
 			if (Overlay2.Visibility == Visibility.Collapsed)
 			{
 				Overlay2.Visibility = Visibility.Visible;
+				Overlay2.Show();
 			}
 			else
 			{
@@ -1145,10 +1147,36 @@ namespace ThePen
 			}
 		}
 
+		public void ToggleOverlay3()
+		{
+			if (Overlay3.Visibility == Visibility.Collapsed)
+			{
+				Overlay3.Visibility = Visibility.Visible;
+				Overlay3.Show();
+			}
+			else
+			{
+				Overlay3.Visibility = Visibility.Collapsed;
+			}
+		}
+
+		public void ToggleOverlay4()
+		{
+			if (Overlay4.Visibility == Visibility.Collapsed)
+			{
+				Overlay4.Visibility = Visibility.Visible;
+				Overlay4.Show();
+			}
+			else
+			{
+				Overlay4.Visibility = Visibility.Collapsed;
+			}
+		}
+
 
 
 		#endregion
 
-	
+
 	}
 }

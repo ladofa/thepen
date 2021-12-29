@@ -235,8 +235,7 @@ namespace ThePen
 
 		private void DefaultButton_Click(object sender, RoutedEventArgs e)
 		{
-			Global.SetAsDefault();
-			Value = Global.SettingData;
+			Value = new SettingData();
 		}
 
 	}

@@ -11,12 +11,11 @@ namespace ThePen
 {
 	public class SettingData
 	{
-
 		public DrawingAttributes Pen1 = new DrawingAttributes()
 		{
-			Color = Color.FromArgb(0xff, 0x21, 0x8b, 0x44),
-			Width = 4.5,
-			Height = 2,
+			Color = Color.FromArgb(0xff, 0xdc, 0x8c, 0x49),
+			Width = 3.5,
+			Height = 1.5,
 		};
 
 		public DrawingAttributes Pen2 = new DrawingAttributes()
@@ -31,9 +30,9 @@ namespace ThePen
 
 		public DrawingAttributes Pen3 = new DrawingAttributes()
 		{
-			Color = Color.FromArgb(255, 0xaf, 0xd1, 0xd3),
-			Width = 2,
-			Height = 2,
+			Color = Color.FromArgb(255, 0x0b, 0x37, 0x39),
+			Width = 1,
+			Height = 1,
 			FitToCurve = true,
 		};
 
@@ -41,7 +40,7 @@ namespace ThePen
 		public Color Palette2 = Color.FromArgb(255, 0xcc, 0xb3, 0x21);
 		public Color Palette3 = Color.FromArgb(255, 0x69, 0x9d, 0x00);
 		public Color Palette4 = Color.FromArgb(255, 0x46, 0xaa, 0xaa);
-		public Color Palette5 = Color.FromArgb(255, 0x57, 0xfa, 0xa8);
+		public Color Palette5 = Color.FromArgb(255, 0x70, 0x76, 0xbd);
 		public Color Palette6 = Color.FromArgb(255, 0xb0, 0x6d, 0xb9);
 
 		public bool Display1 = true;

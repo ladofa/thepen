@@ -30,8 +30,8 @@ namespace ThePen
 		public const uint MOD_CTRL = 0x0002; //CTRL
 		public const uint MOD_SHIFT = 0x0004; //SHIFT
 		public const uint MOD_WIN = 0x0008; //WINDOWS
-											 //CAPS LOCK:
-		private const uint VK_CAPITAL = 0x32;
+		public const uint MOD_NOREPEAT = 0x04000; //
+
 
 
 		//https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
@@ -96,9 +96,9 @@ namespace ThePen
 			{"]",0xDD},
 			{"\\",0xDC},
 			{";",0xBA},
-			{"'",0xDE},
-			{",",0xBC},
-			{".",0xBE},
+			{"\"",0xDE},
+			{"<",0xBC},
+			{">",0xBE},
 			{"/",0xBF},
 			{"NumPad0",0x60},
 			{"NumPad1",0x61},
@@ -127,6 +127,25 @@ namespace ThePen
 			{"ScrollLock", 0x91},
 			{"PrintScreen",0x2c},
 			{"NumLock", 0x90 },
+
+			{"Browser Back", 0xa6 },
+			{"Browser Forward", 0xa7 },
+			{"Browser Refresh", 0xa8 },
+			{"Browser Stop", 0xa9 },
+			{"Browser Search", 0xaa },
+			{"Browser Favorite", 0xab },
+			{"Browser Home", 0xac },
+			{"Volume Mute", 0xad },
+			{"Volume Down", 0xae },
+			{"Volume Up", 0xaf },
+			{"Media Next Track", 0xb0 },
+			{"Media Prev Track", 0xb1 },
+			{"Media Stop", 0xb2 },
+			{"Media Play Pause", 0xb3 },
+			{"Launch Mail", 0xb4 },
+			{"Launch Media Select", 0xb5 },
+			{"Launch App1", 0xb6 },
+			{"Launch App2", 0xb7 },
 		};
 
 		public static Dictionary<uint, string> TrigKeysInv;
@@ -175,7 +194,7 @@ namespace ThePen
 		private static HwndSource _source;
 
 
-		public static void hook(Window window, List<(uint, uint, Action)> hotkeys)
+		public static void Hook(Window window, List<(uint, uint, Action)> hotkeys)
 		{
 			_windowHandle = new WindowInteropHelper(window).Handle;
 			_source = HwndSource.FromHwnd(_windowHandle);
@@ -184,13 +203,13 @@ namespace ThePen
 			for (int i = 0; i < hotkeys.Count; i++)
 			{
 				var hotkey = hotkeys[i];
-				RegisterHotKey(_windowHandle, HOTKEY_ID + i, (uint)hotkey.Item1, (uint)hotkey.Item2);
+				RegisterHotKey(_windowHandle, HOTKEY_ID + i, MOD_NOREPEAT + (uint)hotkey.Item1, (uint)hotkey.Item2);
 			}
 
 			Hotkey.hotkeys = hotkeys;
 		}
 
-		public static void unhook()
+		public static void Unhook()
 		{
 			if (_source == null) return;
 
