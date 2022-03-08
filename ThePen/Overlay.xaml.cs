@@ -310,6 +310,7 @@ namespace ThePen
 
 		public void Show()
 		{
+			if (variables == null) return;
 			if (variables.Count > 0)
 			{
 				MainGrid.Visibility = Visibility.Collapsed;
