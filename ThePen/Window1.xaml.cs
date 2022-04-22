@@ -47,6 +47,9 @@ namespace ThePen
 
 
 			Overlay1.Apply("overlay1.txt");
+			Overlay2.Apply("overlay2.txt");
+			Overlay3.Apply("overlay3.txt");
+			Overlay4.Apply("overlay4.txt");
 		}
 
 		#region block touch
@@ -136,6 +139,10 @@ namespace ThePen
 			else if (e.Key == setting.OneClear)
 			{
 				ClearAll();
+			}
+			else if (e.Key == setting.OneUndo)
+			{
+				Undo(null, null);
 			}
 
 			else if (e.Key == setting.OneSelect)
@@ -401,6 +408,8 @@ namespace ThePen
 			{
 				if (value == DrawingModes.Erase)
 				{
+					//Board.EraserShape = new EllipseStylusShape(100, 100);
+					Board.EditingMode = InkCanvasEditingMode.None;
 					Board.EditingMode = InkCanvasEditingMode.EraseByStroke;
 				}
 				else
@@ -1125,6 +1134,7 @@ namespace ThePen
 
 			if (Overlay1.Visibility == Visibility.Collapsed)
 			{
+				Overlay1.Apply("overlay1.txt");
 				Overlay1.Visibility = Visibility.Visible;
 				Overlay1.Show();
 			}
@@ -1138,6 +1148,8 @@ namespace ThePen
 		{
 			if (Overlay2.Visibility == Visibility.Collapsed)
 			{
+				
+				Overlay2.Apply("overlay2.txt");
 				Overlay2.Visibility = Visibility.Visible;
 				Overlay2.Show();
 			}
@@ -1151,6 +1163,8 @@ namespace ThePen
 		{
 			if (Overlay3.Visibility == Visibility.Collapsed)
 			{
+				
+				Overlay3.Apply("overlay3.txt");
 				Overlay3.Visibility = Visibility.Visible;
 				Overlay3.Show();
 			}
@@ -1164,6 +1178,8 @@ namespace ThePen
 		{
 			if (Overlay4.Visibility == Visibility.Collapsed)
 			{
+				
+				Overlay4.Apply("overlay4.txt");
 				Overlay4.Visibility = Visibility.Visible;
 				Overlay4.Show();
 			}

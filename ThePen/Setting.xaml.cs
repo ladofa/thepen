@@ -63,6 +63,7 @@ namespace ThePen
 					HotKeyPen3.Value = value.HotPen3;
 					HotKeySelect.Value = value.HotSelect;
 					HotKeyClear.Value = value.HotClear;
+					HotKeyUndo.Value = value.HotUndo;
 
 					OneKeyColor1.Value = value.OneColor1;
 					OneKeyColor2.Value = value.OneColor2;
@@ -89,6 +90,7 @@ namespace ThePen
 					OneKeyPen3.Value = value.OnePen3;
 					OneKeySelect.Value = value.OneSelect;
 					OneKeyClear.Value = value.OneClear;
+					OneKeyUndo.Value = value.OneUndo;
 					ImmeRadioButton.IsChecked = value.OneKeyImme;
 					TempRadioButton.IsChecked = !value.OneKeyImme;
 
@@ -164,6 +166,7 @@ namespace ThePen
 				HotPen3 = HotKeyPen3.Value,
 				HotSelect = HotKeySelect.Value,
 				HotClear = HotKeyClear.Value,
+				HotUndo = HotKeyUndo.Value,
 
 				OneColor1 = OneKeyColor1.Value,
 				OneColor2 = OneKeyColor2.Value,
@@ -190,6 +193,7 @@ namespace ThePen
 				OnePen3 = OneKeyPen3.Value,
 				OneSelect = OneKeySelect.Value,
 				OneClear = OneKeyClear.Value,
+				OneUndo = OneKeyUndo.Value,
 				OneKeyImme = ImmeRadioButton.IsChecked.Value,
 				EasySwitch = EasySwitch.IsChecked.Value,
 				EdgeWidth = EdgeWidth.Value,

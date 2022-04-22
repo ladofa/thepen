@@ -40,10 +40,10 @@
             <DropShadowEffect BlurRadius="12" Direction="-90"
                               RenderingBias="Quality" ShadowDepth="2" Opacity="0.6"/>
         </Grid.Effect>
-        <Grid.CommandBindings>
+        <!--<Grid.CommandBindings>
             <CommandBinding Executed="Undo" Command="ApplicationCommands.Undo"/>
             <CommandBinding Executed="Redo" Command="ApplicationCommands.Redo"/>
-        </Grid.CommandBindings>
+        </Grid.CommandBindings>-->
         <StackPanel x:Name="MainStackPanel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40">
             <Image x:Name="Hat" Source="/Images/hat.png" Width="32" Height="32" PreviewMouseMove="Hat_PreviewMouseMove"
                    Cursor="Hand"  ToolTipService.InitialShowDelay="0"

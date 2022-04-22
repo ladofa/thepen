@@ -239,6 +239,11 @@ namespace ThePen
 				canvasWindows.ForEach(w => w.ClearAll());
 			}));
 
+			setHotkey(data.HotClear, new Action(() =>
+			{
+				canvasWindows.ForEach(w => w.Undo(null, null));
+			}));
+
 			setHotkey(data.HotColor1, new Action(() =>
 			{
 				canvasWindows.ForEach(w => w.ChangeColor(Global.SettingData.Palette1));

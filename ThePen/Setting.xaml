@@ -83,6 +83,7 @@
                         <TextBlock Style="{StaticResource HotKey}" Text="Pen3"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Erase"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Clear"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Undo"/>
                         <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color1"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color2"/>
@@ -117,6 +118,7 @@
                         <local:SettingHotKey x:Name="HotKeyPen3"/>
                         <local:SettingHotKey x:Name="HotKeyErase"/>
                         <local:SettingHotKey x:Name="HotKeyClear"/>
+                        <local:SettingHotKey x:Name="HotKeyUndo"/>
                         <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <local:SettingHotKey x:Name="HotKeyColor1"/>
                         <local:SettingHotKey x:Name="HotKeyColor2"/>
@@ -156,6 +158,7 @@
                         <local:SettingOneKey x:Name="OneKeyPen3"/>
                         <local:SettingOneKey x:Name="OneKeyErase"/>
                         <local:SettingOneKey x:Name="OneKeyClear"/>
+                        <local:SettingOneKey x:Name="OneKeyUndo"/>
                         <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <local:SettingOneKey x:Name="OneKeyColor1"/>
                         <local:SettingOneKey x:Name="OneKeyColor2"/>

@@ -11,13 +11,7 @@ namespace ThePen
 {
 	public class SettingData
 	{
-		public DrawingAttributes Pen1 = new DrawingAttributes()
-		{
-			Color = Color.FromArgb(0xff, 0xdc, 0x8c, 0x49),
-			Width = 3.5,
-			Height = 1.5,
-		};
-
+		
 		public DrawingAttributes Pen2 = new DrawingAttributes()
 		{
 			Color = Color.FromArgb(255, 0xb7, 0xff, 0),
@@ -34,6 +28,37 @@ namespace ThePen
 			Width = 1,
 			Height = 1,
 			FitToCurve = true,
+		};
+
+		public DrawingAttributes PenErase = new DrawingAttributes()
+		{
+			Color = Color.FromArgb(255, 0xb7, 0xff, 0),
+			Width = 30,
+			Height = 30,
+			IgnorePressure = true,
+		};
+
+		//pastel
+		//public DrawingAttributes Pen1 = new DrawingAttributes()
+		//{
+		//	Color = Color.FromArgb(0xff, 0xdc, 0x8c, 0x49),
+		//	Width = 3.5,
+		//	Height = 1.5,
+		//};
+
+		//public Color Palette1 = Color.FromArgb(255, 0xe4, 0x5c, 0x76);
+		//public Color Palette2 = Color.FromArgb(255, 0xcc, 0xb3, 0x21);
+		//public Color Palette3 = Color.FromArgb(255, 0x69, 0x9d, 0x00);
+		//public Color Palette4 = Color.FromArgb(255, 0x46, 0xaa, 0xaa);
+		//public Color Palette5 = Color.FromArgb(255, 0x70, 0x76, 0xbd);
+		//public Color Palette6 = Color.FromArgb(255, 0xb0, 0x6d, 0xb9);
+
+		//
+		public DrawingAttributes Pen1 = new DrawingAttributes()
+		{
+			Color = Color.FromArgb(0xff, 0xdc, 0x8c, 0x49),
+			Width = 3.5,
+			Height = 1.5,
 		};
 
 		public Color Palette1 = Color.FromArgb(255, 0xe4, 0x5c, 0x76);
@@ -66,6 +91,7 @@ namespace ThePen
 		public (uint, uint) HotErase = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["1"]);
 		public (uint, uint) HotSelect = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["2"]);
 		public (uint, uint) HotClear = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["7"]);
+		public (uint, uint) HotUndo = (0, 0);
 		public (uint, uint) HotPen1 = (0, Hotkey.TrigKeys["~"]);
 		public (uint, uint) HotPen2 = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["4"]);
 		public (uint, uint) HotPen3 = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["5"]);
@@ -115,6 +141,7 @@ namespace ThePen
 		public Key OneShapeEllipse = Key.D;
 		public Key OneShapeRectangle = Key.F;
 		public Key OneShapeGrid = Key.G;
+		public Key OneUndo = Key.Z;
 
 		//public List<string> InputKeys;
 

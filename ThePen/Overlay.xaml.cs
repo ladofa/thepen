@@ -197,11 +197,16 @@ namespace ThePen
 				var prop = pair.Value;
 				if (key == "path")
 				{
-					image.Source = new BitmapImage(new Uri((string)prop, UriKind.RelativeOrAbsolute));
+					image.Source = new BitmapImage(new Uri((string)prop, UriKind.RelativeOrAbsolute))
+					{
+						
+					};
 				}
 			}
 
 			SetCommonProperty(image, item);
+			RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.HighQuality);
+
 
 			return image;
 		}
@@ -310,6 +315,11 @@ namespace ThePen
 
 		public void Show()
 		{
+			if (variables == null)
+			{
+				return;
+			}
+
 			if (variables.Count > 0)
 			{
 				MainGrid.Visibility = Visibility.Collapsed;

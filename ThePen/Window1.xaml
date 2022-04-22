@@ -8,10 +8,10 @@
         Title="ThePen Canvas" Height="450" Width="800" WindowStyle="None"  AllowsTransparency="True"  Topmost="True" Background="#00000000"  ShowInTaskbar="False"
         >
     <Grid>
-        <Grid.CommandBindings>
+        <!--<Grid.CommandBindings>
             <CommandBinding Executed="Undo" Command="ApplicationCommands.Undo"/>
             <CommandBinding Executed="Redo" Command="ApplicationCommands.Redo"/>
-        </Grid.CommandBindings>
+        </Grid.CommandBindings>-->
         <Grid x:Name="GridBoard" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Rectangle x:Name="BackBoard" Fill="#00000000"/>
             <InkCanvas Name="Board" Background="#00000000" UseCustomCursor="True" Cursor="Pen"/>
