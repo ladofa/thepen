@@ -38,37 +38,55 @@ namespace ThePen
 			IgnorePressure = true,
 		};
 
-		//pastel
+		//bright
+		//# FF FB 50 5E
+		//#FFFFAC16
+		//#FFDCDC00
+		//# FF 53 A3 00
+		//# FF 03 A7 B9
+		//# FF 6C 7A E1
+		//# FF B5 55 D8
+
+		//static public Color FromText(string text)
+		//{
+		//	text = text.Replace("#", "");
+		//	byte a = Byte.Parse(text[0..2], System.Globalization.NumberStyles.HexNumber);
+		//	byte r = Byte.Parse(text[2..4], System.Globalization.NumberStyles.HexNumber);
+		//	byte g = Byte.Parse(text[4..6], System.Globalization.NumberStyles.HexNumber);
+		//	byte b = Byte.Parse(text[6..8], System.Globalization.NumberStyles.HexNumber);
+		//	return Color.FromArgb(a, r, g, b);
+		//}
+
 		//public DrawingAttributes Pen1 = new DrawingAttributes()
 		//{
-		//	Color = Color.FromArgb(0xff, 0xdc, 0x8c, 0x49),
+		//	Color = Color.FromArgb(0xff, 0xfb, 0x50, 0x5e),
 		//	Width = 3.5,
 		//	Height = 1.5,
 		//};
 
-		//public Color Palette1 = Color.FromArgb(255, 0xe4, 0x5c, 0x76);
-		//public Color Palette2 = Color.FromArgb(255, 0xcc, 0xb3, 0x21);
-		//public Color Palette3 = Color.FromArgb(255, 0x69, 0x9d, 0x00);
-		//public Color Palette4 = Color.FromArgb(255, 0x46, 0xaa, 0xaa);
-		//public Color Palette5 = Color.FromArgb(255, 0x70, 0x76, 0xbd);
-		//public Color Palette6 = Color.FromArgb(255, 0xb0, 0x6d, 0xb9);
+		//public Color Palette1 = FromText("FFFFAC16");
+		//public Color Palette2 = FromText("#FFDCDC00");
+		//public Color Palette3 = Color.FromArgb(255, 0x53, 0xa3, 0x00);
+		//public Color Palette4 = Color.FromArgb(255, 0x03, 0xa7, 0xb9);
+		//public Color Palette5 = Color.FromArgb(255, 0x6c, 0x7a, 0xe1);
+		//public Color Palette6 = Color.FromArgb(255, 0xb5, 0x55, 0xd8);
 
-		//
-		public DrawingAttributes Pen1 = new DrawingAttributes()
-		{
-			Color = Color.FromArgb(0xff, 0xdc, 0x8c, 0x49),
-			Width = 3.5,
-			Height = 1.5,
-		};
+        // pastel
+        public DrawingAttributes Pen1 = new DrawingAttributes()
+        {
+            Color = Color.FromArgb(255, 0xe4, 0x5c, 0x76),
+            Width = 3.5,
+            Height = 1.5,
+        };
 
-		public Color Palette1 = Color.FromArgb(255, 0xe4, 0x5c, 0x76);
-		public Color Palette2 = Color.FromArgb(255, 0xcc, 0xb3, 0x21);
-		public Color Palette3 = Color.FromArgb(255, 0x69, 0x9d, 0x00);
-		public Color Palette4 = Color.FromArgb(255, 0x46, 0xaa, 0xaa);
-		public Color Palette5 = Color.FromArgb(255, 0x70, 0x76, 0xbd);
-		public Color Palette6 = Color.FromArgb(255, 0xb0, 0x6d, 0xb9);
+        public Color Palette1 = Color.FromArgb(0xff, 0xdc, 0x8c, 0x49);
+        public Color Palette2 = Color.FromArgb(255, 0xcc, 0xb3, 0x21);
+        public Color Palette3 = Color.FromArgb(255, 0x69, 0x9d, 0x00);
+        public Color Palette4 = Color.FromArgb(255, 0x46, 0xaa, 0xaa);
+        public Color Palette5 = Color.FromArgb(255, 0x70, 0x76, 0xbd);
+        public Color Palette6 = Color.FromArgb(255, 0xb0, 0x6d, 0xb9);
 
-		public bool Display1 = true;
+        public bool Display1 = true;
 		public bool Display2 = true;
 		public bool Display3 = true;
 		public bool Display4 = true;
