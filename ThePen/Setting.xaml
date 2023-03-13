@@ -225,10 +225,11 @@
 
                 <TextBlock Style="{StaticResource Title}" Text="Drawing Display"/>
                 <StackPanel Orientation="Horizontal" Height="30">
-                    <CheckBox x:Name="Display1" Content="Display1" VerticalAlignment="Center" Margin="0 2 10 0"/>
-                    <CheckBox x:Name="Display2" Content="Display2" VerticalAlignment="Center" Margin="0 2 10 0"/>
-                    <CheckBox x:Name="Display3" Content="Display3" VerticalAlignment="Center" Margin="0 2 10 0"/>
-                    <CheckBox x:Name="Display4" Content="Display4" VerticalAlignment="Center" Margin="0 2 10 0"/>
+                        
+                    <RadioButton x:Name="Display1" Content="Display1" VerticalAlignment="Center" Margin="0 2 10 0" GroupName="Display"/>
+                    <RadioButton x:Name="Display2" Content="Display2" VerticalAlignment="Center" Margin="0 2 10 0" GroupName="Display"/>
+                    <RadioButton x:Name="Display3" Content="Display3" VerticalAlignment="Center" Margin="0 2 10 0" GroupName="Display"/>
+                    <RadioButton x:Name="Display4" Content="Display4" VerticalAlignment="Center" Margin="0 2 10 0" GroupName="Display"/>
                 </StackPanel>
 
                 <TextBlock Style="{StaticResource Title}" Text="Mouse Effect"/>

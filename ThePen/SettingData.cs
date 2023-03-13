@@ -74,22 +74,23 @@ namespace ThePen
         // pastel
         public DrawingAttributes Pen1 = new DrawingAttributes()
         {
-            Color = Color.FromArgb(255, 0xe4, 0x5c, 0x76),
+            Color = Color.FromArgb(255, 0xb0, 0x6d, 0xb9),
             Width = 3.5,
             Height = 1.5,
         };
 
-        public Color Palette1 = Color.FromArgb(0xff, 0xdc, 0x8c, 0x49);
-        public Color Palette2 = Color.FromArgb(255, 0xcc, 0xb3, 0x21);
-        public Color Palette3 = Color.FromArgb(255, 0x69, 0x9d, 0x00);
-        public Color Palette4 = Color.FromArgb(255, 0x46, 0xaa, 0xaa);
-        public Color Palette5 = Color.FromArgb(255, 0x70, 0x76, 0xbd);
-        public Color Palette6 = Color.FromArgb(255, 0xb0, 0x6d, 0xb9);
+		public Color Palette1 = Color.FromArgb(255, 0xe4, 0x5c, 0x76);
+        public Color Palette2 = Color.FromArgb(0xff, 0xdc, 0x8c, 0x49);
+        public Color Palette3 = Color.FromArgb(255, 0xcc, 0xb3, 0x21);
+        public Color Palette4 = Color.FromArgb(255, 0x69, 0x9d, 0x00);
+        public Color Palette5 = Color.FromArgb(255, 0x46, 0xaa, 0xaa);
+        public Color Palette6 = Color.FromArgb(255, 0x70, 0x76, 0xbd);
+        
 
-        public bool Display1 = true;
-		public bool Display2 = true;
-		public bool Display3 = true;
-		public bool Display4 = true;
+		public bool Display1 = true;
+		public bool Display2 = false;
+		public bool Display3 = false;
+		public bool Display4 = false;
 
 		public bool MouseEffectMove = false;
 		public bool MouseEffectLeftDown = false;
@@ -99,7 +100,7 @@ namespace ThePen
 
 		public bool BlockTouch = true;
 
-		public bool EasySwitch = true;
+		public bool EasySwitch = false;
 		public double EdgeWidth = 5;
 
 		public bool ShakeToClearAll = true;

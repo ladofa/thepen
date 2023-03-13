@@ -152,19 +152,19 @@ namespace ThePen
 
 			if (drawingScreen.Count > 0)
 			{
-				var rect = getRect(screens);
+				var rectWindow = getRect(drawingScreen);
 				var win = new Window1();
 				win.Show();
 				this.Owner = win;
 				canvasWindows.Add(win);
-				win.Left = rect.X;
-				win.Top = rect.Y;
-				win.Width = rect.Width;
-				win.Height = rect.Height;
+				win.Left = rectWindow.X;
+				win.Top = rectWindow.Y;
+				win.Width = rectWindow.Width;
+				win.Height = rectWindow.Height;
 				//win.WindowState = WindowState.Maximized;
 
-				rect = getRect(drawingScreen);
-				win.SetDrawingArea(rect);
+				var rectBoard = getRect(drawingScreen);
+				win.SetDrawingArea(rectWindow, rectBoard);
 				win.MainPenChanged += Win_MainPenChanged;
 				win.DrawingModeChanged += Win_DrawingModeChanged;
 				win.ColorChanged += Win_ColorChanged;

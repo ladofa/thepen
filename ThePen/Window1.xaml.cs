@@ -384,11 +384,11 @@ namespace ThePen
 
 		//--------------------------------------------------------------------------
 
-		public void SetDrawingArea(Rect rect)
+		public void SetDrawingArea(Rect rectWindow, Rect rectBoard)
 		{
-			GridBoard.Margin = new Thickness() { Left = rect.X, Top = rect.Y };
-			GridBoard.Width = rect.Width;
-			GridBoard.Height = rect.Height;
+			GridBoard.Margin = new Thickness() { Left = rectBoard.X - rectWindow.X, Top = rectBoard.Y - rectWindow.Y };
+			GridBoard.Width = rectBoard.Width;
+			GridBoard.Height = rectBoard.Height;
 		}
 
 		public enum DrawingModes

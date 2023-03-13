@@ -19,18 +19,18 @@ namespace ThePen
             var handler = new NativeMethods.DisplayDevicesMethods.EnumMonitorsDelegate(Monitors.MonitorEnumProc);
             NativeMethods.DisplayDevicesMethods.EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero, handler, IntPtr.Zero); // should be sequential
 
-			foreach (var screen in Screens)
-			{
-				screen.ApplyRate(rate);
-				if (!screen.IsPrimary)
-				{
-					screen.ApplyRate(rate);
-				}
-			}
+            foreach (var screen in Screens)
+            {
+                //screen.ApplyRate(rate);
+                if (!screen.IsPrimary)
+                {
+                    screen.ApplyRate(rate);
+                }
+            }
 
 
 
-			return Screens;
+            return Screens;
         }
 
         private static bool MonitorEnumProc(IntPtr hMonitor, IntPtr hdcMonitor, NativeMethods.DisplayDevicesMethods.RECT rect, IntPtr dwData)
