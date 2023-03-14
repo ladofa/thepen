@@ -2,7 +2,7 @@
 ThePen is a software for drawing on screen in Windows. It started just for my online lectures. I don't have any specific plan to push this work. But I really hope it used widely and be helpful for you.
 
 ## Download the Latest Version
-Alpha5 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/thepen-alpha5.zip
+Alpha6 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/thepen-alpha6.zip
 
 ## Important Features
  * One Key Sourtcut : Push only one keyboard button to change your pen type and color.
@@ -21,11 +21,15 @@ Alpha5 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/thepe
  * And others : I refered them in source codes.
 
 ## Development Environment
- * WPF C# on .NET 5.0
+ * WPF C# on .NET 7.0
  * PixiEditor.colorPicker (3.1.0) - MIT License
+
+## Release Notes
+ * 2023-03-14
+  ** Fix the dpi problem
+  ** Changed to .Net 7.0 (VS 2022)
 
 ## Future Works
  * More settings for the mouse effect.
  * Offering Background To Draw
  * Temporary hide
-
