@@ -28,6 +28,9 @@ namespace ThePen
 
 		private void NumericTextBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
+			if (Text == "-")
+				return;
+
 			bool succeed = Double.TryParse(Text, out double result);
 			if (!succeed)
 			{
@@ -39,7 +42,7 @@ namespace ThePen
 		{
 			get
 			{
-				if (Text == "")
+				if (Text == "" || Text == "-")
 				{
 					return 0;
 				}

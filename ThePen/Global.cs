@@ -64,8 +64,8 @@ namespace ThePen
 	{
 		public static double GetAngle(System.Windows.Media.Matrix m)
 		{
-			return Math.Round(Math.Acos(m.M11) / Math.PI * 180, 2);
-		}
+            return Math.Round(Math.Asin(m.M12) / Math.PI * 180, 0);
+        }
 
 		public static Matrix GetMatrix(double angle)
 		{
@@ -121,6 +121,10 @@ namespace ThePen
 				else if (val is Key _one)
 				{
 					Reg.Write(prop.Name, _one);
+				}
+				else if (val is System.Windows.Ink.DrawingAttributes _pen)
+				{
+					Reg.Write(prop.Name, _pen);
 				}
 				else
 				{
@@ -185,6 +189,11 @@ namespace ThePen
 						Reg.Read(prop.Name, out _one);
 						prop.SetValue(SettingData, _one);
 					}
+					else if (val is System.Windows.Ink.DrawingAttributes _pen)
+					{
+                        Reg.Read(prop.Name, out _pen);
+                        prop.SetValue(SettingData, _pen);
+                    }
 					else
 					{
 						System.Windows.MessageBox.Show(val.ToString());

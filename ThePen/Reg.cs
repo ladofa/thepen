@@ -124,7 +124,7 @@ namespace ThePen
 			Write(key + "_ignore", pen.IgnorePressure);
 			Write(key + "_high", pen.IsHighlighter);
 			Write(key + "_angle", Global.GetAngle(pen.StylusTipTransform));
-		}
+        }
 
 		public static void Read(string key, out System.Windows.Ink.DrawingAttributes outPen)
 		{
