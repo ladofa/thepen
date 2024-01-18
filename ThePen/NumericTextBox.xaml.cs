@@ -69,14 +69,16 @@ namespace ThePen
 			}
 		}
 
+		double min = Double.MinValue;
 		public double Min
 		{
-			get; set;
+			get { return min; } set {  min = value; }
 		}
 
+		double max = Double.MaxValue;
 		public double Max
 		{
-			get; set;
+			get => max; set { max = value; }
 		}
 	}
 }
