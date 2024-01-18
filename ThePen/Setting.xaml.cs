@@ -85,6 +85,7 @@ namespace ThePen
 					OneKeyShapeEllipse.Value = value.OneShapeEllipse;
 					OneKeyShapeRectangle.Value = value.OneShapeRectangle;
 					OneKeyShapeGrid.Value = value.OneShapeGrid;
+					OneKeyShapeArrow.Value = value.OneShapeArrow;
 					OneKeyPen1.Value = value.OnePen1;
 					OneKeyPen2.Value = value.OnePen2;
 					OneKeyPen3.Value = value.OnePen3;
@@ -99,6 +100,8 @@ namespace ThePen
 					ShakeToClearAll.IsChecked = value.ShakeToClearAll;
 
 					BlockTouch.IsChecked = value.BlockTouch;
+					ShapeLine1Arrow.IsChecked = value.ShapeLine1Arrow;
+					ShapeLine2Arrow.IsChecked = value.ShapeLine2Arrow;
 
 					Display1.IsChecked = value.Display1;
 					Display2.IsChecked = value.Display2;
@@ -126,6 +129,8 @@ namespace ThePen
 					}
 
 					StampWidth.Value = value.StampWidth;
+					ArrowWidth.Value = value.ArrowWidth;
+					EraserSize.Value = value.EraserSize;
 				}
 				catch(Exception e)
 				{
@@ -188,6 +193,7 @@ namespace ThePen
 				OneShapeEllipse = OneKeyShapeEllipse.Value,
 				OneShapeRectangle = OneKeyShapeRectangle.Value,
 				OneShapeGrid = OneKeyShapeGrid.Value,
+				OneShapeArrow = OneKeyShapeArrow.Value,
 				OnePen1 = OneKeyPen1.Value,
 				OnePen2 = OneKeyPen2.Value,
 				OnePen3 = OneKeyPen3.Value,
@@ -199,6 +205,8 @@ namespace ThePen
 				EdgeWidth = EdgeWidth.Value,
 				ShakeToClearAll = ShakeToClearAll.IsChecked.Value,
 				BlockTouch = BlockTouch.IsChecked.Value,
+				ShapeLine1Arrow = ShapeLine1Arrow.IsChecked.Value,
+				ShapeLine2Arrow = ShapeLine2Arrow.IsChecked.Value,
 				Display1 = Display1.IsChecked.Value,
 				Display2 = Display2.IsChecked.Value,
 				Display3 = Display3.IsChecked.Value,
@@ -207,6 +215,8 @@ namespace ThePen
 				MouseEffectLeftDown = MouseEffectLeftDown.IsChecked.Value,
 				MouseEffectRightDown = MouseEffectRightDown.IsChecked.Value,
 				StampWidth = StampWidth.Value,
+				ArrowWidth = ArrowWidth.Value,
+				EraserSize = EraserSize.Value,
 			};
 		}
 

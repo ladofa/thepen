@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Transactions;
+using System.Numerics;
 
 
 //thanks to https://poorman.tistory.com/297
@@ -48,6 +51,12 @@ namespace ThePen
 		{
 			MouseMessages message = (MouseMessages)wParam;
 
+			//stylus up???
+			if (message == MouseMessages.WM_LBUTTONDOWN || message == MouseMessages.WM_RBUTTONDOWN)
+			{
+				points = new List<(int, int)>();
+			}
+
 			if (nCode >= 0)
 			{
 				MSLLHOOKSTRUCT hookStruct = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
@@ -63,7 +72,9 @@ namespace ThePen
 				//Debug.WriteLine(hookStruct.pt.x + ", " + hookStruct.pt.y);
 
 
-				if (message == MouseMessages.WM_MOUSEMOVE && Global.SettingData.ShakeToClearAll)
+				setGlobalDxDy(hookStruct);
+
+                if (message == MouseMessages.WM_MOUSEMOVE && Global.SettingData.ShakeToClearAll)
 				{
 					if (System.Windows.Input.Mouse.LeftButton != System.Windows.Input.MouseButtonState.Pressed && !Global.KeyPressed)
 					{
@@ -154,6 +165,35 @@ namespace ThePen
 		static List<(double, double, uint)> hsVector = new();
 
 		public static event EventHandler Shaked;
+
+
+		static List<(int, int)> points = new List<(int, int)>();
+		public static double dx = 0;
+		public static double dy = 0;
+		public static void setGlobalDxDy(MSLLHOOKSTRUCT hookStruct)
+		{
+            POINT p = hookStruct.pt;
+			points.Add((p.x, p.y));
+			while (points.Count > 10)
+			{
+				float sx = points[0].Item1;
+				float sy = points[0].Item2;
+
+				double dist = Vector2.Distance(new Vector2(points[0].Item1, points[0].Item2), new Vector2(p.x, p.y));
+				if (dist > 20)
+				{
+                    points.RemoveAt(0);
+                }
+				else
+				{
+					break;
+				}
+			}
+
+
+			dx = p.x - points[0].Item1;
+			dy = p.y - points[0].Item2;
+        }
 
 		private static void analyseGesture2(MSLLHOOKSTRUCT hookStruct)
 		{

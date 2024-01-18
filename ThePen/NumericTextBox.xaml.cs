@@ -24,9 +24,20 @@ namespace ThePen
 		{
 			InitializeComponent();
 			TextChanged += NumericTextBox_TextChanged;
+            LostFocus += NumericTextBox_LostFocus;
 		}
 
-		private void NumericTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void NumericTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (Value < Min)
+			{
+				Value = Min;
+			}
+
+			if (Value > Max) { Value = Max;}
+        }
+
+        private void NumericTextBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			if (Text == "-")
 				return;
@@ -56,6 +67,16 @@ namespace ThePen
 			{
 				Text = value.ToString();
 			}
+		}
+
+		public double Min
+		{
+			get; set;
+		}
+
+		public double Max
+		{
+			get; set;
 		}
 	}
 }

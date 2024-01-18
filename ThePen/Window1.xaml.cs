@@ -16,8 +16,7 @@ using System.Windows.Interop;
 using System.Windows.Ink;
 
 using System.Diagnostics;
-
-
+using System.Security.Cryptography.Xml;
 
 namespace ThePen
 {
@@ -90,7 +89,12 @@ namespace ThePen
 			AutoDrawAreaLeft.Width = setting.EdgeWidth;
 			AutoDrawAreaRight.Width = setting.EdgeWidth;
 			AutoDrawAreaBottom.Height = setting.EdgeWidth;
-		}
+
+			MouseEffectErase.Width = setting.EraserSize;
+            MouseEffectErase.Height = setting.EraserSize;
+
+            Board.EraserShape = new EllipseStylusShape(setting.EraserSize, setting.EraserSize);
+        }
 
 		public delegate void MainPenChangedEventHandler(object sender, int num);
 		public event MainPenChangedEventHandler MainPenChanged;
@@ -125,7 +129,8 @@ namespace ThePen
 			
 			if (DrawingMode != DrawingModes.Draw) return;
 
-			if (isPressed) return;
+			//why did I write it in here?
+			//if (isPressed) return;
 
 			//all code must be behind here.
 
@@ -227,6 +232,11 @@ namespace ThePen
 				ChangeMainPen(3);
 			}
 
+			if (e.Key == setting.OneShapeArrow)
+			{
+				ArrowMode = true;
+			}
+
 			isPressed = true;
 			Global.KeyPressed = true;
 		}
@@ -288,6 +298,12 @@ namespace ThePen
 				releaseShapeMode();
 			}
 
+
+			if (e.Key == setting.OneShapeArrow)
+			{
+				ArrowMode = false;
+			}
+
 			isPressed = false;
 			Global.KeyPressed = false;
 		}
@@ -308,10 +324,11 @@ namespace ThePen
 		#region mouse effect
 		private void MouseHook_MouseHookEvent(object sender, MouseHook.MouseHookEventArgs e)
 		{
-			var p = new Point(e.Point.x, e.Point.y);
-			var message = e.Message;
+            var p = new Point(e.Point.x - this.Left, e.Point.y - this.Top);
 
-			if (message == MouseHook.MouseMessages.WM_MOUSEMOVE)
+            var message = e.Message;
+
+            if (message == MouseHook.MouseMessages.WM_MOUSEMOVE)
 			{
 				Canvas.SetLeft(MouseEffectGroup, p.X - 50);
 				Canvas.SetTop(MouseEffectGroup, p.Y - 50);
@@ -408,14 +425,15 @@ namespace ThePen
 			{
 				if (value == DrawingModes.Erase)
 				{
-					//Board.EraserShape = new EllipseStylusShape(100, 100);
 					Board.EditingMode = InkCanvasEditingMode.None;
 					Board.EditingMode = InkCanvasEditingMode.EraseByStroke;
+					MouseEffectErase.Visibility = Visibility.Visible;
 				}
 				else
 				{
 					Board.EditingMode = InkCanvasEditingMode.Ink;
-				}
+					MouseEffectErase.Visibility = Visibility.Collapsed;
+                }
 
 				bool drawing = true;
 				if (value == DrawingModes.Select)
@@ -742,6 +760,10 @@ namespace ThePen
 		bool shapePushed = false;
 		Stroke shapeStroke;
 		Point shapeStartPoint;
+
+		double shapeLineDx = 0;
+		double shapeLineDy = 0;
+		Point shapeEndPoint;
 		private void ShapeLineArea_MouseMove(object sender, MouseEventArgs e)
 		{
 			if (!shapePushed)
@@ -756,7 +778,6 @@ namespace ThePen
 				const double step = Math.PI / 8;
 				const double step2 = step / 2;
 
-				Debug.WriteLine("angle " + ang);
 
 				for (double c = step2 - Math.PI; c < Math.PI + step; c += step)
 				{
@@ -770,8 +791,12 @@ namespace ThePen
 				var dx = Math.Cos(ang) * len;
 				var dy = Math.Sin(ang) * len;
 				p = shapeStartPoint + new Vector(dx, dy);
-				
-			}
+
+				//for arrow
+				shapeLineDx = dx;
+                shapeLineDy = dy;
+				shapeEndPoint = p;
+            }
 
 			shapeStroke.StylusPoints[1] = new StylusPoint(p.X, p.Y);
 		}
@@ -796,6 +821,10 @@ namespace ThePen
 		private void ShapeLineArea_MouseUp(object sender, MouseButtonEventArgs e)
 		{
 			shapePushed = false;
+			if (ArrowMode || setting.ShapeLine1Arrow)
+			{
+				drawArrow(shapeEndPoint, shapeLineDx, shapeLineDy);
+			}
 		}
 		private void ShapeLineArea_MouseLeave(object sender, MouseEventArgs e)
 		{
@@ -813,7 +842,7 @@ namespace ThePen
 			var p = Mouse.GetPosition(Board);
 
 			shapeStroke.StylusPoints[1] = new StylusPoint(p.X, p.Y);
-		}
+        }
 
 		private void ShapeLine2Area_MouseDown(object sender, MouseButtonEventArgs e)
 		{
@@ -836,7 +865,17 @@ namespace ThePen
 		private void ShapeLine2Area_MouseUp(object sender, MouseButtonEventArgs e)
 		{
 			shapePushed = false;
-		}
+
+			if (ArrowMode || setting.ShapeLine2Arrow)
+			{
+				var p0 = shapeStroke.StylusPoints[0];
+				var p1 = shapeStroke.StylusPoints[1];
+
+				var dx = (p1.X - p0.X);
+				var dy = (p1.Y - p0.Y);
+				drawArrow(new Point(p1.X, p1.Y), dx, dy);
+            }
+        }
 
 		private void ShapeLine2Area_MouseLeave(object sender, MouseEventArgs e)
 		{
@@ -1094,7 +1133,9 @@ namespace ThePen
 		int shapeGridCurX;
 		int shapeGridCurY;
 
-		private void ShapeGridArea_MouseUp(object sender, MouseButtonEventArgs e)
+        private bool ArrowMode;
+
+        private void ShapeGridArea_MouseUp(object sender, MouseButtonEventArgs e)
 		{
 			if (shapeGridCopyMode)
 			{
@@ -1191,8 +1232,83 @@ namespace ThePen
 
 
 
-		#endregion
+        #endregion
 
+		private void drawArrow(Point center, double dx = 0, double dy = 0)
+		{
+			if (dx == 0 && dy == 0)
+			{
+                dx = MouseHook.dx;
+                dy = MouseHook.dy;
+            }
+            
+            double rad = Math.Atan2(dy, dx);
+            double cx = center.X;
+            double cy = center.Y;
 
-	}
+			double size = setting.ArrowWidth;
+
+            //-135
+            double leftWingX = Math.Cos(rad - Math.PI * 0.75) * size + cx;
+            double leftWingY = Math.Sin(rad - Math.PI * 0.75) * size + cy;
+            Point leftWing = new Point(leftWingX, leftWingY);
+
+            var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
+                new List<Point> { center, leftWing }
+            ))
+            {
+                DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+            };
+
+            Board.Strokes.Add(s1);
+
+            //+135
+            double rightWingX = Math.Cos(rad + Math.PI * 0.75) * size + cx;
+            double rightWingY = Math.Sin(rad + Math.PI * 0.75) * size + cy;
+            Point rightWing = new Point(rightWingX, rightWingY);
+
+            s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
+                new List<Point> { center, rightWing }
+            ))
+            {
+                DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+            };
+
+            Board.Strokes.Add(s1);
+        }
+
+        private void Board_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+			if (ArrowMode)
+			{
+                var center = Mouse.GetPosition(Board);
+				drawArrow(center);
+            }
+        }
+
+   
+
+        private void Board_StylusDown(object sender, StylusDownEventArgs e)
+        {
+			if (e.Inverted)
+			{
+                MouseEffectErase.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void Board_StylusUp(object sender, StylusEventArgs e)
+        {
+			if (e.Inverted)
+			{
+				MouseEffectErase.Visibility = Visibility.Hidden;
+			}
+        }
+
+        private void Board_MouseMove(object sender, MouseEventArgs e)
+        {
+            Point p = Mouse.GetPosition(this);
+            Canvas.SetLeft(MouseEffectEraseGroup, p.X - 100);
+            Canvas.SetTop(MouseEffectEraseGroup, p.Y - 100);
+        }
+    }
 }

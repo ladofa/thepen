@@ -52,6 +52,11 @@
                     <TextBlock Text="Pen3" VerticalAlignment="Center" Margin="0 0 10 0"/>
                     <local:SettingPen x:Name="SettingPen3"/>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <TextBlock Text="Eraser Size : " VerticalAlignment="Center"/>
+                    <local:NumericTextBox Width="40" Height="20" Text="100" x:Name="EraserSize" Min="1" Max="200"/>
+                </StackPanel>
+
                 <TextBlock Style="{StaticResource Title}" Text="Colors"/>
                 <StackPanel Orientation="Horizontal" Height="20">
                     <TextBlock Text="1 : "/>
@@ -102,6 +107,7 @@
                         <TextBlock Style="{StaticResource HotKey}" Text="Ellipse"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Rectangle"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Grid"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Arrow"/>
                         <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Overlay1"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Overlay2"/>
@@ -141,6 +147,7 @@
                         <Rectangle Style="{StaticResource Dummy}"/>
                         <Rectangle Style="{StaticResource Dummy}"/>
                         <Rectangle Style="{StaticResource Dummy}"/>
+                        <Rectangle Style="{StaticResource Dummy}"/>
 
 
                         <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
@@ -172,11 +179,18 @@
                         <local:SettingOneKey x:Name="OneKeyStampTri"/>
                         <local:SettingOneKey x:Name="OneKeyStampDot"/>
                         <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
-                        <local:SettingOneKey x:Name="OneKeyShapeLine1"/>
-                        <local:SettingOneKey x:Name="OneKeyShapeLine2"/>
+                        <StackPanel Orientation="Horizontal">
+                            <local:SettingOneKey x:Name="OneKeyShapeLine1"/>
+                            <CheckBox x:Name="ShapeLine1Arrow" Content="Always Draw Arrow" VerticalAlignment="Center" Margin="10 0 0 0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <local:SettingOneKey x:Name="OneKeyShapeLine2"/>
+                            <CheckBox x:Name="ShapeLine2Arrow" Content="Always Draw Arrow" VerticalAlignment="Center" Margin="10 0 0 0"/>
+                        </StackPanel>
                         <local:SettingOneKey x:Name="OneKeyShapeEllipse"/>
                         <local:SettingOneKey x:Name="OneKeyShapeRectangle"/>
                         <local:SettingOneKey x:Name="OneKeyShapeGrid"/>
+                        <local:SettingOneKey x:Name="OneKeyShapeArrow"/>
                         <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <local:SettingOneKey x:Name="OneKeyOverlay1"/>
                         <local:SettingOneKey x:Name="OneKeyOverlay2"/>
@@ -239,11 +253,16 @@
                     <CheckBox x:Name="MouseEffectRightDown" Content="Right Down" VerticalAlignment="Center" Margin="0 2 10 0"/>
                 </StackPanel>
 
-                <TextBlock Style="{StaticResource Title}" Text="Stamp"/>
+                <TextBlock Style="{StaticResource Title}" Text="Stamp and Arrow"/>
                 <StackPanel Orientation="Horizontal" Height="30">
                     <TextBlock Text="Stamp Size :  " VerticalAlignment="Center"/>
                     <local:NumericTextBox Width="40" Text="3" x:Name="StampWidth" Height="20"/>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <TextBlock Text="Arrow Size :  " VerticalAlignment="Center"/>
+                    <local:NumericTextBox Width="40" Text="3" x:Name="ArrowWidth" Height="20"/>
+                </StackPanel>
+
 
 
                 <TextBlock Style="{StaticResource Title}" Text="Overlay"/>

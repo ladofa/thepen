@@ -106,8 +106,12 @@ namespace ThePen
 		public bool ShakeToClearAll = true;
 
 		public double StampWidth = 15;
+        public double ArrowWidth = 20;
 
-		public (uint, uint) HotErase = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["1"]);
+        public bool ShapeLine1Arrow = false;
+        public bool ShapeLine2Arrow = false;
+
+        public (uint, uint) HotErase = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["1"]);
 		public (uint, uint) HotSelect = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["2"]);
 		public (uint, uint) HotClear = (Hotkey.MOD_CTRL + Hotkey.MOD_SHIFT, Hotkey.TrigKeys["7"]);
 		public (uint, uint) HotUndo = (0, 0);
@@ -160,12 +164,14 @@ namespace ThePen
 		public Key OneShapeEllipse = Key.D;
 		public Key OneShapeRectangle = Key.F;
 		public Key OneShapeGrid = Key.G;
-		public Key OneUndo = Key.Z;
+        public Key OneShapeArrow = Key.LeftShift;
+        public Key OneUndo = Key.Z;
+        public double EraserSize = 100;
 
-		//public List<string> InputKeys;
+        //public List<string> InputKeys;
 
-		//---------------------------
+        //---------------------------
 
-	}
+    }
 
 }

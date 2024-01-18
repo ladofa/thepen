@@ -12,9 +12,16 @@
             <CommandBinding Executed="Undo" Command="ApplicationCommands.Undo"/>
             <CommandBinding Executed="Redo" Command="ApplicationCommands.Redo"/>
         </Grid.CommandBindings>-->
+
+        <Canvas>
+            <Grid Name="MouseEffectEraseGroup" Width="200" Height="200">
+                <Ellipse Fill="#00000000" StrokeThickness="2" Stroke="#FF0000ff" Width="40" Height="40" Name="MouseEffectErase" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+            </Grid>
+        </Canvas>
+        
         <Grid x:Name="GridBoard" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Rectangle x:Name="BackBoard" Fill="#00000000"/>
-            <InkCanvas Name="Board" Background="#00000000" UseCustomCursor="True" Cursor="Pen"/>
+            <InkCanvas Name="Board" Background="#00000000" UseCustomCursor="True" Cursor="Pen" MouseUp="Board_MouseUp" StylusDown="Board_StylusDown" StylusUp="Board_StylusUp" MouseMove="Board_MouseMove"/>
             <InkCanvas Name="BoardTemp" Background="#00000000" UseCustomCursor="True" Cursor="Pen" Visibility="Collapsed"/>
 
             <Rectangle x:Name="ShapeLineArea" Fill="#01000000" Visibility="Collapsed" Cursor="Hand" MouseMove="ShapeLineArea_MouseMove" MouseDown="ShapeLineArea_MouseDown" MouseUp="ShapeLineArea_MouseUp" MouseLeave="ShapeLineArea_MouseLeave"/>
@@ -41,9 +48,14 @@
                 <Ellipse Fill="#00000000" StrokeThickness="8" Stroke="#80FF0000" Width="30" Height="30" Name="MouseEffectMove" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Ellipse Fill="#00000000" StrokeThickness="8" Stroke="#8000ff00" Width="30" Height="30" Name="MouseEffectLeftDown" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
                 <Ellipse Fill="#00000000" StrokeThickness="8" Stroke="#800000ff" Width="30" Height="30" Name="MouseEffectRightDown" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
-
             </Grid>
+
+            
         </Canvas>
+
         
+
+
+
     </Grid>
 </Window>

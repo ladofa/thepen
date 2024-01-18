@@ -710,6 +710,9 @@ namespace ThePen
 		private void HatInfoButton_Click(object sender, RoutedEventArgs e)
 		{
 			HideAllPopup();
+			string info =
+				"ThePen alpha7";
+			MessageBox.Show(info);
 		}
 
 		private void HatExitButton_Click(object sender, RoutedEventArgs e)

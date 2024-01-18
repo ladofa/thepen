@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0-windows</TargetFramework>
+		<TargetFramework>net6.0-windows</TargetFramework>
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ApplicationIcon>Template.ico</ApplicationIcon>
 		<OutputType>WinExe</OutputType>
-		<StartupObject />
+		<StartupObject>ThePen.App</StartupObject>
 		<Win32Resource />
 
 	</PropertyGroup>
