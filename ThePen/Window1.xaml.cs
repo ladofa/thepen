@@ -129,8 +129,15 @@ namespace ThePen
 			
 			if (DrawingMode != DrawingModes.Draw) return;
 
-			//why did I write it in here?
-			//if (isPressed) return;
+			//arrow key exception
+            if (e.Key == setting.OneShapeArrow)
+            {
+                ArrowMode = true;
+				return;
+            }
+
+            //prevent repeating
+            if (isPressed) return;
 
 			//all code must be behind here.
 
@@ -232,10 +239,7 @@ namespace ThePen
 				ChangeMainPen(3);
 			}
 
-			if (e.Key == setting.OneShapeArrow)
-			{
-				ArrowMode = true;
-			}
+			
 
 			isPressed = true;
 			Global.KeyPressed = true;
@@ -257,7 +261,13 @@ namespace ThePen
 		{
 			base.OnPreviewKeyUp(e);
 
-			if (e.Key == setting.OneErase)
+            if (e.Key == setting.OneShapeArrow)
+            {
+                ArrowMode = false;
+				return;
+            }
+
+            if (e.Key == setting.OneErase)
 			{
 				DrawingMode = DrawingModes.Draw;
 			}
@@ -299,10 +309,7 @@ namespace ThePen
 			}
 
 
-			if (e.Key == setting.OneShapeArrow)
-			{
-				ArrowMode = false;
-			}
+			
 
 			isPressed = false;
 			Global.KeyPressed = false;
@@ -1040,6 +1047,7 @@ namespace ThePen
 
 		private void ShapeGridArea_MouseMove(object sender, MouseEventArgs e)
 		{
+			Debug.WriteLine(shapePushed + ", " + shapeGridCopyMode + "," + shapeStartPoint);
 			if (shapeGridCopyMode)
 			{
 				//check current area
@@ -1091,6 +1099,8 @@ namespace ThePen
 					new Point(x1, y2)
 				};
 				points.Add(points[0]);
+
+				Debug.WriteLine($"{x1}, {y1}, {x2}, {y2}");
 
 				shapeStroke.StylusPoints = new StylusPointCollection(points);
 			}
