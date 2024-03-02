@@ -2,7 +2,7 @@
 ThePen is a software for drawing on screen in Windows. It started just for my online lectures. I don't have any specific plan to push this work. But I really hope it used widely and be helpful for you.
 
 ## Download the Latest Version
-Alpha7 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/thepen-alpha7.1.zip
+Alpha7 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/thepen-alpha8.zip
 
 ## Important Features
  * One Key Sourtcut : Push only one keyboard button to change your pen type and color.
@@ -25,12 +25,13 @@ Alpha7 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/thepe
  * PixiEditor.colorPicker (3.1.0) - MIT License
 
 ## Release Notes
+ * 2024-03-02 (Alpha 8)
+   - The taskbar is always visible.
  * 2024-01-18 (Alpha 7)
    - The eraser got bigger, you can change the size.
    - Draw arrow on the tip of your line with the shotcut (default : Left Shift)
    - Bug Fixed : mouse effects are available from now.
    - Changed to .Net 6.0
-   
  * 2023-03-14 (Alpha 6)
    - Fix the dpi problem
    - Changed to .Net 7.0 (VS 2022)
