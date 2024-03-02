@@ -27,11 +27,9 @@ namespace ThePen
 	{
 		List<Window1> canvasWindows = new();
 
-		System.Windows.Forms.NotifyIcon notifyIcon = new();
-
 		public MainWindow()
 		{
-			InitializeComponent();
+            InitializeComponent();
 
 			HideAllPopup();
 
@@ -41,10 +39,7 @@ namespace ThePen
 			//-------------------------------------
 		}
 
-		private void NotifyIcon_Click(object sender, EventArgs e)
-		{
-			
-		}
+		
 
 		private void Global_SettingChanged(object sender, EventArgs e)
 		{
@@ -155,7 +150,7 @@ namespace ThePen
 				var rectWindow = getRect(drawingScreen);
 				var win = new Window1();
 				win.Show();
-				this.Owner = win;
+				//this.Owner = win;
 				canvasWindows.Add(win);
 				win.Left = rectWindow.X;
 				win.Top = rectWindow.Y;
@@ -711,7 +706,7 @@ namespace ThePen
 		{
 			HideAllPopup();
 			string info =
-				"ThePen alpha7";
+				"ThePen alpha8";
 			MessageBox.Show(info);
 		}
 

@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ThePen"
         mc:Ignorable="d"
-        Title="ThePen Canvas" Height="450" Width="800" WindowStyle="None"  AllowsTransparency="True"  Topmost="True" Background="#00000000"  ShowInTaskbar="False"
-        >
+        Title="ThePen Canvas" Height="450" Width="800" WindowStyle="None"  AllowsTransparency="True"  Topmost="True" Background="#00000000"  ShowInTaskbar="False">
     <Grid>
         <!--<Grid.CommandBindings>
             <CommandBinding Executed="Undo" Command="ApplicationCommands.Undo"/>

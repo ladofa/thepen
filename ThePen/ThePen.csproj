@@ -17,6 +17,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Hardcodet.Wpf.TaskbarNotification" Version="1.0.5" />
 		<PackageReference Include="PixiEditor.ColorPicker" Version="3.1.0" />
 	</ItemGroup>
 	

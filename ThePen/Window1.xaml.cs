@@ -93,7 +93,6 @@ namespace ThePen
 			MouseEffectErase.Width = setting.EraserSize;
             MouseEffectErase.Height = setting.EraserSize;
 
-            Board.EraserShape = new EllipseStylusShape(setting.EraserSize, setting.EraserSize);
         }
 
 		public delegate void MainPenChangedEventHandler(object sender, int num);
@@ -435,11 +434,13 @@ namespace ThePen
 					Board.EditingMode = InkCanvasEditingMode.None;
 					Board.EditingMode = InkCanvasEditingMode.EraseByStroke;
 					MouseEffectErase.Visibility = Visibility.Visible;
-				}
+                    Board.EraserShape = new EllipseStylusShape(setting.EraserSize, setting.EraserSize);
+                }
 				else
 				{
 					Board.EditingMode = InkCanvasEditingMode.Ink;
 					MouseEffectErase.Visibility = Visibility.Collapsed;
+                    Board.EraserShape = new EllipseStylusShape(2, 2);
                 }
 
 				bool drawing = true;
@@ -1302,7 +1303,7 @@ namespace ThePen
         {
 			if (e.Inverted)
 			{
-                MouseEffectErase.Visibility = Visibility.Visible;
+                //MouseEffectErase.Visibility = Visibility.Visible;
             }
         }
 
@@ -1310,7 +1311,7 @@ namespace ThePen
         {
 			if (e.Inverted)
 			{
-				MouseEffectErase.Visibility = Visibility.Hidden;
+				//MouseEffectErase.Visibility = Visibility.Hidden;
 			}
         }
 
