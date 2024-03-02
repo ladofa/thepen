@@ -155,7 +155,7 @@ namespace ThePen
 				win.Left = rectWindow.X;
 				win.Top = rectWindow.Y;
 				win.Width = rectWindow.Width;
-				win.Height = rectWindow.Height;
+				win.Height = rectWindow.Height - 1;
 				//win.WindowState = WindowState.Maximized;
 
 				var rectBoard = getRect(drawingScreen);
