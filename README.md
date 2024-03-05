@@ -25,7 +25,7 @@ ThePen is a software for drawing on screen in Windows. It started just for my on
  * Shapes : Line, Circle, Rectangle, Grid (One Key Shortcut Only)
  * Stamp : Just push a key to put your stamps. (One Key Shortcut Only)
  * Arrow : Add arrow on free drawings or any shapes.
- * Overlay - Display current time, text messages and images. (Now it is not in maintenance yet)
+ * Overlay - Display current time, text messages and images. (It is not in maintenance yet)
 
 ## Reference
  * Epic Pen : https://epic-pen.com/
