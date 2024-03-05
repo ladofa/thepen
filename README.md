@@ -2,18 +2,30 @@
 ThePen is a software for drawing on screen in Windows. It started just for my online lectures. I don't have any specific plan to push this work. But I really hope it used widely and be helpful for you.
 
 ## Download the Latest Version
-Alpha7 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/thepen-alpha8.zip
+ * Alpha8 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/thepen-alpha8.zip
+ * It is not allowed by Windows SmartScreen. It is **not officially authorized** for Windows yet. You have to check the advanced option.
+  - Virus warning can be shown
+    
+<img src="images/w1.jpg" width="40%" height="40%">
+  - For installation, you need to select advanced option
+<img src="images/w2.jpg" width="40%" height="40%">
+<img src="images/w3.jpg" width="40%" height="40%">
+
+
 
 ## Important Features
  * One Key Sourtcut : Push only one keyboard button to change your pen type and color.
+   
  ![alt text](images/onekey.jpg "Title")
  * Easy Switch : Just by lifting the stylus pen, it switches to drawing mode. And just move your mouse to escape drawing mode.
    - It doesn't work on some applications(Chrome, Edge, VSCode, etc.). In this case, move your pen to edges of the monitor to switch mode.
+     
    ![alt text](images/edgearea.jpg "Title")
  * Shaking gesture to clear all drawing.
  * Shapes : Line, Circle, Rectangle, Grid (One Key Shortcut Only)
  * Stamp : Just push a key to put your stamps. (One Key Shortcut Only)
- * Overlay - Display current time, text messages and images.
+ * Arrow : Add arrow on free drawings or any shapes.
+ * Overlay - Display current time, text messages and images. (Now it is not in maintenance yet)
 
 ## Reference
  * Epic Pen : https://epic-pen.com/
