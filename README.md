@@ -2,7 +2,7 @@
 ThePen is a software for drawing on screen in Windows. It started just for my online lectures. I don't have any specific plan to push this work. But I really hope it used widely and be helpful for you.
 
 ## Download the Latest Version
- * Alpha8 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/thepen-alpha8.zip
+ * Alpha8 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/ThePen-alpha10.zip
  * It is not allowed by Windows SmartScreen. It is **not officially authorized** for Windows yet. You have to check the advanced option.
   - Virus warning can be shown
     
@@ -26,6 +26,9 @@ ThePen is a software for drawing on screen in Windows. It started just for my on
  * Stamp : Just push a key to put your stamps. (One Key Shortcut Only)
  * Arrow : Add arrow on free drawings or any shapes.
  * Overlay - Display current time, text messages and images. (It is not in maintenance yet)
+ * Right click and move to erase.
+ * Color palette swap (shortcut : number key 7(&) )
+ * Multi Board (shortcut : F1, F2, F3)
 
 ## Reference
  * Epic Pen : https://epic-pen.com/
@@ -37,8 +40,12 @@ ThePen is a software for drawing on screen in Windows. It started just for my on
  * PixiEditor.colorPicker (3.1.0) - MIT License
 
 ## Release Notes
+ * 2024-03-15
+   - add Multi board, each board has own pen style (pen swap will be deprecated.)
+   - add palette swap, in setting you can choose twin color.
+   - Right click works as eraser.
  * 2024-03-02 (Alpha 8)
-   - The taskbar is always visible.
+   - The taskbar is always visible when you press alt+tab between fullscreen applications.
  * 2024-01-18 (Alpha 7)
    - The eraser got bigger, you can change the size.
    - Draw arrow on the tip of your line with the shotcut (default : Left Shift)
