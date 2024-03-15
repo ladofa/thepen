@@ -41,9 +41,11 @@ ThePen is a software for drawing on screen in Windows. It started just for my on
 
 ## Release Notes
  * 2024-03-15
-   - add Multi board, each board has own pen style (pen swap will be deprecated.)
+   - add Multi board, each board has own pen style, (shortcut F1, F2, F3) (pen swap will be deprecated.)
+   - add temporary hide drawing (shortcut F1, F2, F3 - press again)
    - add palette swap, in setting you can choose twin color.
    - Right click works as eraser.
+   - Quick quit - clear all and quit drawing at once (shortcut q)
  * 2024-03-02 (Alpha 8)
    - The taskbar is always visible when you press alt+tab between fullscreen applications.
  * 2024-01-18 (Alpha 7)
