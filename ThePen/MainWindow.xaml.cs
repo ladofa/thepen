@@ -57,7 +57,7 @@ namespace ThePen
 			(DrawButton2.Image as PenRepresenter).Value = Global.SettingData.Pen2;
 			(DrawButton3.Image as PenRepresenter).Value = Global.SettingData.Pen3;
 
-			canvasWindows.ForEach(w => w.DrawingMode = Window1.DrawingModes.Select);
+			canvasWindows.ForEach(w => w.DrawingMode = Window1.DrawingModes.Normal);
 			canvasWindows.ForEach(w => w.ChangeMainPen(Global.CurrentPen));
 		}
 
@@ -197,7 +197,7 @@ namespace ThePen
 		private void Win_DrawingModeChanged(object sender, EventArgs e)
 		{
 			Window1 w = (Window1)sender;
-			if (w.DrawingMode == Window1.DrawingModes.Select)
+			if (w.DrawingMode == Window1.DrawingModes.Normal)
 			{
 				SelectButton.Checked = true;
 				DrawButton.Checked = false;
@@ -241,35 +241,40 @@ namespace ThePen
 
 			setHotkey(data.HotColor1, new Action(() =>
 			{
-				canvasWindows.ForEach(w => w.ChangeColor(Global.SettingData.Palette1));
+				canvasWindows.ForEach(w => w.ChangeColor(0));
 			}));
 
 			setHotkey(data.HotColor2, new Action(() =>
 			{
-				canvasWindows.ForEach(w => w.ChangeColor(Global.SettingData.Palette2));
+				canvasWindows.ForEach(w => w.ChangeColor(1));
 			}));
 
 			setHotkey(data.HotColor3, new Action(() =>
 			{
-				canvasWindows.ForEach(w => w.ChangeColor(Global.SettingData.Palette3));
+				canvasWindows.ForEach(w => w.ChangeColor(2));
 			}));
 
 			setHotkey(data.HotColor4, new Action(() =>
 			{
-				canvasWindows.ForEach(w => w.ChangeColor(Global.SettingData.Palette4));
+				canvasWindows.ForEach(w => w.ChangeColor(3));
 			}));
 
 			setHotkey(data.HotColor5, new Action(() =>
 			{
-				canvasWindows.ForEach(w => w.ChangeColor(Global.SettingData.Palette5));
+				canvasWindows.ForEach(w => w.ChangeColor(4));
 			}));
 
 			setHotkey(data.HotColor6, new Action(() =>
 			{
-				canvasWindows.ForEach(w => w.ChangeColor(Global.SettingData.Palette6));
+				canvasWindows.ForEach(w => w.ChangeColor(5));
 			}));
 
-			setHotkey(data.HotErase, new Action(() =>
+            setHotkey(data.HotSwapPalette, new Action(() =>
+            {
+                canvasWindows.ForEach(w => w.SwapPalette());
+            }));
+
+            setHotkey(data.HotErase, new Action(() =>
 			{
 				canvasWindows.ForEach(w => w.DrawingMode = Window1.DrawingModes.Erase);
 			}));
@@ -312,14 +317,34 @@ namespace ThePen
 				canvasWindows.ForEach(w => w.DrawingMode = Window1.DrawingModes.Draw);
 			}));
 
-			setHotkey(data.HotSelect, new Action(() =>
+			setHotkey(data.HotNormal, new Action(() =>
 			{
-				canvasWindows.ForEach(w => w.DrawingMode = Window1.DrawingModes.Select);
+				canvasWindows.ForEach(w => w.DrawingMode = Window1.DrawingModes.Normal);
 			}));
 
-			
+            setHotkey(data.HotClearNormal, new Action(() =>
+            {
+                canvasWindows.ForEach(w => w.ClearNormal());
+            }));
 
-			Hotkey.Hook(this, hotkeys);
+            setHotkey(data.HotBoard1, new Action(() =>
+            {
+                canvasWindows.ForEach(w => w.ToggleCurrentBoard(0));
+            }));
+
+            setHotkey(data.HotBoard2, new Action(() =>
+            {
+                canvasWindows.ForEach(w => w.ToggleCurrentBoard(1));
+            }));
+
+            setHotkey(data.HotBoard3, new Action(() =>
+            {
+                canvasWindows.ForEach(w => w.ToggleCurrentBoard(2));
+            }));
+
+
+
+            Hotkey.Hook(this, hotkeys);
 		}
 
 
@@ -375,7 +400,7 @@ namespace ThePen
 		private void SelectButton_Click(object sender, RoutedEventArgs e)
 		{
 			HideAllPopup();
-			canvasWindows.ForEach(w => w.DrawingMode = Window1.DrawingModes.Select);
+			canvasWindows.ForEach(w => w.DrawingMode = Window1.DrawingModes.Normal);
 		}
 
 		private void DrawButton_Click(object sender, RoutedEventArgs e)
@@ -611,37 +636,37 @@ namespace ThePen
 
 		private void ColorButton1_Click(object sender, RoutedEventArgs e)
 		{
-			canvasWindows.ForEach(w => w.ChangeColor(Global.SettingData.Palette1));
+			canvasWindows.ForEach(w => w.ChangeColor(0));
 			HideAllPopup();
 		}
 
 		private void ColorButton2_Click(object sender, RoutedEventArgs e)
 		{
-			canvasWindows.ForEach(w => w.ChangeColor(Global.SettingData.Palette2));
+			canvasWindows.ForEach(w => w.ChangeColor(1));
 			HideAllPopup();
 		}
 
 		private void ColorButton3_Click(object sender, RoutedEventArgs e)
 		{
-			canvasWindows.ForEach(w => w.ChangeColor(Global.SettingData.Palette3));
+			canvasWindows.ForEach(w => w.ChangeColor(2));
 			HideAllPopup();
 		}
 
 		private void ColorButton4_Click(object sender, RoutedEventArgs e)
 		{
-			canvasWindows.ForEach(w => w.ChangeColor(Global.SettingData.Palette4));
+			canvasWindows.ForEach(w => w.ChangeColor(3));
 			HideAllPopup();
 		}
 
 		private void ColorButton5_Click(object sender, RoutedEventArgs e)
 		{
-			canvasWindows.ForEach(w => w.ChangeColor(Global.SettingData.Palette5));
+			canvasWindows.ForEach(w => w.ChangeColor(4));
 			HideAllPopup();
 		}
 
 		private void ColorButton6_Click(object sender, RoutedEventArgs e)
 		{
-			canvasWindows.ForEach(w => w.ChangeColor(Global.SettingData.Palette6));
+			canvasWindows.ForEach(w => w.ChangeColor(5));
 			HideAllPopup();
 		}
 
@@ -674,7 +699,7 @@ namespace ThePen
 			canvasWindows.ForEach(w => w.ToggleOverlay1());
 			HideAllPopup();
 		}
-
+		
 		private void OverlayButton2_Click(object sender, RoutedEventArgs e)
 		{
 			canvasWindows.ForEach(w => w.ToggleOverlay2());
@@ -706,7 +731,7 @@ namespace ThePen
 		{
 			HideAllPopup();
 			string info =
-				"ThePen alpha8";
+				"ThePen alpha10";
 			MessageBox.Show(info);
 		}
 
@@ -745,7 +770,5 @@ namespace ThePen
 		{
 			canvasWindows[0].Activate();
 		}
-
-		
 	}
 }

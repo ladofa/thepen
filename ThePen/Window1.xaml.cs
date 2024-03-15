@@ -17,6 +17,9 @@ using System.Windows.Ink;
 
 using System.Diagnostics;
 using System.Security.Cryptography.Xml;
+using System.Windows.Media.Animation;
+using System.IO;
+
 
 namespace ThePen
 {
@@ -30,7 +33,15 @@ namespace ThePen
 			InitializeComponent();
 
 			//for undo/redo
-			Board.Strokes.StrokesChanged += Strokes_StrokesChanged;
+			undoMain = new UndoReDo(BoardMain);
+			undoInst1 = new UndoReDo(BoardInst1);
+            undoInst2 = new UndoReDo(BoardInst2);
+            
+
+			BoardMain.Strokes.StrokesChanged += undoMain.Strokes_StrokesChanged;
+			BoardInst1.Strokes.StrokesChanged += undoInst1.Strokes_StrokesChanged;
+            BoardInst2.Strokes.StrokesChanged += undoInst2.Strokes_StrokesChanged;
+			
 
 			//for mouse effect
 			MouseHook.MouseHookEvent += MouseHook_MouseHookEvent;
@@ -49,11 +60,14 @@ namespace ThePen
 			Overlay2.Apply("overlay2.txt");
 			Overlay3.Apply("overlay3.txt");
 			Overlay4.Apply("overlay4.txt");
+
+            
 		}
 
-		#region block touch
 
-		private void Window1_PreviewTouchUp(object sender, TouchEventArgs e)
+        #region block touch
+
+        private void Window1_PreviewTouchUp(object sender, TouchEventArgs e)
 		{
 			e.Handled = setting.BlockTouch;
 		}
@@ -93,6 +107,51 @@ namespace ThePen
 			MouseEffectErase.Width = setting.EraserSize;
             MouseEffectErase.Height = setting.EraserSize;
 
+            if (File.Exists("back3.png"))
+            {
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.UriSource = new Uri("back3.png", UriKind.RelativeOrAbsolute);
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                ImageBack.Source = bitmapImage;
+            }
+
+            BoardMain.DefaultDrawingAttributes = setting.Pen1;
+			BoardInst1.DefaultDrawingAttributes = setting.Pen2;
+            BoardInst2.DefaultDrawingAttributes = setting.Pen3;
+
+			ToggleCurrentBoard(0);
+			BoardVisibility = true;
+        }
+
+		public void SwapPalette()
+		{
+			Color nuColor;
+			if (prevColorIndex == -1)
+			{
+				nuColor = new Color[] {
+					setting.Qen1, setting.Qen2, setting.Qen3 }
+				[Global.CurrentPen - 1];
+
+
+			}
+			else
+			{
+				nuColor = new Color[] {
+				setting.Qalette1,
+				setting.Qalette2,
+				setting.Qalette3,
+				setting.Qalette4,
+				setting.Qalette5,
+				setting.Qalette6
+				}[prevColorIndex];
+
+			}
+
+            CurrentBoard.DefaultDrawingAttributes.Color = nuColor;
+            ColorChanged?.Invoke(this, nuColor);
+            setting.SwapPalette();
         }
 
 		public delegate void MainPenChangedEventHandler(object sender, int num);
@@ -106,20 +165,70 @@ namespace ThePen
 				setting.Pen2,
 				setting.Pen3,
 			};
-			Board.DefaultDrawingAttributes = pens[num - 1].Clone();
-			previousPen = Board.DefaultDrawingAttributes.Clone();
+
+			CurrentBoard.DefaultDrawingAttributes = pens[num - 1].Clone();
+			PreviousPen = CurrentBoard.DefaultDrawingAttributes.Clone();
 			MainPenChanged?.Invoke(this, num);
-		}
+            prevColorIndex = -1;
+        }
 
 		public delegate void ColorChangedEventHandler(object sender, Color color);
 		public event ColorChangedEventHandler ColorChanged;
-		public void ChangeColor(Color color)
-		{
-			Board.DefaultDrawingAttributes.Color = color;
-			ColorChanged?.Invoke(this, color);
-		}
 
-		private DrawingAttributes previousPen;
+		private int prevColorIndex = -1; //for palette change, -1 means using original pen color
+		public void ChangeColor(int colorIndex)
+		{
+			Color color = new Color[] {
+				setting.Palette1,
+				setting.Palette2,
+				setting.Palette3,
+				setting.Palette4,
+				setting.Palette5,
+				setting.Palette6
+			}[colorIndex];
+			CurrentBoard.DefaultDrawingAttributes.Color = color;
+            ColorChanged?.Invoke(this, color);
+            prevColorIndex = colorIndex;
+        }
+
+		private DrawingAttributes previousPenMain;
+        private DrawingAttributes previousPenInst1;
+        private DrawingAttributes previousPenInst2;
+
+        private DrawingAttributes PreviousPen
+		{
+			get
+			{
+				if (CurrentBoard == BoardMain)
+				{
+					return previousPenMain;
+				}
+				else if (CurrentBoard == BoardInst1)
+				{
+					return previousPenInst1;
+				}
+				else
+				{
+					return previousPenInst2;
+				}
+			}
+
+			set
+			{
+				if (CurrentBoard == BoardMain)
+				{
+					previousPenMain = value;
+				}
+				else if (CurrentBoard == BoardInst1)
+				{
+					previousPenInst1 = value;
+				}
+				else
+				{
+					previousPenInst2 = value;
+				}
+			}
+		}
 
 		bool isPressed = false;
 		protected override void OnPreviewKeyDown(KeyEventArgs e)
@@ -140,7 +249,7 @@ namespace ThePen
 
 			//all code must be behind here.
 
-			previousPen = Board.DefaultDrawingAttributes.Clone();
+			PreviousPen = CurrentBoard.DefaultDrawingAttributes.Clone();
 
 			if (e.Key == setting.OneErase)
 			{
@@ -156,9 +265,13 @@ namespace ThePen
 				Undo(null, null);
 			}
 
-			else if (e.Key == setting.OneSelect)
+			else if (e.Key == setting.OneNormal)
 			{
-				DrawingMode = DrawingModes.Select;
+				DrawingMode = DrawingModes.Normal;
+			}
+			else if (e.Key == setting.OneClearNormal)
+			{
+				ClearNormal();
 			}
 			else if (e.Key == setting.OneStampX)
 			{
@@ -200,27 +313,31 @@ namespace ThePen
 
 			else if (e.Key == setting.OneColor1)
 			{
-				ChangeColor(setting.Palette1);
+				ChangeColor(0);
 			}
 			else if (e.Key == setting.OneColor2)
 			{
-				ChangeColor(setting.Palette2);
+				ChangeColor(1);
 			}
 			else if (e.Key == setting.OneColor3)
 			{
-				ChangeColor(setting.Palette3);
+				ChangeColor(2);
 			}
 			else if (e.Key == setting.OneColor4)
 			{
-				ChangeColor(setting.Palette4);
+				ChangeColor(3);
 			}
 			else if (e.Key == setting.OneColor5)
 			{
-				ChangeColor(setting.Palette5);
+				ChangeColor(4);
 			}
 			else if (e.Key == setting.OneColor6)
 			{
-				ChangeColor(setting.Palette6);
+				ChangeColor(5);
+			}
+			else if (e.Key == setting.OneSwapPalette)
+			{
+				SwapPalette();
 			}
 			else if (e.Key == setting.OnePen1)
 			{
@@ -244,6 +361,13 @@ namespace ThePen
 			Global.KeyPressed = true;
 		}
 
+		public void ClearNormal()
+		{
+			CurrentBoard.Strokes.Clear();
+			BoardVisibility = false;
+			DrawingMode = DrawingModes.Normal;
+		}
+
 		
 
 		protected override void OnLostFocus(RoutedEventArgs e)
@@ -251,7 +375,7 @@ namespace ThePen
 			base.OnLostFocus(e);
 			if (setting.EasySwitch)
 			{ 
-				DrawingMode = DrawingModes.Select;
+				DrawingMode = DrawingModes.Normal;
 			}
 			Global.KeyPressed = false;
 		}
@@ -379,33 +503,140 @@ namespace ThePen
 			{
 				if (e.ExtraInfo == (IntPtr)(0))
 				{
-					if (drawingMode != DrawingModes.Select)
+					if (drawingMode != DrawingModes.Normal)
 					{
-						DrawingMode = DrawingModes.Select;
+						DrawingMode = DrawingModes.Normal;
 					}
 				}
 				else
 				{
-					if (drawingMode == DrawingModes.Select)
+					if (drawingMode == DrawingModes.Normal)
 					{
 						DrawingMode = DrawingModes.Draw;
 					}
 				}
 			}
 		}
-		#endregion
+        #endregion
 
 
-		//private void Window_SourceInitialized(object sender, EventArgs e)
-		//{
-		//    base.OnSourceInitialized(e);
-		//    var hwnd = new WindowInteropHelper(this).Handle;
-		//    WindowsService.SetWindowExTransparent(hwnd);
-		//}
+        //private void Window_SourceInitialized(object sender, EventArgs e)
+        //{
+        //    base.OnSourceInitialized(e);
+        //    var hwnd = new WindowInteropHelper(this).Handle;
+        //    WindowsService.SetWindowExTransparent(hwnd);
+        //}
+
+
+        #region Board
+        InkCanvas currentBoard2;
+
+        InkCanvas CurrentBoard
+        {
+            get
+            {
+				if (currentBoard2 == null)
+					currentBoard2 = BoardMain;
+                return currentBoard2;
+            }
+        }
+
+        public void ToggleCurrentBoard(int  boardId)
+		{
+			if (boardId == 0)
+			{
+				//select same board again
+				if (CurrentBoard == BoardMain && DrawingMode == DrawingModes.Draw)
+                {
+					BoardVisibility = !BoardVisibility;
+					DrawingMode = DrawingModes.Normal;
+				}
+				//must turn on
+				else
+				{
+					BoardVisibility = true;
+                    DrawingMode = DrawingModes.Draw;
+                }
+
+				currentBoard2 = BoardMain;
+                BoardMain.Visibility = Visibility.Visible;
+                BoardInst1.Visibility = Visibility.Collapsed;
+                GridBoard2.Visibility = Visibility.Collapsed;
+            }
+			else if (boardId == 1)
+			{
+                if (CurrentBoard == BoardInst1 && DrawingMode == DrawingModes.Draw)
+                {
+                    BoardVisibility = !BoardVisibility;
+                    DrawingMode = DrawingModes.Normal;
+                }
+                else
+                {
+                    BoardVisibility = true;
+					DrawingMode = DrawingModes.Draw;
+
+                }
+
+                currentBoard2 = BoardInst1;
+                BoardMain.Visibility = Visibility.Collapsed;
+                BoardInst1.Visibility = Visibility.Visible;
+                GridBoard2.Visibility = Visibility.Collapsed;
+            }
+            else if (boardId == 2)
+            {
+                if (CurrentBoard == BoardInst2 && DrawingMode == DrawingModes.Draw)
+                {
+                    BoardVisibility = !BoardVisibility;
+                    DrawingMode = DrawingModes.Normal;
+                }
+                else
+                {
+                    BoardVisibility = true;
+					DrawingMode = DrawingModes.Draw;
+
+                }
+
+                currentBoard2 = BoardInst2;
+                BoardMain.Visibility = Visibility.Collapsed;
+                BoardInst1.Visibility = Visibility.Collapsed;
+                GridBoard2.Visibility = Visibility.Visible;
+            }
+
+            ColorChanged?.Invoke(this, CurrentBoard.DefaultDrawingAttributes.Color);
+        }
 
 		
+        public bool BoardVisibility
+		{
+			set
+			{
+				if (value)
+				{
+					GridBoard.Visibility = Visibility;
+				}
+				else
+				{
+					GridBoard.Visibility = Visibility.Collapsed;
+				}
+			}
 
-		//--------------------------------------------------------------------------
+			get
+			{
+				return GridBoard.Visibility == Visibility.Visible;
+			}
+		}
+			
+
+
+
+        #endregion
+
+
+        //--------------------------------------------------------------------------
+
+        DrawingModes previousMainDrawingMode = DrawingModes.Normal;
+		
+
 
 		public void SetDrawingArea(Rect rectWindow, Rect rectBoard)
 		{
@@ -416,12 +647,12 @@ namespace ThePen
 
 		public enum DrawingModes
 		{
-			Select,
+			Normal,
 			Draw,
 			Erase
 		}
 
-		DrawingModes drawingMode = DrawingModes.Select;
+		DrawingModes drawingMode = DrawingModes.Normal;
 
 		public event EventHandler DrawingModeChanged;
 		public DrawingModes DrawingMode
@@ -431,73 +662,58 @@ namespace ThePen
 			{
 				if (value == DrawingModes.Erase)
 				{
-					Board.EditingMode = InkCanvasEditingMode.None;
-					Board.EditingMode = InkCanvasEditingMode.EraseByStroke;
+                    CurrentBoard.EditingMode = InkCanvasEditingMode.None;
+                    CurrentBoard.EditingMode = InkCanvasEditingMode.EraseByStroke;
 					MouseEffectErase.Visibility = Visibility.Visible;
-                    Board.EraserShape = new EllipseStylusShape(setting.EraserSize, setting.EraserSize);
+                    CurrentBoard.EraserShape = new EllipseStylusShape(setting.EraserSize, setting.EraserSize);
                 }
 				else
 				{
-					Board.EditingMode = InkCanvasEditingMode.Ink;
+                    CurrentBoard.EditingMode = InkCanvasEditingMode.Ink;
 					MouseEffectErase.Visibility = Visibility.Collapsed;
-                    Board.EraserShape = new EllipseStylusShape(2, 2);
+                    CurrentBoard.EraserShape = new EllipseStylusShape(2, 2);
                 }
 
 				bool drawing = true;
-				if (value == DrawingModes.Select)
+				if (value == DrawingModes.Normal)
 				{
 					drawing = false;
 				}
 
 				if (drawing)
 				{
-					BackBoard.Fill = new SolidColorBrush(Color.FromArgb(1, 0, 0, 0));
+                    this.Activate();
+                    BackBoard.Fill = new SolidColorBrush(Color.FromArgb(1, 0, 0, 0));
 					Overlay.Visibility = Visibility.Collapsed;
-					Board.Focus();
-				}
+                    CurrentBoard.Focus();
+                    if (BoardVisibility == false) { BoardVisibility = true; }
+                }
 				else
 				{
 					BackBoard.Fill = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
 					Overlay.Visibility = Visibility.Visible;
-
+					if (CurrentBoard == BoardInst2 && BoardVisibility) BoardVisibility = false;
 				}
 
-				//IsHitTestVisible = drawing;
-				Board.IsHitTestVisible = drawing;
-				//IsEnabled = drawing;
-				Board.IsEnabled = drawing;
+                //IsHitTestVisible = drawing;
+                //CurrentBoard.IsHitTestVisible = drawing;
+                //IsEnabled = drawing;
+                //CurrentBoard.IsEnabled = drawing;
+
 				Focusable = drawing;
 				//Board.Focusable = drawing;
-
-				this.Activate();
-				Board.Focus();
 
 				drawingMode = value;
 				DrawingModeChanged?.Invoke(this, new EventArgs());
 			}
 		}
+		
+			
 
-		public bool DrawingVisibility
+
+        public void ClearAll()
 		{
-			get => Board.Visibility == Visibility.Visible;
-
-			set
-			{
-				if (value)
-				{
-					Board.Visibility = Visibility.Visible;
-				}
-				else
-				{
-					Board.Visibility = Visibility.Hidden;
-				}
-			}
-		}
-
-
-		public void ClearAll()
-		{
-			Board.Strokes.Clear();
+            CurrentBoard.Strokes.Clear();
 
 			//var s = new System.Windows.Ink.Stroke(new StylusPointCollection(new List<Point> {
 			//	new Point(0, 0), new Point(100, 100)}))
@@ -513,60 +729,108 @@ namespace ThePen
 		#region undo/redo
 		//thanks to https://stackoverflow.com/questions/6368517/undo-redo-command-stack-for-inkBoard/52911463#52911463
 
-		List<System.Windows.Ink.StrokeCollection> _added = new();
-		List<System.Windows.Ink.StrokeCollection> _removed = new();
-		List<System.Windows.Ink.StrokeCollection> _added_redo = new();
-		List<System.Windows.Ink.StrokeCollection> _removed_redo = new();
 
-		private bool handle = true;
 
-		private void Strokes_StrokesChanged(object sender, System.Windows.Ink.StrokeCollectionChangedEventArgs e)
-		{
-			if (handle)
+		UndoReDo undoMain;
+        UndoReDo undoInst1;
+        UndoReDo undoInst2;
+        UndoReDo undoInst3;
+		
+        public void Undo(object sender, RoutedEventArgs e)
+        {
+			
+            var undos = new List<UndoReDo> { undoMain, undoInst1, undoInst2, undoInst3 };
+			foreach (var undo in undos)
 			{
-				_added.Add(e.Added);
-				_removed.Add(e.Removed);
-				_added_redo.Clear();
-				_removed_redo.Clear();
-
-				if (_added.Count > 1000)
+				if (undo.Board ==  CurrentBoard)
 				{
-					_added.RemoveAt(0);
-					_removed.RemoveAt(0);
+					undo.Undo(sender, e);
 				}
 			}
 		}
 
+        public void Redo(object sender, RoutedEventArgs e)
+        {
 
-		internal void Undo(object sender, RoutedEventArgs e)
-		{
-			if (_added.Count == 0) return;
-			handle = false;
-			var a = _added.Last();
-			var r = _removed.Last();
-			Board.Strokes.Remove(a);
-			Board.Strokes.Add(r);
-			_added_redo.Add(a);
-			_removed_redo.Add(r);
-			_added.RemoveAt(_added.Count - 1);
-			_removed.RemoveAt(_removed.Count - 1);
-			handle = true;
-		}
+            var undos = new List<UndoReDo> { undoMain, undoInst1, undoInst2, undoInst3 };
+            foreach (var undo in undos)
+            {
+                if (undo.Board == CurrentBoard)
+                {
+                    undo.Redo(sender, e);
+                }
+            }
+        }
 
-		internal void Redo(object sender, RoutedEventArgs e)
+        class UndoReDo
 		{
-			if (_added_redo.Count == 0) return;
-			handle = false;
-			var a = _added_redo.Last();
-			var r = _removed_redo.Last();
-			Board.Strokes.Add(a);
-			Board.Strokes.Remove(r);
-			_added.Add(a);
-			_removed.Add(r);
-			_added_redo.RemoveAt(_added_redo.Count - 1);
-			_removed_redo.RemoveAt(_removed_redo.Count - 1);
-			handle = true;
-		}
+            private bool handle = true;
+
+            List<System.Windows.Ink.StrokeCollection> _added = new();
+            List<System.Windows.Ink.StrokeCollection> _removed = new();
+            List<System.Windows.Ink.StrokeCollection> _added_redo = new();
+            List<System.Windows.Ink.StrokeCollection> _removed_redo = new();
+
+			public InkCanvas Board;
+
+			public UndoReDo(InkCanvas board)
+			{
+				Board = board;
+			}
+
+            public  void Strokes_StrokesChanged(object sender, System.Windows.Ink.StrokeCollectionChangedEventArgs e)
+			{
+                if (handle)
+                {
+                    _added.Add(e.Added);
+                    _removed.Add(e.Removed);
+                    _added_redo.Clear();
+                    _removed_redo.Clear();
+
+                    if (_added.Count > 1000)
+                    {
+                        _added.RemoveAt(0);
+                        _removed.RemoveAt(0);
+                    }
+                }
+            }
+
+
+            public void Undo(object sender, RoutedEventArgs e)
+            {
+                if (_added.Count == 0) return;
+                handle = false;
+                var a = _added.Last();
+                var r = _removed.Last();
+                Board.Strokes.Remove(a);
+                Board.Strokes.Add(r);
+                _added_redo.Add(a);
+                _removed_redo.Add(r);
+                _added.RemoveAt(_added.Count - 1);
+                _removed.RemoveAt(_removed.Count - 1);
+                handle = true;
+            }
+
+
+            public void Redo(object sender, RoutedEventArgs e)
+            {
+                if (_added_redo.Count == 0) return;
+                handle = false;
+                var a = _added_redo.Last();
+                var r = _removed_redo.Last();
+                Board.Strokes.Add(a);
+                Board.Strokes.Remove(r);
+                _added.Add(a);
+                _removed.Add(r);
+                _added_redo.RemoveAt(_added_redo.Count - 1);
+                _removed_redo.RemoveAt(_removed_redo.Count - 1);
+                handle = true;
+            }
+
+        }
+
+		
+
 		#endregion
 
 		#region stamp
@@ -607,7 +871,7 @@ namespace ThePen
 		{
 			double width = setting.StampWidth;
 			double w2 = width / 2;
-			var center = Mouse.GetPosition(Board);
+			var center = Mouse.GetPosition(CurrentBoard);
 			double left = center.X - w2;
 			double top = center.Y - w2;
 			double right = left + width;
@@ -619,7 +883,7 @@ namespace ThePen
 			}))
 			{
 
-				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+				DrawingAttributes = CurrentBoard.DefaultDrawingAttributes.Clone()
 			};
 
 			var s2 = new System.Windows.Ink.Stroke(new StylusPointCollection(new List<Point>
@@ -628,18 +892,18 @@ namespace ThePen
 			}))
 			{
 
-				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+				DrawingAttributes = CurrentBoard.DefaultDrawingAttributes.Clone()
 			};
 
-			Board.Strokes.Add(s1);
-			Board.Strokes.Add(s2);
+            CurrentBoard.Strokes.Add(s1);
+            CurrentBoard.Strokes.Add(s2);
 		}
 
 		private void StampO()
 		{
 			double width = setting.StampWidth;
 			double w2 = width / 2;
-			var center = Mouse.GetPosition(Board);
+			var center = Mouse.GetPosition(CurrentBoard);
 			var cx = center.X;
 			var cy = center.Y;
 
@@ -658,17 +922,17 @@ namespace ThePen
 			))
 			{
 
-				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+				DrawingAttributes = CurrentBoard.DefaultDrawingAttributes.Clone()
 			};
 
-			Board.Strokes.Add(s1);
+            CurrentBoard.Strokes.Add(s1);
 		}
 
 		private void StampDot()
 		{
 			double width = setting.StampWidth;
 			double w2 = width / 2;
-			var center = Mouse.GetPosition(Board);
+			var center = Mouse.GetPosition(CurrentBoard);
 			double left = center.X - w2;
 			double top = center.Y - w2;
 			double right = left + width;
@@ -681,17 +945,17 @@ namespace ThePen
 			}))
 			{
 
-				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+				DrawingAttributes = CurrentBoard.DefaultDrawingAttributes.Clone()
 			};
 
-			Board.Strokes.Add(s1);
+            CurrentBoard.Strokes.Add(s1);
 		}
 
 		private void StampTri()
 		{
 			double width = setting.StampWidth;
 			double w2 = width / 2;
-			var center = Mouse.GetPosition(Board);
+			var center = Mouse.GetPosition(CurrentBoard);
 			var cx = center.X;
 			var cy = center.Y;
 
@@ -709,10 +973,10 @@ namespace ThePen
 				points
 			))
 			{
-				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+				DrawingAttributes = CurrentBoard.DefaultDrawingAttributes.Clone()
 			};
 
-			Board.Strokes.Add(s1);
+            CurrentBoard.Strokes.Add(s1);
 		}
 
 		#endregion
@@ -758,7 +1022,7 @@ namespace ThePen
 
 			foreach (var stroke in BoardTemp.Strokes)
 			{
-				Board.Strokes.Add(stroke);
+				CurrentBoard.Strokes.Add(stroke);
 			}
 
 			BoardTemp.Strokes.Clear();
@@ -777,7 +1041,7 @@ namespace ThePen
 			if (!shapePushed)
 				return;
 
-			var p = Mouse.GetPosition(Board);
+			var p = Mouse.GetPosition(CurrentBoard);
 
 			if (true)
 			{
@@ -812,18 +1076,18 @@ namespace ThePen
 		private void ShapeLineArea_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			shapePushed = true;
-			var center = Mouse.GetPosition(Board);
+			var center = Mouse.GetPosition(CurrentBoard);
 			var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
 				new List<Point>{ center, center}
 			))
 			{
-				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+				DrawingAttributes = CurrentBoard.DefaultDrawingAttributes.Clone()
 			};
 
 			shapeStroke = s1;
 			shapeStartPoint = center;
 
-			Board.Strokes.Add(s1);
+			CurrentBoard.Strokes.Add(s1);
 		}
 
 		private void ShapeLineArea_MouseUp(object sender, MouseButtonEventArgs e)
@@ -847,7 +1111,7 @@ namespace ThePen
 			if (!shapePushed)
 				return;
 
-			var p = Mouse.GetPosition(Board);
+			var p = Mouse.GetPosition(CurrentBoard);
 
 			shapeStroke.StylusPoints[1] = new StylusPoint(p.X, p.Y);
         }
@@ -856,18 +1120,18 @@ namespace ThePen
 		{
 
 			shapePushed = true;
-			var center = Mouse.GetPosition(Board);
+			var center = Mouse.GetPosition(CurrentBoard);
 			var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
 				new List<Point> { center, center }
 			))
 			{
-				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+				DrawingAttributes = CurrentBoard.DefaultDrawingAttributes.Clone()
 			};
 
 			shapeStroke = s1;
 			shapeStartPoint = center;
 
-			Board.Strokes.Add(s1);
+			CurrentBoard.Strokes.Add(s1);
 		}
 
 		private void ShapeLine2Area_MouseUp(object sender, MouseButtonEventArgs e)
@@ -900,7 +1164,7 @@ namespace ThePen
 			if (!shapePushed)
 				return;
 
-			var p = Mouse.GetPosition(Board);
+			var p = Mouse.GetPosition(CurrentBoard);
 			var r = ((Vector)(p - shapeStartPoint)).Length / 2;
 
 			List<Point> points = new();
@@ -932,18 +1196,18 @@ namespace ThePen
 		private void ShapeEllipseArea_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			shapePushed = true;
-			var center = Mouse.GetPosition(Board);
+			var center = Mouse.GetPosition(CurrentBoard);
 
 			var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
 				new List<Point> { center, center }
 			))
 			{
-				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+				DrawingAttributes = CurrentBoard.DefaultDrawingAttributes.Clone()
 			};
 
 			shapeStroke = s1;
 			shapeStartPoint = center;
-			Board.Strokes.Add(s1);
+			CurrentBoard.Strokes.Add(s1);
 		}
 
 		private void ShapeEllipseArea_MouseUp(object sender, MouseButtonEventArgs e)
@@ -963,7 +1227,7 @@ namespace ThePen
 			if (!shapePushed)
 				return;
 
-			var p = Mouse.GetPosition(Board);
+			var p = Mouse.GetPosition(CurrentBoard);
 
 			double x1 = p.X;
 			double y1 = p.Y;
@@ -985,18 +1249,18 @@ namespace ThePen
 		private void ShapeRectangleArea_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			shapePushed = true;
-			var center = Mouse.GetPosition(Board);
+			var center = Mouse.GetPosition(CurrentBoard);
 
 			var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
 				new List<Point> { center, center }
 			))
 			{
-				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+				DrawingAttributes = CurrentBoard.DefaultDrawingAttributes.Clone()
 			};
 
 			shapeStroke = s1;
 			shapeStartPoint = center;
-			Board.Strokes.Add(s1);
+			CurrentBoard.Strokes.Add(s1);
 		}
 
 		private void ShapeRectangleArea_MouseUp(object sender, MouseButtonEventArgs e)
@@ -1052,7 +1316,7 @@ namespace ThePen
 			if (shapeGridCopyMode)
 			{
 				//check current area
-				var p = Mouse.GetPosition(Board);
+				var p = Mouse.GetPosition(CurrentBoard);
 				var v = p - shapeStartPoint;
 
 				int gx = (int)(v.X / shapeGridW);
@@ -1077,7 +1341,7 @@ namespace ThePen
 						stroke
 						))
 						{
-							DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+							DrawingAttributes = CurrentBoard.DefaultDrawingAttributes.Clone()
 						};
 						BoardTemp.Strokes.Add(s1);
 					}
@@ -1085,7 +1349,7 @@ namespace ThePen
 			}
 			else if (shapePushed)
 			{
-				var p = Mouse.GetPosition(Board);
+				var p = Mouse.GetPosition(CurrentBoard);
 
 				double x1 = p.X;
 				double y1 = p.Y;
@@ -1114,7 +1378,7 @@ namespace ThePen
 			{
 				foreach (var stroke in BoardTemp.Strokes)
 				{
-					Board.Strokes.Add(stroke);
+                    CurrentBoard.Strokes.Add(stroke);
 				}
 
 				BoardTemp.Strokes.Clear();
@@ -1125,13 +1389,13 @@ namespace ThePen
 			shapePushed = true;
 			shapeGridCopyMode = false;
 
-			var center = Mouse.GetPosition(Board);
+			var center = Mouse.GetPosition(CurrentBoard);
 
 			var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
 				new List<Point> { center, center }
 			))
 			{
-				DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+				DrawingAttributes = CurrentBoard.DefaultDrawingAttributes.Clone()
 			};
 
 			shapeStroke = s1;
@@ -1159,7 +1423,7 @@ namespace ThePen
 
 			BoardTemp.Strokes.Clear();
 
-			var p = Mouse.GetPosition(Board);
+			var p = Mouse.GetPosition(CurrentBoard);
 
 			shapeGridW = Math.Max(Math.Abs(p.X - shapeStartPoint.X), 15);
 			shapeGridH = Math.Max(Math.Abs(p.Y - shapeStartPoint.Y), 15);
@@ -1245,7 +1509,9 @@ namespace ThePen
 
         #endregion
 
-		private void drawArrow(Point center, double dx = 0, double dy = 0)
+        #region arrow
+
+        private void drawArrow(Point center, double dx = 0, double dy = 0)
 		{
 			if (dx == 0 && dy == 0)
 			{
@@ -1268,10 +1534,10 @@ namespace ThePen
                 new List<Point> { center, leftWing }
             ))
             {
-                DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+                DrawingAttributes = CurrentBoard.DefaultDrawingAttributes.Clone()
             };
 
-            Board.Strokes.Add(s1);
+            CurrentBoard.Strokes.Add(s1);
 
             //+135
             double rightWingX = Math.Cos(rad + Math.PI * 0.75) * size + cx;
@@ -1282,22 +1548,23 @@ namespace ThePen
                 new List<Point> { center, rightWing }
             ))
             {
-                DrawingAttributes = Board.DefaultDrawingAttributes.Clone()
+                DrawingAttributes = CurrentBoard.DefaultDrawingAttributes.Clone()
             };
 
-            Board.Strokes.Add(s1);
+            CurrentBoard.Strokes.Add(s1);
         }
 
         private void Board_MouseUp(object sender, MouseButtonEventArgs e)
         {
 			if (ArrowMode)
 			{
-                var center = Mouse.GetPosition(Board);
+                var center = Mouse.GetPosition(CurrentBoard);
 				drawArrow(center);
             }
         }
+        #endregion
 
-   
+
 
         private void Board_StylusDown(object sender, StylusDownEventArgs e)
         {
@@ -1320,6 +1587,46 @@ namespace ThePen
             Point p = Mouse.GetPosition(this);
             Canvas.SetLeft(MouseEffectEraseGroup, p.X - 100);
             Canvas.SetTop(MouseEffectEraseGroup, p.Y - 100);
+
+			Debug.WriteLine(DrawingMode);
         }
+
+        private void BoardMain_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
+
+        private void BoardMain_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (System.Windows.Input.Keyboard.IsKeyDown(setting.OneErase))
+            {
+                DrawingMode = DrawingModes.Erase;
+            }
+            else
+            {
+                DrawingMode = DrawingModes.Draw;
+            }
+
+            //https://stackoverflow.com/questions/2421304/raising-wpf-mouseleftbuttondownevent-event-programmatically
+            CurrentBoard.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+            {
+                RoutedEvent = Mouse.MouseUpEvent,
+                Source = sender,
+            });
+        }
+
+        private void BoardMain_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DrawingMode = DrawingModes.Erase;
+
+            
+            CurrentBoard.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+            {
+                RoutedEvent = Mouse.MouseDownEvent,
+                Source = sender,
+            });
+        }
+
+        
     }
 }

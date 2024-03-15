@@ -36,24 +36,43 @@ namespace ThePen
 					SettingPen2.Value = value.Pen2;
 					SettingPen3.Value = value.Pen3;
 
-					Palette1.Value = value.Palette1;
-					Palette2.Value = value.Palette2;
-					Palette3.Value = value.Palette3;
-					Palette4.Value = value.Palette4;
-					Palette5.Value = value.Palette5;
-					Palette6.Value = value.Palette6;
+					SettingPen1.SecondColor = value.Qen1;
+                    SettingPen2.SecondColor = value.Qen2;
+                    SettingPen3.SecondColor = value.Qen3;
 
-					HotKeyColor1.Value = value.HotColor1;
+
+
+                    Palette1.Value = value.Palette1;
+                    Palette2.Value = value.Palette2;
+                    Palette3.Value = value.Palette3;
+                    Palette4.Value = value.Palette4;
+                    Palette5.Value = value.Palette5;
+                    Palette6.Value = value.Palette6;
+
+                    Palette1.SecondValue = value.Qalette1;
+					Palette2.SecondValue = value.Qalette2;
+					Palette3.SecondValue = value.Qalette3;
+					Palette4.SecondValue = value.Qalette4;
+					Palette5.SecondValue = value.Qalette5;
+					Palette6.SecondValue = value.Qalette6;
+
+                    HotKeyBoard1.Value = value.HotBoard1;
+                    HotKeyBoard2.Value = value.HotBoard2;
+                    HotKeyBoard3.Value = value.HotBoard3;
+
+                    HotKeyColor1.Value = value.HotColor1;
 					HotKeyColor2.Value = value.HotColor2;
 					HotKeyColor3.Value = value.HotColor3;
 					HotKeyColor4.Value = value.HotColor4;
 					HotKeyColor5.Value = value.HotColor5;
 					HotKeyColor6.Value = value.HotColor6;
-					//HotKeyStampX.Value = value.HotStampX;
-					//HotKeyStampO.Value = value.HotStampO;
-					//HotKeyStampTri.Value = value.HotStampTri;
-					//HotKeyStampDot.Value = value.HotStampDot;
-					HotKeyErase.Value = value.HotErase;
+                    HotKeySwapPalette.Value = value.HotSwapPalette;
+
+                    //HotKeyStampX.Value = value.HotStampX;
+                    //HotKeyStampO.Value = value.HotStampO;
+                    //HotKeyStampTri.Value = value.HotStampTri;
+                    //HotKeyStampDot.Value = value.HotStampDot;
+                    HotKeyErase.Value = value.HotErase;
 					HotKeyOverlay1.Value = value.HotOverlay1;
 					HotKeyOverlay2.Value = value.HotOverlay2;
 					HotKeyOverlay3.Value = value.HotOverlay3;
@@ -61,8 +80,9 @@ namespace ThePen
 					HotKeyPen1.Value = value.HotPen1;
 					HotKeyPen2.Value = value.HotPen2;
 					HotKeyPen3.Value = value.HotPen3;
-					HotKeySelect.Value = value.HotSelect;
-					HotKeyClear.Value = value.HotClear;
+					HotKeyNormal.Value = value.HotNormal;
+                    HotKeyClearNormal.Value = value.HotClearNormal;
+                    HotKeyClear.Value = value.HotClear;
 					HotKeyUndo.Value = value.HotUndo;
 
 					OneKeyColor1.Value = value.OneColor1;
@@ -71,6 +91,7 @@ namespace ThePen
 					OneKeyColor4.Value = value.OneColor4;
 					OneKeyColor5.Value = value.OneColor5;
 					OneKeyColor6.Value = value.OneColor6;
+					OneKeySwapPalette.Value = value.OneSwapPalette;
 					OneKeyErase.Value = value.OneErase;
 					OneKeyOverlay1.Value = value.OneOverlay1;
 					OneKeyOverlay2.Value = value.OneOverlay2;
@@ -89,7 +110,8 @@ namespace ThePen
 					OneKeyPen1.Value = value.OnePen1;
 					OneKeyPen2.Value = value.OnePen2;
 					OneKeyPen3.Value = value.OnePen3;
-					OneKeySelect.Value = value.OneSelect;
+					OneKeyNormal.Value = value.OneNormal;
+					OneKeyClearNormal.Value = value.OneClearNormal;
 					OneKeyClear.Value = value.OneClear;
 					OneKeyUndo.Value = value.OneUndo;
 					ImmeRadioButton.IsChecked = value.OneKeyImme;
@@ -144,12 +166,27 @@ namespace ThePen
 				Pen2 = SettingPen2.Value,
 				Pen3 = SettingPen3.Value,
 
-				Palette1 = Palette1.Value,
+				Qen1 = SettingPen1.SecondColor,
+                Qen2 = SettingPen2.SecondColor,
+                Qen3 = SettingPen3.SecondColor,
+
+                Palette1 = Palette1.Value,
 				Palette2 = Palette2.Value,
 				Palette3 = Palette3.Value,
 				Palette4 = Palette4.Value,
 				Palette5 = Palette5.Value,
 				Palette6 = Palette6.Value,
+
+                Qalette1 = Palette1.SecondValue,
+                Qalette2 = Palette2.SecondValue,
+                Qalette3 = Palette3.SecondValue,
+                Qalette4 = Palette4.SecondValue,
+                Qalette5 = Palette5.SecondValue,
+                Qalette6 = Palette6.SecondValue,
+
+                HotBoard1 = HotKeyBoard1.Value,
+                HotBoard2 = HotKeyBoard2.Value,
+                HotBoard3 = HotKeyBoard3.Value,
 
 				HotColor1 = HotKeyColor1.Value,
 				HotColor2 = HotKeyColor2.Value,
@@ -157,6 +194,7 @@ namespace ThePen
 				HotColor4 = HotKeyColor4.Value,
 				HotColor5 = HotKeyColor5.Value,
 				HotColor6 = HotKeyColor6.Value,
+				HotSwapPalette = HotKeySwapPalette.Value,
 				//HotStampX = HotKeyStampX.Value,
 				//HotStampO = HotKeyStampO.Value,
 				//HotStampTri = HotKeyStampTri.Value,
@@ -169,8 +207,9 @@ namespace ThePen
 				HotPen1 = HotKeyPen1.Value,
 				HotPen2 = HotKeyPen2.Value,
 				HotPen3 = HotKeyPen3.Value,
-				HotSelect = HotKeySelect.Value,
-				HotClear = HotKeyClear.Value,
+				HotNormal = HotKeyNormal.Value,
+                HotClearNormal = HotKeyClearNormal.Value,
+                HotClear = HotKeyClear.Value,
 				HotUndo = HotKeyUndo.Value,
 
 				OneColor1 = OneKeyColor1.Value,
@@ -179,6 +218,7 @@ namespace ThePen
 				OneColor4 = OneKeyColor4.Value,
 				OneColor5 = OneKeyColor5.Value,
 				OneColor6 = OneKeyColor6.Value,
+				OneSwapPalette = OneKeySwapPalette.Value,
 				OneErase = OneKeyErase.Value,
 				OneOverlay1 = OneKeyOverlay1.Value,
 				OneOverlay2 = OneKeyOverlay2.Value,
@@ -197,7 +237,8 @@ namespace ThePen
 				OnePen1 = OneKeyPen1.Value,
 				OnePen2 = OneKeyPen2.Value,
 				OnePen3 = OneKeyPen3.Value,
-				OneSelect = OneKeySelect.Value,
+				OneNormal = OneKeyNormal.Value,
+				OneClearNormal = OneKeyClearNormal.Value,
 				OneClear = OneKeyClear.Value,
 				OneUndo = OneKeyUndo.Value,
 				OneKeyImme = ImmeRadioButton.IsChecked.Value,

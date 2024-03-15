@@ -33,6 +33,7 @@ namespace ThePen
 				R = (byte)Picker.Color.RGB_R,
 				G = (byte)Picker.Color.RGB_G,
 				B = (byte)Picker.Color.RGB_B,
+
 			};
 
 			set
@@ -41,7 +42,27 @@ namespace ThePen
 				Picker.Color.RGB_R = value.R;
 				Picker.Color.RGB_G = value.G;
 				Picker.Color.RGB_B = value.B;
-			}
+            }
 		}
+
+		public Color SecondValue
+		{
+            get => new()
+            {
+                A = (byte)Picker.SecondColor.A,
+                R = (byte)Picker.SecondColor.RGB_R,
+                G = (byte)Picker.SecondColor.RGB_G,
+                B = (byte)Picker.SecondColor.RGB_B,
+
+            };
+
+            set
+            {
+                Picker.SecondColor.A = value.A;
+                Picker.SecondColor.RGB_R = value.R;
+                Picker.SecondColor.RGB_G = value.G;
+                Picker.SecondColor.RGB_B = value.B;
+            }
+        }
 	}
 }

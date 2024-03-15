@@ -22,10 +22,6 @@ namespace ThePen
 	/// </summary>
 	/// 
 
-	
-	
-
-
 	public partial class Overlay : UserControl
 	{
 		public Overlay()
@@ -199,7 +195,7 @@ namespace ThePen
 				{
 					image.Source = new BitmapImage(new Uri((string)prop, UriKind.RelativeOrAbsolute))
 					{
-						
+						CacheOption = BitmapCacheOption.OnLoad	
 					};
 				}
 			}
@@ -323,7 +319,7 @@ namespace ThePen
 				var first = VariableStackPanel.Children[0] as StackPanel;
 				var input = (first.Children[1] as TextBox);
 				(Application.Current.MainWindow as MainWindow).GetCanvasActivate();
-				input.Focus();
+                input.Focus();
 
 			}
 			else

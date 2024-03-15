@@ -8,6 +8,8 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Media;
 
+using System.Text.RegularExpressions;
+
 
 namespace ThePen
 {
@@ -39,8 +41,9 @@ namespace ThePen
 						throw new Exception("[]");
 					}
 
-					var words = System.Text.RegularExpressions.Regex.Matches(line, @"[\""].+?[\""]|[^ ]+")
-									.Cast<System.Text.RegularExpressions.Match>()
+
+					var words = Regex.Matches(line, @"[\""].+?[\""]|[^ ]+")
+									.Cast<Match>()
 									.Select(m => m.Value)
 									.ToList();
 

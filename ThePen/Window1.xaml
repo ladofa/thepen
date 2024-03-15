@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ThePen"
         mc:Ignorable="d"
+        
         Title="ThePen Canvas" Height="450" Width="800" WindowStyle="None"  AllowsTransparency="True"  Topmost="True" Background="#00000000"  ShowInTaskbar="False">
     <Grid>
         <!--<Grid.CommandBindings>
@@ -17,11 +18,20 @@
                 <Ellipse Fill="#00000000" StrokeThickness="2" Stroke="#FF0000ff" Width="40" Height="40" Name="MouseEffectErase" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
             </Grid>
         </Canvas>
-        
+
         <Grid x:Name="GridBoard" HorizontalAlignment="Left" VerticalAlignment="Top">
+
             <Rectangle x:Name="BackBoard" Fill="#00000000"/>
-            <InkCanvas Name="Board" Background="#00000000" UseCustomCursor="True" Cursor="Pen" MouseUp="Board_MouseUp" StylusDown="Board_StylusDown" StylusUp="Board_StylusUp" MouseMove="Board_MouseMove"/>
-            <InkCanvas Name="BoardTemp" Background="#00000000" UseCustomCursor="True" Cursor="Pen" Visibility="Collapsed"/>
+            <InkCanvas Name="BoardMain" Background="#00000000" UseCustomCursor="True" Cursor="Pen" MouseUp="Board_MouseUp" StylusDown="Board_StylusDown" StylusUp="Board_StylusUp" MouseMove="Board_MouseMove" PreviewMouseRightButtonUp="BoardMain_PreviewMouseRightButtonUp" PreviewMouseRightButtonDown="BoardMain_PreviewMouseRightButtonDown"/>
+            <InkCanvas Name="BoardTemp" Background="#00000000" UseCustomCursor="True" Cursor="Pen" Visibility="Collapsed" />
+
+
+            <InkCanvas Name="BoardInst1" Background="#00000000" Visibility="Collapsed" UseCustomCursor="True" Cursor="Pen" MouseUp="Board_MouseUp" StylusDown="Board_StylusDown" StylusUp="Board_StylusUp" MouseMove="Board_MouseMove"  PreviewMouseRightButtonUp="BoardMain_PreviewMouseRightButtonUp" PreviewMouseRightButtonDown="BoardMain_PreviewMouseRightButtonDown"/>
+            <Grid x:Name="GridBoard2">
+                <Image x:Name="ImageBack" Source="back3.png" Stretch="Fill"/>
+                <InkCanvas Name="BoardInst2" Background="#00000000" UseCustomCursor="True" Cursor="Pen" MouseUp="Board_MouseUp" StylusDown="Board_StylusDown" StylusUp="Board_StylusUp" MouseMove="Board_MouseMove" PreviewMouseRightButtonUp="BoardMain_PreviewMouseRightButtonUp" PreviewMouseRightButtonDown="BoardMain_PreviewMouseRightButtonDown"/>
+            </Grid>
+        
 
             <Rectangle x:Name="ShapeLineArea" Fill="#01000000" Visibility="Collapsed" Cursor="Hand" MouseMove="ShapeLineArea_MouseMove" MouseDown="ShapeLineArea_MouseDown" MouseUp="ShapeLineArea_MouseUp" MouseLeave="ShapeLineArea_MouseLeave"/>
             <Rectangle x:Name="ShapeLine2Area" Fill="#01000000" Visibility="Collapsed" Cursor="Hand" MouseMove="ShapeLine2Area_MouseMove" MouseDown="ShapeLine2Area_MouseDown" MouseUp="ShapeLine2Area_MouseUp" MouseLeave="ShapeLine2Area_MouseLeave"/>
@@ -34,15 +44,14 @@
             <Rectangle x:Name="AutoDrawAreaBottom" Fill="#01000000" VerticalAlignment="Bottom" Height="5" />
 
             <Rectangle x:Name="StampeArea" Fill="#01000000" Visibility="Collapsed" MouseDown="StampeArea_MouseDown" Cursor="No"/>
-
-            
-            <local:Overlay x:Name="Overlay1"  Visibility="Collapsed"></local:Overlay>
-            <local:Overlay x:Name="Overlay2"  Visibility="Collapsed"></local:Overlay>
-            <local:Overlay x:Name="Overlay3"  Visibility="Collapsed"></local:Overlay>
-            <local:Overlay x:Name="Overlay4"  Visibility="Collapsed"></local:Overlay>
         </Grid>
 
         <Canvas Name="Overlay">
+            
+            <local:Overlay x:Name="Overlay1"  Visibility="Visible"></local:Overlay>
+            <local:Overlay x:Name="Overlay2"  Visibility="Collapsed"></local:Overlay>
+            <local:Overlay x:Name="Overlay3"  Visibility="Collapsed"></local:Overlay>
+            <local:Overlay x:Name="Overlay4"  Visibility="Collapsed"></local:Overlay>
             <Grid Name="MouseEffectGroup" Width="100" Height="100">
                 <Ellipse Fill="#00000000" StrokeThickness="8" Stroke="#80FF0000" Width="30" Height="30" Name="MouseEffectMove" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Ellipse Fill="#00000000" StrokeThickness="8" Stroke="#8000ff00" Width="30" Height="30" Name="MouseEffectLeftDown" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>

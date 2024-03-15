@@ -53,5 +53,19 @@ namespace ThePen
 				};
 			}
 		}
+
+		public Color SecondColor
+		{
+			set
+			{
+                Picker.SecondValue = value;
+            }
+
+			get
+			{
+				return Picker.SecondValue;
+			}
+		}
+
 	}
 }

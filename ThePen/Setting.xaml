@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:ThePen"
         
         mc:Ignorable="d"
+        d:DesignHeight="1600"
         Title="Setting" Height="800" Width="800" Closing="Window_Closing">
     <Window.Resources>
         <Style TargetType="TextBlock" x:Key="Title">
@@ -60,17 +61,17 @@
                 <TextBlock Style="{StaticResource Title}" Text="Colors"/>
                 <StackPanel Orientation="Horizontal" Height="20">
                     <TextBlock Text="1 : "/>
-                    <local:SettingColor x:Name="Palette1"/>
+                    <local:SettingColor x:Name="Palette1" Width="25"/>
                     <TextBlock Text="2 : "/>
-                    <local:SettingColor x:Name="Palette2"/>
+                    <local:SettingColor x:Name="Palette2" Width="25"/>
                     <TextBlock Text="3 : "/>
-                    <local:SettingColor x:Name="Palette3"/>
+                    <local:SettingColor x:Name="Palette3" Width="25"/>
                     <TextBlock Text="4 : "/>
-                    <local:SettingColor x:Name="Palette4"/>
+                    <local:SettingColor x:Name="Palette4" Width="25"/>
                     <TextBlock Text="5 : "/>
-                    <local:SettingColor x:Name="Palette5"/>
+                    <local:SettingColor x:Name="Palette5" Width="25"/>
                     <TextBlock Text="6 : "/>
-                    <local:SettingColor x:Name="Palette6"/>
+                    <local:SettingColor x:Name="Palette6" Width="25"/>
                 </StackPanel>
 
                 <TextBlock Style="{StaticResource Title}" Text="Shortcuts"/>
@@ -82,7 +83,8 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0">
                         <TextBlock Style="{StaticResource HotKey}" Text=""/>
-                        <TextBlock Style="{StaticResource HotKey}" Text="Select"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Normal"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Clear&amp;Normal"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Pen1"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Pen2"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Pen3"/>
@@ -90,12 +92,17 @@
                         <TextBlock Style="{StaticResource HotKey}" Text="Clear"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Undo"/>
                         <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Board1"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Board2"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Board3"/>
+                        <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color1"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color2"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color3"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color4"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color5"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Color6"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Swap Palette"/>
                         <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Stamp X"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Stamp ○"/>
@@ -118,7 +125,8 @@
 
                     <StackPanel Grid.Column="1">
                         <TextBlock Style="{StaticResource HotKey}" Text="Global Shortcuts"/>
-                        <local:SettingHotKey x:Name="HotKeySelect"/>
+                        <local:SettingHotKey x:Name="HotKeyNormal"/>
+                        <local:SettingHotKey x:Name="HotKeyClearNormal"/>
                         <local:SettingHotKey x:Name="HotKeyPen1"/>
                         <local:SettingHotKey x:Name="HotKeyPen2"/>
                         <local:SettingHotKey x:Name="HotKeyPen3"/>
@@ -126,12 +134,17 @@
                         <local:SettingHotKey x:Name="HotKeyClear"/>
                         <local:SettingHotKey x:Name="HotKeyUndo"/>
                         <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
+                        <local:SettingHotKey x:Name="HotKeyBoard1"/>
+                        <local:SettingHotKey x:Name="HotKeyBoard2"/>
+                        <local:SettingHotKey x:Name="HotKeyBoard3"/>
+                        <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <local:SettingHotKey x:Name="HotKeyColor1"/>
                         <local:SettingHotKey x:Name="HotKeyColor2"/>
                         <local:SettingHotKey x:Name="HotKeyColor3"/>
                         <local:SettingHotKey x:Name="HotKeyColor4"/>
                         <local:SettingHotKey x:Name="HotKeyColor5"/>
                         <local:SettingHotKey x:Name="HotKeyColor6"/>
+                        <local:SettingHotKey x:Name="HotKeySwapPalette"/>
                         <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <!--<local:SettingHotKey x:Name="HotKeyStampO"/>
                         <local:SettingHotKey x:Name="HotKeyStampX"/>
@@ -159,7 +172,8 @@
 
                     <StackPanel Grid.Column="2">
                         <TextBlock Style="{StaticResource HotKey}" Text="Drawing Shortcuts"/>
-                        <local:SettingOneKey x:Name="OneKeySelect"/>
+                        <local:SettingOneKey x:Name="OneKeyNormal"/>
+                        <local:SettingOneKey x:Name="OneKeyClearNormal"/>
                         <local:SettingOneKey x:Name="OneKeyPen1"/>
                         <local:SettingOneKey x:Name="OneKeyPen2"/>
                         <local:SettingOneKey x:Name="OneKeyPen3"/>
@@ -167,12 +181,17 @@
                         <local:SettingOneKey x:Name="OneKeyClear"/>
                         <local:SettingOneKey x:Name="OneKeyUndo"/>
                         <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
+                        <Rectangle Style="{StaticResource Dummy}"/>
+                        <Rectangle Style="{StaticResource Dummy}"/>
+                        <Rectangle Style="{StaticResource Dummy}"/>
+                        <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <local:SettingOneKey x:Name="OneKeyColor1"/>
                         <local:SettingOneKey x:Name="OneKeyColor2"/>
                         <local:SettingOneKey x:Name="OneKeyColor3"/>
                         <local:SettingOneKey x:Name="OneKeyColor4"/>
                         <local:SettingOneKey x:Name="OneKeyColor5"/>
                         <local:SettingOneKey x:Name="OneKeyColor6"/>
+                        <local:SettingOneKey x:Name="OneKeySwapPalette"/>
                         <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <local:SettingOneKey x:Name="OneKeyStampX"/>
                         <local:SettingOneKey x:Name="OneKeyStampO"/>

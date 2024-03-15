@@ -17,7 +17,7 @@
     <Grid>
         <StackPanel Orientation="Horizontal" Height="20">
             <TextBlock Text="Color : " VerticalAlignment="Center"/>
-            <local:SettingColor VerticalAlignment="Center" Height="20" Margin="0 0 10 0" x:Name="Picker"/>
+            <local:SettingColor VerticalAlignment="Center" Height="20" Margin="0 0 10 0" x:Name="Picker"  Width="25"/>
             <CheckBox Content="FitToCurve" Name="FitToCurve"/>
             <CheckBox Content="Highlighter" Name="Highlighter"/>
             <CheckBox Content="Ignore Presure" Name="IgnorePresure"/>
