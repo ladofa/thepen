@@ -40,7 +40,7 @@ ThePen is a software for drawing on screen in Windows. It started just for my on
  * PixiEditor.colorPicker (3.1.0) - MIT License
 
 ## Release Notes
- * 2024-03-15
+ * 2024-03-15 (Alpha 10)
    - add Multi board, each board has own pen style, (shortcut F1, F2, F3) (pen swap will be deprecated.)
    - add temporary hide drawing (shortcut F1, F2, F3 - press again)
    - add palette swap, in setting you can choose twin color.
