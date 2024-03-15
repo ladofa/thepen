@@ -13,24 +13,22 @@
             <CommandBinding Executed="Redo" Command="ApplicationCommands.Redo"/>
         </Grid.CommandBindings>-->
 
-        <Canvas>
-            <Grid Name="MouseEffectEraseGroup" Width="200" Height="200">
-                <Ellipse Fill="#00000000" StrokeThickness="2" Stroke="#FF0000ff" Width="40" Height="40" Name="MouseEffectErase" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
-            </Grid>
-        </Canvas>
+        
 
         <Grid x:Name="GridBoard" HorizontalAlignment="Left" VerticalAlignment="Top">
 
             <Rectangle x:Name="BackBoard" Fill="#00000000"/>
             <InkCanvas Name="BoardMain" Background="#00000000" UseCustomCursor="True" Cursor="Pen" MouseUp="Board_MouseUp" StylusDown="Board_StylusDown" StylusUp="Board_StylusUp" MouseMove="Board_MouseMove" PreviewMouseRightButtonUp="BoardMain_PreviewMouseRightButtonUp" PreviewMouseRightButtonDown="BoardMain_PreviewMouseRightButtonDown"/>
+            <Grid x:Name="GridBoard2">
+                <Image x:Name="ImageBack" Stretch="Fill"/>
+                <InkCanvas Name="BoardInst2" Background="#00000000" UseCustomCursor="True" Cursor="Pen" MouseUp="Board_MouseUp" StylusDown="Board_StylusDown" StylusUp="Board_StylusUp" MouseMove="Board_MouseMove" PreviewMouseRightButtonUp="BoardMain_PreviewMouseRightButtonUp" PreviewMouseRightButtonDown="BoardMain_PreviewMouseRightButtonDown"/>
+            </Grid>
+            <InkCanvas Name="BoardInst1" Background="#00000000" Visibility="Collapsed" UseCustomCursor="True" Cursor="Pen" MouseUp="Board_MouseUp" StylusDown="Board_StylusDown" StylusUp="Board_StylusUp" MouseMove="Board_MouseMove"  PreviewMouseRightButtonUp="BoardMain_PreviewMouseRightButtonUp" PreviewMouseRightButtonDown="BoardMain_PreviewMouseRightButtonDown"/>
             <InkCanvas Name="BoardTemp" Background="#00000000" UseCustomCursor="True" Cursor="Pen" Visibility="Collapsed" />
 
 
-            <InkCanvas Name="BoardInst1" Background="#00000000" Visibility="Collapsed" UseCustomCursor="True" Cursor="Pen" MouseUp="Board_MouseUp" StylusDown="Board_StylusDown" StylusUp="Board_StylusUp" MouseMove="Board_MouseMove"  PreviewMouseRightButtonUp="BoardMain_PreviewMouseRightButtonUp" PreviewMouseRightButtonDown="BoardMain_PreviewMouseRightButtonDown"/>
-            <Grid x:Name="GridBoard2">
-                <Image x:Name="ImageBack" Source="back3.png" Stretch="Fill"/>
-                <InkCanvas Name="BoardInst2" Background="#00000000" UseCustomCursor="True" Cursor="Pen" MouseUp="Board_MouseUp" StylusDown="Board_StylusDown" StylusUp="Board_StylusUp" MouseMove="Board_MouseMove" PreviewMouseRightButtonUp="BoardMain_PreviewMouseRightButtonUp" PreviewMouseRightButtonDown="BoardMain_PreviewMouseRightButtonDown"/>
-            </Grid>
+            
+            
         
 
             <Rectangle x:Name="ShapeLineArea" Fill="#01000000" Visibility="Collapsed" Cursor="Hand" MouseMove="ShapeLineArea_MouseMove" MouseDown="ShapeLineArea_MouseDown" MouseUp="ShapeLineArea_MouseUp" MouseLeave="ShapeLineArea_MouseLeave"/>
@@ -45,6 +43,13 @@
 
             <Rectangle x:Name="StampeArea" Fill="#01000000" Visibility="Collapsed" MouseDown="StampeArea_MouseDown" Cursor="No"/>
         </Grid>
+
+        <Canvas>
+            <Grid Name="MouseEffectEraseGroup" Width="200" Height="200">
+                <Ellipse Fill="#00000000" StrokeThickness="2" Stroke="#FF0000ff" Width="40" Height="40" Name="MouseEffectErase" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+            </Grid>
+        </Canvas>
+
 
         <Canvas Name="Overlay">
             
