@@ -66,3 +66,8 @@ ThePen is a software for drawing on screen in Windows. It started just for my on
  * More settings for the mouse effect.
  * Offering Background To Draw
  * Temporary hide
+
+## Copyright
+This includes quite a lot of people's source codes and I haven't been able to look at all of their copyrights. This project may not be used for commercial purposes (if I have the right to claim it)
+
+My plan is to upload this project to Microsoft Store for free. (if I can afford it, and if this program is worth it)
