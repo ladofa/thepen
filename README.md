@@ -2,7 +2,7 @@
 ThePen is a software for drawing on screen in Windows. It started just for my online lectures. I don't have any specific plan to push this work. But I really hope it used widely and be helpful for you.
 
 ## Download the Latest Version
- * Alpha10 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/ThePen-alpha11.zip
+ * Alpha10 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/ThePen-alpha12.zip
  * It is not allowed by Windows SmartScreen. It is **not officially authorized** for Windows yet. You have to check the advanced option.
   - Virus warning can be shown
     
@@ -40,6 +40,10 @@ ThePen is a software for drawing on screen in Windows. It started just for my on
  * PixiEditor.colorPicker (3.1.0) - MIT License
 
 ## Release Notes
+ * 2024-05-26 (Alpha 12)
+   - Fix Undo/redo bug
+   - Shaking gesture was readopted.
+   - Main contron window is always on drawing.
  * 2024-03-23 (Alpha 11)
    - Fix Eraser Bug (from Alpah10)
    - Fix Arrow Bug (arrow tip will not split with body)
