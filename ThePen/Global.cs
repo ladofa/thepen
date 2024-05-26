@@ -83,7 +83,11 @@ namespace ThePen
 		public static SettingData SettingData = new SettingData();
 		public static int CurrentPen = 1;
 
-		public static bool KeyPressed = false;
+
+		public static bool KeyPressed
+		{
+			get;set;
+		}
 
 		public static void SaveToReg()
 		{

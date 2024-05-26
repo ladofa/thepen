@@ -17,12 +17,12 @@ using System.Windows.Threading;
 
 namespace ThePen
 {
-	/// <summary>
-	/// Interaction logic for Overlay.xaml
-	/// </summary>
-	/// 
+    /// <summary>
+    /// Interaction logic for Overlay.xaml
+    /// </summary>
+    /// 
 
-	public partial class Overlay : UserControl
+    public partial class Overlay : UserControl
 	{
 		public Overlay()
 		{

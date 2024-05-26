@@ -19,6 +19,7 @@ using System.Diagnostics;
 using System.Security.Cryptography.Xml;
 using System.Windows.Media.Animation;
 using System.IO;
+using System.Windows.Threading;
 
 
 namespace ThePen
@@ -38,7 +39,8 @@ namespace ThePen
             undoInst2 = new UndoReDo(BoardInst2);
             
 
-			BoardMain.Strokes.StrokesChanged += undoMain.Strokes_StrokesChanged;
+
+            BoardMain.Strokes.StrokesChanged += undoMain.Strokes_StrokesChanged;
 			BoardInst1.Strokes.StrokesChanged += undoInst1.Strokes_StrokesChanged;
             BoardInst2.Strokes.StrokesChanged += undoInst2.Strokes_StrokesChanged;
 			
@@ -106,15 +108,34 @@ namespace ThePen
 
 			MouseEffectErase.Width = setting.EraserSize;
             MouseEffectErase.Height = setting.EraserSize;
-
-            if (File.Exists("back3.png"))
+            if (File.Exists("back1.png"))
             {
                 var bitmapImage = new BitmapImage();
                 bitmapImage.BeginInit();
-                bitmapImage.UriSource = new Uri("back3.png", UriKind.RelativeOrAbsolute);
+                bitmapImage.UriSource = new Uri("back1.png", UriKind.RelativeOrAbsolute);
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                 bitmapImage.EndInit();
-                ImageBack.Source = bitmapImage;
+                ImageBackMain.Source = bitmapImage;
+            }
+
+            if (File.Exists("back2.png"))
+            {
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.UriSource = new Uri("back2.png", UriKind.RelativeOrAbsolute);
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                ImageBack1.Source = bitmapImage;
+            }
+
+            if (File.Exists("back3.png"))
+			{
+				var bitmapImage = new BitmapImage();
+				bitmapImage.BeginInit();
+				bitmapImage.UriSource = new Uri("back3.png", UriKind.RelativeOrAbsolute);
+				bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+				bitmapImage.EndInit();
+                ImageBack2.Source = bitmapImage;
             }
 
             BoardMain.DefaultDrawingAttributes = setting.Pen1;
@@ -543,10 +564,12 @@ namespace ThePen
 
         public void ToggleCurrentBoard(int  boardId)
 		{
+			
+
 			if (boardId == 0)
 			{
 				//select same board again
-				if (CurrentBoard == BoardMain && DrawingMode == DrawingModes.Draw)
+				if (CurrentBoard == BoardMain)
                 {
 					BoardVisibility = !BoardVisibility;
 					DrawingMode = DrawingModes.Normal;
@@ -559,13 +582,13 @@ namespace ThePen
                 }
 
 				currentBoard2 = BoardMain;
-                BoardMain.Visibility = Visibility.Visible;
-                BoardInst1.Visibility = Visibility.Collapsed;
+                GridBoardMain.Visibility = Visibility.Visible;
+                GridBoard1.Visibility = Visibility.Collapsed;
                 GridBoard2.Visibility = Visibility.Collapsed;
             }
 			else if (boardId == 1)
 			{
-                if (CurrentBoard == BoardInst1 && DrawingMode == DrawingModes.Draw)
+                if (CurrentBoard == BoardInst1)
                 {
                     BoardVisibility = !BoardVisibility;
                     DrawingMode = DrawingModes.Normal;
@@ -578,13 +601,13 @@ namespace ThePen
                 }
 
                 currentBoard2 = BoardInst1;
-                BoardMain.Visibility = Visibility.Collapsed;
-                BoardInst1.Visibility = Visibility.Visible;
+                GridBoardMain.Visibility = Visibility.Collapsed;
+                GridBoard1.Visibility = Visibility.Visible;
                 GridBoard2.Visibility = Visibility.Collapsed;
             }
             else if (boardId == 2)
             {
-                if (CurrentBoard == BoardInst2 && DrawingMode == DrawingModes.Draw)
+                if (CurrentBoard == BoardInst2)
                 {
                     BoardVisibility = !BoardVisibility;
                     DrawingMode = DrawingModes.Normal;
@@ -597,8 +620,8 @@ namespace ThePen
                 }
 
                 currentBoard2 = BoardInst2;
-                BoardMain.Visibility = Visibility.Collapsed;
-                BoardInst1.Visibility = Visibility.Collapsed;
+                GridBoardMain.Visibility = Visibility.Collapsed;
+                GridBoard1.Visibility = Visibility.Collapsed;
                 GridBoard2.Visibility = Visibility.Visible;
             }
 
@@ -672,6 +695,8 @@ namespace ThePen
                     CurrentBoard.EditingMode = InkCanvasEditingMode.Ink;
 					MouseEffectErase.Visibility = Visibility.Collapsed;
                     CurrentBoard.EraserShape = new EllipseStylusShape(2, 2);
+
+					
                 }
 
 				bool drawing = true;
@@ -692,8 +717,10 @@ namespace ThePen
 				{
 					BackBoard.Fill = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
 					Overlay.Visibility = Visibility.Visible;
-					if (CurrentBoard == BoardInst2 && BoardVisibility) BoardVisibility = false;
-				}
+					if (CurrentBoard == BoardInst2 && ImageBack2.ActualWidth > 0) BoardVisibility = false;
+                    if (CurrentBoard == BoardMain && ImageBackMain.ActualWidth > 0) BoardVisibility = false;
+                    if (CurrentBoard == BoardInst1 && ImageBack1.ActualWidth > 0) BoardVisibility = false;
+                }
 
                 //IsHitTestVisible = drawing;
                 //CurrentBoard.IsHitTestVisible = drawing;
@@ -705,7 +732,10 @@ namespace ThePen
 
 				drawingMode = value;
 				DrawingModeChanged?.Invoke(this, new EventArgs());
-			}
+
+                touchEdgeLeft = false;
+                touchEdgeRight = false;
+            }
 		}
 		
 			
@@ -732,16 +762,16 @@ namespace ThePen
 
 
 		UndoReDo undoMain;
-        UndoReDo undoInst1;
+		UndoReDo undoInst1;
         UndoReDo undoInst2;
-        UndoReDo undoInst3;
+        
 		
         public void Undo(object sender, RoutedEventArgs e)
         {
-			
-            var undos = new List<UndoReDo> { undoMain, undoInst1, undoInst2, undoInst3 };
+            var undos = new List<UndoReDo> { undoMain, undoInst1, undoInst2 };
 			foreach (var undo in undos)
 			{
+				
 				if (undo.Board ==  CurrentBoard)
 				{
 					undo.Undo(sender, e);
@@ -752,7 +782,7 @@ namespace ThePen
         public void Redo(object sender, RoutedEventArgs e)
         {
 
-            var undos = new List<UndoReDo> { undoMain, undoInst1, undoInst2, undoInst3 };
+            var undos = new List<UndoReDo> { undoMain, undoInst1, undoInst2};
             foreach (var undo in undos)
             {
                 if (undo.Board == CurrentBoard)
@@ -1312,7 +1342,6 @@ namespace ThePen
 
 		private void ShapeGridArea_MouseMove(object sender, MouseEventArgs e)
 		{
-			Debug.WriteLine(shapePushed + ", " + shapeGridCopyMode + "," + shapeStartPoint);
 			if (shapeGridCopyMode)
 			{
 				//check current area
@@ -1364,8 +1393,6 @@ namespace ThePen
 					new Point(x1, y2)
 				};
 				points.Add(points[0]);
-
-				Debug.WriteLine($"{x1}, {y1}, {x2}, {y2}");
 
 				shapeStroke.StylusPoints = new StylusPointCollection(points);
 			}
@@ -1525,33 +1552,40 @@ namespace ThePen
 
 			double size = setting.ArrowWidth;
 
+			if (CurrentBoard.Strokes.Count  == 0)
+			{
+				Debug.WriteLine("drawArrow ERROR??");
+				return;
+			}
+
+			var lastStroke = CurrentBoard.Strokes.Last();
+            //CurrentBoard.Strokes.Remove(lastStroke);
+            
+
             //-135
             double leftWingX = Math.Cos(rad - Math.PI * 0.75) * size + cx;
             double leftWingY = Math.Sin(rad - Math.PI * 0.75) * size + cy;
             Point leftWing = new Point(leftWingX, leftWingY);
 
-            var s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
-                new List<Point> { center, leftWing }
-            ))
-            {
-                DrawingAttributes = CurrentBoard.DefaultDrawingAttributes.Clone()
-            };
 
-            CurrentBoard.Strokes.Add(s1);
+
+			var s1 = new StylusPointCollection(
+				new List<Point> { leftWing, center }
+			);
+
+            lastStroke.StylusPoints.Add(s1);
+
 
             //+135
             double rightWingX = Math.Cos(rad + Math.PI * 0.75) * size + cx;
             double rightWingY = Math.Sin(rad + Math.PI * 0.75) * size + cy;
             Point rightWing = new Point(rightWingX, rightWingY);
 
-            s1 = new System.Windows.Ink.Stroke(new StylusPointCollection(
-                new List<Point> { center, rightWing }
-            ))
-            {
-                DrawingAttributes = CurrentBoard.DefaultDrawingAttributes.Clone()
-            };
+			var s2 = new StylusPointCollection(
+				new List<Point> { rightWing, center}
+			);
 
-            CurrentBoard.Strokes.Add(s1);
+            lastStroke.StylusPoints.Add(s2);
         }
 
         private void Board_MouseUp(object sender, MouseButtonEventArgs e)
@@ -1582,13 +1616,34 @@ namespace ThePen
 			}
         }
 
+
+		bool touchEdgeLeft = false;
+		bool touchEdgeRight = false;
+
         private void Board_MouseMove(object sender, MouseEventArgs e)
         {
             Point p = Mouse.GetPosition(this);
             Canvas.SetLeft(MouseEffectEraseGroup, p.X - 100);
             Canvas.SetTop(MouseEffectEraseGroup, p.Y - 100);
 
-			Debug.WriteLine(DrawingMode);
+            if (DrawingMode == DrawingModes.Erase || stylusButtonPressed)
+			{ 	
+                if (p.X <= 20)
+				{
+					touchEdgeLeft = true;
+				}
+				if (p.X >= (sender as InkCanvas).ActualWidth - 20)
+				{
+                    touchEdgeRight = true;
+                }
+			}
+
+            if (touchEdgeRight && touchEdgeLeft)
+            {
+                ClearAll();
+				touchEdgeLeft = false;
+				touchEdgeRight = false;
+            }
         }
 
         private void BoardMain_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -1607,26 +1662,96 @@ namespace ThePen
                 DrawingMode = DrawingModes.Draw;
             }
 
-            //https://stackoverflow.com/questions/2421304/raising-wpf-mouseleftbuttondownevent-event-programmatically
-            CurrentBoard.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
-            {
-                RoutedEvent = Mouse.MouseUpEvent,
-                Source = sender,
-            });
-        }
+		https://stackoverflow.com/questions/2421304/raising-wpf-mouseleftbuttondownevent-event-programmatically
+			CurrentBoard.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+			{
+				RoutedEvent = Mouse.MouseUpEvent,
+				Source = sender,
+			});
+		}
+
 
         private void BoardMain_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            DrawingMode = DrawingModes.Erase;
+			if (!setting.EasySwitch)
+			{
+				DrawingMode = DrawingModes.Erase;
 
+
+				CurrentBoard.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+				{
+					RoutedEvent = Mouse.MouseDownEvent,
+					Source = sender,
+				});
+			}
+
+
+            if (e.ClickCount == 2)
+			{
+				ClearAll();
+			}
             
-            CurrentBoard.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
-            {
-                RoutedEvent = Mouse.MouseDownEvent,
-                Source = sender,
-            });
         }
 
-        
+        private void GridBoard_MouseLeave(object sender, MouseEventArgs e)
+        {
+			if (DrawingMode == DrawingModes.Erase || stylusButtonPressed)
+			{
+				Grid ui  = sender as Grid;
+				var pos = e.GetPosition(ui);
+				if (pos.X <= 30)
+				{
+					touchEdgeLeft = true;
+				}
+
+				if (pos.X >= ui.ActualWidth - 30)
+				{
+                    touchEdgeRight = true;
+                }
+			}
+
+			stylusButtonPressed = false;
+        }
+
+		bool stylusButtonPressed;
+
+		long stylusErasingTime1;
+        long stylusErasingTime2;
+		long stylusErasingStrokeCount;
+
+        private void BoardMain_PreviewStylusButtonDown(object sender, StylusButtonEventArgs e)
+        {
+			if (e.Inverted)
+			{
+				stylusButtonPressed = true;
+				Debug.WriteLine((DateTime.Now.Ticks - stylusErasingTime2) / 10000000.0);
+
+                if (DateTime.Now.Ticks  - stylusErasingTime2 <  5000000)
+				{
+					
+						ClearAll();
+				}
+
+				if (CurrentBoard.Strokes.Count == stylusErasingStrokeCount)
+				{
+					stylusErasingTime2 = stylusErasingTime1;
+				}
+				else
+				{
+					stylusErasingTime2 = 0;
+				}
+
+				stylusErasingTime1 = DateTime.Now.Ticks;
+
+				stylusErasingStrokeCount = CurrentBoard.Strokes.Count;
+            }
+        }
+
+        private void BoardMain_PreviewStylusButtonUp(object sender, StylusButtonEventArgs e)
+        {
+			stylusButtonPressed = false;
+			touchEdgeLeft = false;
+			touchEdgeRight = false;
+        }
     }
 }

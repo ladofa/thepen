@@ -150,7 +150,7 @@ namespace ThePen
 				var rectWindow = getRect(drawingScreen);
 				var win = new Window1();
 				win.Show();
-				//this.Owner = win;
+				this.Owner = win;
 				canvasWindows.Add(win);
 				win.Left = rectWindow.X;
 				win.Top = rectWindow.Y;
@@ -731,7 +731,7 @@ namespace ThePen
 		{
 			HideAllPopup();
 			string info =
-				"ThePen alpha10";
+				"ThePen alpha12";
 			MessageBox.Show(info);
 		}
 

@@ -64,22 +64,15 @@ namespace ThePen
 					Message = message, Point = hookStruct.pt, ExtraInfo = hookStruct.dwExtraInfo,
 				});
 
-				//Debug.WriteLine(wParam);
-				//Debug.WriteLine(hookStruct.dwExtraInfo);
-				//Debug.WriteLine(hookStruct.flags);
-				//Debug.WriteLine(hookStruct.mouseData);
-				//Debug.WriteLine(hookStruct.time);
-				//Debug.WriteLine(hookStruct.pt.x + ", " + hookStruct.pt.y);
-
-
 				setGlobalDxDy(hookStruct);
 
                 if (message == MouseMessages.WM_MOUSEMOVE && Global.SettingData.ShakeToClearAll)
 				{
 					if (System.Windows.Input.Mouse.LeftButton != System.Windows.Input.MouseButtonState.Pressed && !Global.KeyPressed)
 					{
+						//shaking gesture was deprecated.
+						//but it needs yet...
 						analyseGesture2(hookStruct);
-						//Debug.WriteLine("Anaylise");
 					}
 						
 					else
