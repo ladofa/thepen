@@ -2,7 +2,7 @@
 ThePen is a software for drawing on screen in Windows. It started just for my online lectures. I don't have any specific plan to push this work. But I really hope it used widely and be helpful for you.
 
 ## Download the Latest Version
- * Alpha10 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/ThePen-alpha12.zip
+ * Alpha12 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/ThePen-alpha12.zip
  * It is not allowed by Windows SmartScreen. It is **not officially authorized** for Windows yet. You have to check the advanced option.
   - Virus warning can be shown
     
