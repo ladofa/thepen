@@ -234,7 +234,7 @@ namespace ThePen
 				canvasWindows.ForEach(w => w.ClearAll());
 			}));
 
-			setHotkey(data.HotClear, new Action(() =>
+			setHotkey(data.HotUndo, new Action(() =>
 			{
 				canvasWindows.ForEach(w => w.Undo(null, null));
 			}));
@@ -291,12 +291,12 @@ namespace ThePen
 
 			setHotkey(data.HotOverlay3, new Action(() =>
 			{
-				;
+				canvasWindows.ForEach(w => w.ToggleOverlay3());
 			}));
 
 			setHotkey(data.HotOverlay4, new Action(() =>
 			{
-				;
+				canvasWindows.ForEach(w => w.ToggleOverlay4());
 			}));
 
 			setHotkey(data.HotPen1, new Action(() =>
@@ -349,29 +349,16 @@ namespace ThePen
 
 
 		#region titlebar move
-		//thannks to https://gigong.tistory.com/99
 
 		bool titleBarMoved = false;
 		private void Hat_PreviewMouseMove(object sender, MouseEventArgs e)
 		{
-			if (e.LeftButton == MouseButtonState.Pressed)
-			{
-				if (this.WindowState == WindowState.Maximized && Math.Abs(startPos.Y - e.GetPosition(null).Y) > 2)
-				{
-					var point = PointToScreen(e.GetPosition(null));
+			//dragging the hat moves the tool window
+			if (e.LeftButton != MouseButtonState.Pressed) return;
 
-					this.WindowState = WindowState.Normal;
-
-					this.Left = point.X - this.ActualWidth / 2;
-					this.Top = point.Y - Hat.ActualHeight / 2;
-				}
-				DragMove();
-
-				titleBarMoved = true;
-			}
+			DragMove();
+			titleBarMoved = true;
 		}
-
-		private Point startPos;
 
 		#endregion
 
@@ -516,21 +503,6 @@ namespace ThePen
 			}
 
 			HideAllPopup();
-
-			Reg.Write("test", 3.14);
-			Reg.Read("test", out double k);
-			Debug.WriteLine(k);
-
-			Color a = Color.FromArgb(10, 20, 30, 40);
-			Reg.Write("test2", a);
-			Reg.Read("test2", out Color b);
-			Debug.WriteLine(b.ToString());
-
-			foreach (PropertyInfo prop in typeof(Global).GetProperties())
-			{
-				object asdf = prop.GetValue(a, null);
-				Debug.WriteLine("{0} = {1}", prop.Name, prop.GetValue(a, null));
-			}
 		}
 
 		#endregion
@@ -731,7 +703,15 @@ namespace ThePen
 		{
 			HideAllPopup();
 			string info =
-				"ThePen alpha12";
+				"ThePen alpha12\n" +
+				"Copyright (c) 2021-2026 ladofa\n" +
+				"https://github.com/ladofa/thepen\n\n" +
+				"Free to use for any purpose, including at work and in paid lectures.\n" +
+				"Selling it or including it in a paid product is not allowed.\n" +
+				"PolyForm Noncommercial License 1.0.0\n" +
+				"https://polyformproject.org/licenses/noncommercial/1.0.0\n\n" +
+				"Includes PixiEditor.ColorPicker (MIT License)\n" +
+				"Copyright (c) PixiEditor Organization";
 			MessageBox.Show(info);
 		}
 

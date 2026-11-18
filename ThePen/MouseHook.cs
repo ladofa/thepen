@@ -1,124 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Runtime.InteropServices;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Transactions;
 using System.Numerics;
+using System.Runtime.InteropServices;
 
-
-//thanks to https://poorman.tistory.com/297
 namespace ThePen
 {
-
+	/// <summary>
+	/// Listens to every mouse message of the system with a low level hook (WH_MOUSE_LL).
+	/// </summary>
 	public static class MouseHook
 	{
+		public class MouseHookEventArgs
+		{
+			public MouseMessages Message { get; set; }
+			public POINT Point { get; set; }
+			public IntPtr ExtraInfo { get; set; }
+		}
+
 		public delegate void MouseHookEventHandler(object sender, MouseHookEventArgs message);
 		public static event MouseHookEventHandler MouseHookEvent;
 
-		public static void Start()
-		{
-			_hookID = SetHook(_proc);
-		}
-
-		public static void Stop()
-		{
-			UnhookWindowsHookEx(_hookID);
-		}
-
-		private static LowLevelMouseProc _proc = HookCallback;
-		private static IntPtr _hookID = IntPtr.Zero;
-
-		private static IntPtr SetHook(LowLevelMouseProc proc)
-		{
-			using (Process curProcess = Process.GetCurrentProcess())
-			using (ProcessModule curModule = curProcess.MainModule)
-			{
-					return SetWindowsHookEx(WH_MOUSE_LL, proc,
-					GetModuleHandle(curModule.ModuleName), 0);
-			}
-		}
-
-		private delegate IntPtr LowLevelMouseProc(int nCode, IntPtr wParam, IntPtr lParam);
-		private delegate IntPtr MouseProc(int nCode, IntPtr wParam, IntPtr lParam);
-
-		private static IntPtr HookCallback(
-			int nCode, IntPtr wParam, IntPtr lParam)
-		{
-			MouseMessages message = (MouseMessages)wParam;
-
-			//stylus up???
-			if (message == MouseMessages.WM_LBUTTONDOWN || message == MouseMessages.WM_RBUTTONDOWN)
-			{
-				points = new List<(int, int)>();
-			}
-
-			if (nCode >= 0)
-			{
-				MSLLHOOKSTRUCT hookStruct = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
-				MouseHookEvent?.Invoke(null, new MouseHookEventArgs() { 
-					Message = message, Point = hookStruct.pt, ExtraInfo = hookStruct.dwExtraInfo,
-				});
-
-				setGlobalDxDy(hookStruct);
-
-                if (message == MouseMessages.WM_MOUSEMOVE && Global.SettingData.ShakeToClearAll)
-				{
-					if (System.Windows.Input.Mouse.LeftButton != System.Windows.Input.MouseButtonState.Pressed && !Global.KeyPressed)
-					{
-						//shaking gesture was deprecated.
-						//but it needs yet...
-						analyseGesture2(hookStruct);
-					}
-						
-					else
-					{
-						//Debug.WriteLine("???");
-						hsVector.Clear();
-					}
-				}
-			}
-			return CallNextHookEx(_hookID, nCode, wParam, lParam);
-		}
-
-	
-		private const int WH_MOUSE_LL = 14;
-		private const int WH_MOUSE = 7;
-
-		public class MouseHookEventArgs
-		{
-			public MouseMessages Message
-			{
-				get;set;
-			}
-			public POINT Point
-			{
-				get;set;
-			}
-
-			public IntPtr ExtraInfo
-			{
-				get;set;
-			}
-		}
-
-		//more messages
 		//https://docs.microsoft.com/en-us/windows/win32/inputdev/mouse-input-notifications
 		public enum MouseMessages
 		{
+			WM_MOUSEMOVE = 0x0200,
 			WM_LBUTTONDOWN = 0x0201,
 			WM_LBUTTONUP = 0x0202,
-			WM_MOUSEMOVE = 0x0200,
-			WM_MOUSEWHEEL = 0x020A,
 			WM_RBUTTONDOWN = 0x0204,
 			WM_RBUTTONUP = 0x0205,
 			WM_MBUTTONDOWN = 0x0207,
-			WM_MBUTTONUP = 0x0208
-        }
+			WM_MBUTTONUP = 0x0208,
+			WM_MOUSEWHEEL = 0x020A,
+		}
 
 		[StructLayout(LayoutKind.Sequential)]
 		public struct POINT
@@ -137,20 +51,81 @@ namespace ThePen
 			public IntPtr dwExtraInfo;
 		}
 
-		//https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setwindowshookexa?redirectedfrom=MSDN
-		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-		private static extern IntPtr SetWindowsHookEx(int idHook,
-			LowLevelMouseProc lpfn, IntPtr hMod, uint dwThreadId);
+		const int WH_MOUSE_LL = 14;
 
-		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		private delegate IntPtr HookProc(int code, IntPtr wParam, IntPtr lParam);
+
+		//kept in a field, the native side holds no reference to the delegate
+		static readonly HookProc callback = OnMouse;
+		static IntPtr hook = IntPtr.Zero;
+
+		public static void Start()
+		{
+			//one hook is enough for the whole process
+			if (hook != IntPtr.Zero) return;
+			hook = SetWindowsHookEx(WH_MOUSE_LL, callback, GetModuleHandle(null), 0);
+		}
+
+		public static void Stop()
+		{
+			if (hook == IntPtr.Zero) return;
+			UnhookWindowsHookEx(hook);
+			hook = IntPtr.Zero;
+		}
+
+		private static IntPtr OnMouse(int code, IntPtr wParam, IntPtr lParam)
+		{
+			//negative code must be passed on untouched
+			if (code >= 0)
+			{
+				var message = (MouseMessages)wParam.ToInt64();
+				var info = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
+
+				//a new press starts a new direction history
+				if (message == MouseMessages.WM_LBUTTONDOWN || message == MouseMessages.WM_RBUTTONDOWN)
+				{
+					points = new List<(int, int)>();
+				}
+
+				MouseHookEvent?.Invoke(null, new MouseHookEventArgs()
+				{
+					Message = message,
+					Point = info.pt,
+					ExtraInfo = info.dwExtraInfo,
+				});
+
+				setGlobalDxDy(info);
+
+				if (message == MouseMessages.WM_MOUSEMOVE && Global.SettingData.ShakeToClearAll)
+				{
+					bool idle = System.Windows.Input.Mouse.LeftButton != System.Windows.Input.MouseButtonState.Pressed
+						&& !Global.KeyPressed;
+
+					if (idle)
+					{
+						analyseGesture2(info);
+					}
+					else
+					{
+						hsVector.Clear();
+					}
+				}
+			}
+
+			return CallNextHookEx(hook, code, wParam, lParam);
+		}
+
+		[DllImport("user32.dll", SetLastError = true)]
+		private static extern IntPtr SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, uint dwThreadId);
+
+		[DllImport("user32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		private static extern bool UnhookWindowsHookEx(IntPtr hhk);
 
-		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-		private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode,
-			IntPtr wParam, IntPtr lParam);
+		[DllImport("user32.dll")]
+		private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
 
-		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+		[DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
 		private static extern IntPtr GetModuleHandle(string lpModuleName);
 
 		#region gesture

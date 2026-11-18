@@ -64,7 +64,7 @@ namespace ThePen
 	{
 		public static double GetAngle(System.Windows.Media.Matrix m)
 		{
-            return Math.Round(Math.Asin(m.M12) / Math.PI * 180, 0);
+            return Math.Round(Math.Atan2(m.M12, m.M11) / Math.PI * 180, 0);
         }
 
 		public static Matrix GetMatrix(double angle)
@@ -75,9 +75,41 @@ namespace ThePen
 		}
 
 
-		static Global()
+		/// <summary>
+		/// User files (back1.png, overlay1.txt, ...) live in Documents\ThePen.
+		/// The program folder is read only when installed from the store.
+		/// </summary>
+		public static string DataFolder
 		{
+			get
+			{
+				return System.IO.Path.Combine(
+					Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ThePen");
+			}
+		}
 
+		/// <summary>
+		/// Looks for a user file. Returns the full path, or null when it does not exist.
+		/// The program folder and the current folder are kept for the portable(zip) version.
+		/// </summary>
+		public static string FindDataFile(string name)
+		{
+			if (System.IO.Path.IsPathRooted(name))
+			{
+				return System.IO.File.Exists(name) ? name : null;
+			}
+
+			string[] folders = { DataFolder, AppContext.BaseDirectory, Environment.CurrentDirectory };
+			foreach (string folder in folders)
+			{
+				string path = System.IO.Path.Combine(folder, name);
+				if (System.IO.File.Exists(path))
+				{
+					return System.IO.Path.GetFullPath(path);
+				}
+			}
+
+			return null;
 		}
 
 		public static SettingData SettingData = new SettingData();
@@ -147,6 +179,10 @@ namespace ThePen
 			{
 				foreach (var prop in typeof(SettingData).GetFields())
 				{
+					//a value missing in the registry (e.g. added by a newer version)
+					//keeps its default and must not stop loading the others.
+					try
+					{
 					var val = prop.GetValue(SettingData);
 
 					if (val == null)
@@ -202,9 +238,14 @@ namespace ThePen
 					{
 						System.Windows.MessageBox.Show(val.ToString());
 					}
+					}
+					catch (Exception)
+					{
+					}
 				}
 
 				Reg.Read(nameof(CurrentPen), out CurrentPen);
+				if (CurrentPen < 1 || CurrentPen > 3) CurrentPen = 1;
 			}
 			catch (Exception e)
 			{

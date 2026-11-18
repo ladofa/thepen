@@ -35,6 +35,7 @@ namespace ThePen
 
 			VarGrid.Visibility = Visibility.Collapsed;
 		}
+		string scriptFolder;
 		Dictionary<string, string> variables;
 		List<(TextBlock, List<(int, string)>)> textList;
 		private void Timer_Tick(object sender, EventArgs e)
@@ -72,8 +73,11 @@ namespace ThePen
 		{
 			try
 			{ 
-				if (System.IO.File.Exists(path))
+				path = Global.FindDataFile(path);
+				if (path != null)
 				{
+					//images in the script are relative to the script file
+					scriptFolder = System.IO.Path.GetDirectoryName(path);
 					var lines = System.IO.File.ReadAllLines(path);
 					var items = OverlayScript.Parse(lines);
 					this.Apply(items);
@@ -193,7 +197,13 @@ namespace ThePen
 				var prop = pair.Value;
 				if (key == "path")
 				{
-					image.Source = new BitmapImage(new Uri((string)prop, UriKind.RelativeOrAbsolute))
+					string imagePath = ((string)prop).Trim('"');
+					if (scriptFolder != null && !System.IO.Path.IsPathRooted(imagePath) && !imagePath.Contains("://"))
+					{
+						imagePath = System.IO.Path.Combine(scriptFolder, imagePath);
+					}
+
+					image.Source = new BitmapImage(new Uri(imagePath, UriKind.RelativeOrAbsolute))
 					{
 						CacheOption = BitmapCacheOption.OnLoad	
 					};
@@ -282,7 +292,8 @@ namespace ThePen
 					{
 						res.Add((mod, word));
 						mod = 0;
-						variables.Add(word, "");
+						//the same variable can be used more than once
+						variables[word] = "";
 						word = "";
 					}
 					else

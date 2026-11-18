@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ThePen sample slides</title>
+<!--
+  Background slides for the store screenshots.
+  Open with ?s=1, ?s=2 or ?s=3 to show one slide. Each slide is 1920 x 1080.
+-->
+<style>
+  :root {
+    --ink: #1f2a37;
+    --muted: #6b7785;
+    --line: #d5dbe3;
+    --paper: #fbfaf7;
+    --accent: #2f6f8f;
+    --soft: #eef3f6;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper); }
+  body { font-family: "Segoe UI", "Malgun Gothic", sans-serif; color: var(--ink); }
+  .slide {
+    width: 1920px; height: 1080px; padding: 90px 120px 70px;
+    position: relative; overflow: hidden; display: none;
+  }
+  .slide.on { display: block; }
+  .kicker { font-size: 26px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  h1 { font-size: 76px; margin: 14px 0 0; font-weight: 600; letter-spacing: -1px; }
+  .rule { height: 4px; width: 120px; background: var(--accent); margin: 34px 0 0; }
+  .foot { position: absolute; left: 120px; right: 120px; bottom: 44px; display: flex; justify-content: space-between;
+          font-size: 22px; color: var(--muted); }
+  p, li { font-size: 38px; line-height: 1.5; }
+  .muted { color: var(--muted); }
+
+  /* slide 1 */
+  .cols { display: flex; gap: 90px; margin-top: 60px; }
+  .cols .left { width: 760px; }
+  .formula { font-family: "Cambria Math", Cambria, serif; font-size: 68px; margin: 26px 0 40px; }
+  .formula i { font-style: italic; }
+  ul { padding-left: 40px; margin: 0; }
+  li { margin-bottom: 18px; }
+
+  /* slide 2 */
+  .flow { display: flex; align-items: center; justify-content: space-between; margin-top: 120px; }
+  .node { width: 300px; height: 190px; border: 3px solid var(--ink); border-radius: 18px; background: #fff;
+          display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .node b { font-size: 40px; font-weight: 600; }
+  .node span { font-size: 26px; color: var(--muted); margin-top: 8px; }
+  .gap { flex: 1; height: 3px; background: var(--line); margin: 0 18px; }
+  .steps { display: flex; justify-content: space-between; margin-top: 90px; }
+  .steps div { width: 300px; font-size: 30px; line-height: 1.45; color: var(--muted); }
+  .steps b { color: var(--ink); display: block; font-size: 32px; margin-bottom: 8px; }
+
+  /* slide 3 */
+  .quiz { margin-top: 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 34px 80px; }
+  .q { display: flex; align-items: center; background: #fff; border: 2px solid var(--line); border-radius: 16px;
+       padding: 30px 36px; height: 170px; }
+  .q .n { font-size: 34px; color: var(--accent); font-weight: 600; width: 70px; }
+  .q .t { font-family: "Cambria Math", Cambria, serif; font-size: 54px; flex: 1; }
+  .q .box { width: 150px; height: 104px; border: 3px dashed var(--line); border-radius: 12px; }
+  .work { margin-top: 40px; height: 200px; border: 2px solid var(--line); border-radius: 16px; background: #fff;
+          padding: 22px 30px; font-size: 26px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- 1. graph of a function -->
+<section class="slide" id="s1">
+  <div class="kicker">Lecture 1</div>
+  <h1>Quadratic Functions</h1>
+  <div class="rule"></div>
+  <div class="cols">
+    <div class="left">
+      <div class="formula"><i>y</i> = <i>x</i><sup>2</sup> − 4<i>x</i> + 3</div>
+      <ul>
+        <li>Opens upward</li>
+        <li>Crosses the <i>x</i>-axis twice</li>
+        <li>Where is the lowest point?</li>
+      </ul>
+    </div>
+    <svg width="860" height="640" viewBox="0 0 860 640">
+      <defs>
+        <pattern id="g" width="80" height="80" patternUnits="userSpaceOnUse">
+          <path d="M80 0H0V80" fill="none" stroke="#e3e8ee" stroke-width="2"/>
+        </pattern>
+      </defs>
+      <rect x="20" y="0" width="800" height="640" fill="url(#g)"/>
+      <!-- axes: origin at (180, 400), 80px per unit -->
+      <line x1="20" y1="400" x2="840" y2="400" stroke="#1f2a37" stroke-width="3"/>
+      <line x1="180" y1="0" x2="180" y2="640" stroke="#1f2a37" stroke-width="3"/>
+      <path d="M 148 19.2 Q 340 940.8 532 19.2" fill="none" stroke="#2f6f8f" stroke-width="6"
+            stroke-linecap="round"/>
+      <g font-size="26" fill="#6b7785" font-family="Segoe UI">
+        <text x="252" y="436">1</text><text x="332" y="436">2</text><text x="412" y="436">3</text>
+        <text x="492" y="436">4</text><text x="572" y="436">5</text>
+        <text x="150" y="330">1</text><text x="150" y="250">2</text><text x="150" y="170">3</text>
+        <text x="128" y="490">−1</text>
+        <text x="806" y="386">x</text><text x="196" y="30">y</text>
+      </g>
+    </svg>
+  </div>
+  <div class="foot"><span>Introduction to Algebra</span><span>1 / 3</span></div>
+</section>
+
+<!-- 2. block diagram -->
+<section class="slide" id="s2">
+  <div class="kicker">Lecture 2</div>
+  <h1>What Happens When You Open a Web Page</h1>
+  <div class="rule"></div>
+  <div class="flow">
+    <div class="node"><b>Browser</b><span>asks for a page</span></div>
+    <div class="gap"></div>
+    <div class="node"><b>DNS</b><span>finds the address</span></div>
+    <div class="gap"></div>
+    <div class="node"><b>Server</b><span>builds the answer</span></div>
+    <div class="gap"></div>
+    <div class="node"><b>Database</b><span>keeps the data</span></div>
+  </div>
+  <div class="steps">
+    <div><b>1. Request</b>You type an address and press Enter.</div>
+    <div><b>2. Lookup</b>The name is turned into a number.</div>
+    <div><b>3. Response</b>The server sends the page back.</div>
+    <div><b>4. Storage</b>Data is read and written here.</div>
+  </div>
+  <div class="foot"><span>Computer Networks for Beginners</span><span>2 / 3</span></div>
+</section>
+
+<!-- 3. quiz -->
+<section class="slide" id="s3">
+  <div class="kicker">Quiz</div>
+  <h1>Check Your Answers</h1>
+  <div class="rule"></div>
+  <div class="quiz">
+    <div class="q"><span class="n">Q1</span><span class="t">7 × 8 = 56</span><span class="box"></span></div>
+    <div class="q"><span class="n">Q2</span><span class="t">12² = 124</span><span class="box"></span></div>
+    <div class="q"><span class="n">Q3</span><span class="t">√81 = 9</span><span class="box"></span></div>
+    <div class="q"><span class="n">Q4</span><span class="t">3 + 4 × 2 = 14</span><span class="box"></span></div>
+  </div>
+  <div class="work">Work space</div>
+  <div class="foot"><span>Introduction to Algebra</span><span>3 / 3</span></div>
+</section>
+
+<script>
+  // ?s=1..3 shows one slide. Without it, arrow keys move between slides.
+  var n = parseInt(new URLSearchParams(location.search).get('s') || '1', 10);
+  function show(i) {
+    n = Math.min(3, Math.max(1, i));
+    document.querySelectorAll('.slide').forEach(function (e) { e.classList.remove('on'); });
+    document.getElementById('s' + n).classList.add('on');
+    // fit 1920x1080 into the window
+    var k = Math.min(innerWidth / 1920, innerHeight / 1080);
+    document.body.style.zoom = k;
+  }
+  addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') show(n + 1);
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') show(n - 1);
+  });
+  addEventListener('resize', function () { show(n); });
+  show(n);
+</script>
+</body>
+</html>

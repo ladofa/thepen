@@ -1,39 +1,25 @@
-﻿//thanks to
-//https://social.technet.microsoft.com/wiki/contents/articles/30568.wpf-implementing-global-hot-keys.aspx
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
 namespace ThePen
 {
+	/// <summary>
+	/// System wide hot keys (RegisterHotKey) delivered to the main window.
+	/// </summary>
 	public static class Hotkey
 	{
-		[DllImport("user32.dll")]
-		private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+		//fsModifiers of RegisterHotKey
+		public const uint MOD_NONE = 0x0000;
+		public const uint MOD_ALT = 0x0001;
+		public const uint MOD_CTRL = 0x0002;
+		public const uint MOD_SHIFT = 0x0004;
+		public const uint MOD_WIN = 0x0008;
+		public const uint MOD_NOREPEAT = 0x4000;
 
-		[DllImport("user32.dll")]
-		private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-		private const int HOTKEY_ID = 9030;
-
-		//Modifiers:
-		public const uint MOD_NONE = 0x0000; //(none)
-		public const uint MOD_ALT = 0x0001; //ALT
-		public const uint MOD_CTRL = 0x0002; //CTRL
-		public const uint MOD_SHIFT = 0x0004; //SHIFT
-		public const uint MOD_WIN = 0x0008; //WINDOWS
-		public const uint MOD_NOREPEAT = 0x04000; //
-
-
-
+		//display name -> virtual key code
 		//https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 		public static Dictionary<string, uint> TrigKeys = new Dictionary<string, uint>
 		{
@@ -148,77 +134,84 @@ namespace ThePen
 			{"Launch App2", 0xb7 },
 		};
 
-		public static Dictionary<uint, string> TrigKeysInv;
-		public static List<string> TrigKeyStrings;
-		public static List<string> OneKeyStrings;
-
-		static List<(uint, uint, Action)> hotkeys;
-		
+		public static Dictionary<uint, string> TrigKeysInv = new();
+		public static List<string> TrigKeyStrings = new();
+		public static List<string> OneKeyStrings = new();
 
 		static Hotkey()
 		{
-			TrigKeysInv = new();
-			foreach (var pair in TrigKeys)
+			foreach (var (name, code) in TrigKeys)
 			{
-				TrigKeysInv.Add(pair.Value, pair.Key);
+				TrigKeysInv[code] = name;
+				TrigKeyStrings.Add(name);
 			}
 
-			TrigKeyStrings = new();
-			foreach (var item in Hotkey.TrigKeys)
+			foreach (System.Windows.Input.Key key in Enum.GetValues(typeof(System.Windows.Input.Key)))
 			{
-				TrigKeyStrings.Add(item.Key);
+				OneKeyStrings.Add(key.ToString());
 			}
-
-			OneKeyStrings = new();
-			var enumValues = Enum.GetValues(typeof(System.Windows.Input.Key));
-			foreach (System.Windows.Input.Key enumValue in (System.Windows.Input.Key[])enumValues)
-			{
-				OneKeyStrings.Add(enumValue.ToString());
-			}
-
 		}
 
-		private static IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+		const int WM_HOTKEY = 0x0312;
+		const int FirstId = 9030;
+
+		//hot key id -> what to do
+		static readonly Dictionary<int, Action> actions = new();
+		static HwndSource source;
+
+		/// <summary>
+		/// Registers the hot keys (modifiers, virtual key, action) on the window.
+		/// The previous ones are released first.
+		/// </summary>
+		public static void Hook(Window window, List<(uint, uint, Action)> hotkeys)
 		{
-			const int WM_HOTKEY = 0x0312;
-			if (msg == WM_HOTKEY)
+			Unhook();
+
+			source = HwndSource.FromHwnd(new WindowInteropHelper(window).Handle);
+			if (source == null) return;
+
+			source.AddHook(WindowMessage);
+
+			int id = FirstId;
+			foreach (var (modifiers, key, action) in hotkeys)
 			{
-				int index = wParam.ToInt32() - HOTKEY_ID;
-				hotkeys[index].Item3();
+				//fails when another program already owns the combination
+				if (RegisterHotKey(source.Handle, id, modifiers | MOD_NOREPEAT, key))
+				{
+					actions[id] = action;
+				}
+				id++;
+			}
+		}
+
+		public static void Unhook()
+		{
+			if (source == null) return;
+
+			foreach (int id in actions.Keys)
+			{
+				UnregisterHotKey(source.Handle, id);
+			}
+			actions.Clear();
+
+			source.RemoveHook(WindowMessage);
+			source = null;
+		}
+
+		private static IntPtr WindowMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+		{
+			if (msg == WM_HOTKEY && actions.TryGetValue(wParam.ToInt32(), out Action action))
+			{
+				action();
 				handled = true;
 			}
 			return IntPtr.Zero;
 		}
 
-		private static IntPtr _windowHandle;
-		private static HwndSource _source;
+		[DllImport("user32.dll")]
+		private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
-
-		public static void Hook(Window window, List<(uint, uint, Action)> hotkeys)
-		{
-			_windowHandle = new WindowInteropHelper(window).Handle;
-			_source = HwndSource.FromHwnd(_windowHandle);
-			_source.AddHook(HwndHook);
-
-			for (int i = 0; i < hotkeys.Count; i++)
-			{
-				var hotkey = hotkeys[i];
-				RegisterHotKey(_windowHandle, HOTKEY_ID + i, MOD_NOREPEAT + (uint)hotkey.Item1, (uint)hotkey.Item2);
-			}
-
-			Hotkey.hotkeys = hotkeys;
-		}
-
-		public static void Unhook()
-		{
-			if (_source == null) return;
-
-			_source.RemoveHook(HwndHook);
-
-			for (int i = 0; i < hotkeys.Count; i++)
-			{
-				UnregisterHotKey(_windowHandle, HOTKEY_ID + i);
-			}
-		}
+		[DllImport("user32.dll")]
+		private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 	}
 }

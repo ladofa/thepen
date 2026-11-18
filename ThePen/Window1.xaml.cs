@@ -49,7 +49,6 @@ namespace ThePen
 			MouseHook.MouseHookEvent += MouseHook_MouseHookEvent;
 			MouseHook.Shaked += MouseHook_Shaked;
 			MouseHook.Start();
-			//KeyboardHook.Start();
 
 			AdoptSetting();
 
@@ -66,6 +65,15 @@ namespace ThePen
             
 		}
 
+
+		protected override void OnClosed(EventArgs e)
+		{
+			//this window is recreated whenever settings change,
+			//so the static hook events must be released.
+			MouseHook.MouseHookEvent -= MouseHook_MouseHookEvent;
+			MouseHook.Shaked -= MouseHook_Shaked;
+			base.OnClosed(e);
+		}
 
         #region block touch
 
@@ -108,35 +116,9 @@ namespace ThePen
 
 			MouseEffectErase.Width = setting.EraserSize;
             MouseEffectErase.Height = setting.EraserSize;
-            if (File.Exists("back1.png"))
-            {
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.UriSource = new Uri("back1.png", UriKind.RelativeOrAbsolute);
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-                ImageBackMain.Source = bitmapImage;
-            }
-
-            if (File.Exists("back2.png"))
-            {
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.UriSource = new Uri("back2.png", UriKind.RelativeOrAbsolute);
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-                ImageBack1.Source = bitmapImage;
-            }
-
-            if (File.Exists("back3.png"))
-			{
-				var bitmapImage = new BitmapImage();
-				bitmapImage.BeginInit();
-				bitmapImage.UriSource = new Uri("back3.png", UriKind.RelativeOrAbsolute);
-				bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-				bitmapImage.EndInit();
-                ImageBack2.Source = bitmapImage;
-            }
+			LoadBackground(ImageBackMain, "back1.png");
+			LoadBackground(ImageBack1, "back2.png");
+			LoadBackground(ImageBack2, "back3.png");
 
             BoardMain.DefaultDrawingAttributes = setting.Pen1;
 			BoardInst1.DefaultDrawingAttributes = setting.Pen2;
@@ -145,6 +127,26 @@ namespace ThePen
 			ToggleCurrentBoard(0);
 			BoardVisibility = true;
         }
+
+		private static void LoadBackground(Image target, string name)
+		{
+			string path = Global.FindDataFile(name);
+			if (path == null) return;
+
+			try
+			{
+				var bitmapImage = new BitmapImage();
+				bitmapImage.BeginInit();
+				bitmapImage.UriSource = new Uri(path, UriKind.Absolute);
+				bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+				bitmapImage.EndInit();
+				target.Source = bitmapImage;
+			}
+			catch (Exception)
+			{
+				//a broken image file must not stop the program
+			}
+		}
 
 		public void SwapPalette()
 		{
@@ -189,6 +191,7 @@ namespace ThePen
 
 			CurrentBoard.DefaultDrawingAttributes = pens[num - 1].Clone();
 			PreviousPen = CurrentBoard.DefaultDrawingAttributes.Clone();
+			Global.CurrentPen = num;
 			MainPenChanged?.Invoke(this, num);
             prevColorIndex = -1;
         }
@@ -541,12 +544,6 @@ namespace ThePen
         #endregion
 
 
-        //private void Window_SourceInitialized(object sender, EventArgs e)
-        //{
-        //    base.OnSourceInitialized(e);
-        //    var hwnd = new WindowInteropHelper(this).Handle;
-        //    WindowsService.SetWindowExTransparent(hwnd);
-        //}
 
 
         #region Board
@@ -635,7 +632,7 @@ namespace ThePen
 			{
 				if (value)
 				{
-					GridBoard.Visibility = Visibility;
+					GridBoard.Visibility = Visibility.Visible;
 				}
 				else
 				{
@@ -757,7 +754,6 @@ namespace ThePen
 
 
 		#region undo/redo
-		//thanks to https://stackoverflow.com/questions/6368517/undo-redo-command-stack-for-inkBoard/52911463#52911463
 
 
 
@@ -792,75 +788,6 @@ namespace ThePen
             }
         }
 
-        class UndoReDo
-		{
-            private bool handle = true;
-
-            List<System.Windows.Ink.StrokeCollection> _added = new();
-            List<System.Windows.Ink.StrokeCollection> _removed = new();
-            List<System.Windows.Ink.StrokeCollection> _added_redo = new();
-            List<System.Windows.Ink.StrokeCollection> _removed_redo = new();
-
-			public InkCanvas Board;
-
-			public UndoReDo(InkCanvas board)
-			{
-				Board = board;
-			}
-
-            public  void Strokes_StrokesChanged(object sender, System.Windows.Ink.StrokeCollectionChangedEventArgs e)
-			{
-                if (handle)
-                {
-                    _added.Add(e.Added);
-                    _removed.Add(e.Removed);
-                    _added_redo.Clear();
-                    _removed_redo.Clear();
-
-                    if (_added.Count > 1000)
-                    {
-                        _added.RemoveAt(0);
-                        _removed.RemoveAt(0);
-                    }
-                }
-            }
-
-
-            public void Undo(object sender, RoutedEventArgs e)
-            {
-                if (_added.Count == 0) return;
-                handle = false;
-                var a = _added.Last();
-                var r = _removed.Last();
-                Board.Strokes.Remove(a);
-                Board.Strokes.Add(r);
-                _added_redo.Add(a);
-                _removed_redo.Add(r);
-                _added.RemoveAt(_added.Count - 1);
-                _removed.RemoveAt(_removed.Count - 1);
-                handle = true;
-            }
-
-
-            public void Redo(object sender, RoutedEventArgs e)
-            {
-                if (_added_redo.Count == 0) return;
-                handle = false;
-                var a = _added_redo.Last();
-                var r = _removed_redo.Last();
-                Board.Strokes.Add(a);
-                Board.Strokes.Remove(r);
-                _added.Add(a);
-                _removed.Add(r);
-                _added_redo.RemoveAt(_added_redo.Count - 1);
-                _removed_redo.RemoveAt(_removed_redo.Count - 1);
-                handle = true;
-            }
-
-        }
-
-		
-
 		#endregion
 
 		#region stamp
@@ -889,11 +816,11 @@ namespace ThePen
 			}
 			else if (stampKind == 2)
 			{
-				StampDot();
+				StampTri();
 			}
 			else
 			{
-				StampTri();
+				StampDot();
 			}
 		}
 
@@ -1117,11 +1044,17 @@ namespace ThePen
 			shapeStroke = s1;
 			shapeStartPoint = center;
 
+			//reset arrow info of the previous line
+			shapeLineDx = 0;
+			shapeLineDy = 0;
+			shapeEndPoint = center;
+
 			CurrentBoard.Strokes.Add(s1);
 		}
 
 		private void ShapeLineArea_MouseUp(object sender, MouseButtonEventArgs e)
 		{
+			if (!shapePushed) return;
 			shapePushed = false;
 			if (ArrowMode || setting.ShapeLine1Arrow)
 			{
@@ -1166,6 +1099,7 @@ namespace ThePen
 
 		private void ShapeLine2Area_MouseUp(object sender, MouseButtonEventArgs e)
 		{
+			if (!shapePushed) return;
 			shapePushed = false;
 
 			if (ArrowMode || setting.ShapeLine2Arrow)
@@ -1348,15 +1282,15 @@ namespace ThePen
 				var p = Mouse.GetPosition(CurrentBoard);
 				var v = p - shapeStartPoint;
 
-				int gx = (int)(v.X / shapeGridW);
-				int gy = (int)(v.Y / shapeGridH);
+				int gx = (int)Math.Floor(v.X / shapeGridW);
+				int gy = (int)Math.Floor(v.Y / shapeGridH);
 
 				if (gx != shapeGridCurX || gy != shapeGridCurY)
 				{
-					BoardTemp.Strokes.Clear();
+					shapeGridCurX = gx;
+					shapeGridCurY = gy;
 
-					if (v.X < 0) gx += -1;
-					if (v.Y < 0) gy += -1;
+					BoardTemp.Strokes.Clear();
 
 					int gx1 = Math.Min(gx, 0);
 					int gx2 = Math.Max(gx, 0);
@@ -1445,6 +1379,7 @@ namespace ThePen
 				return;
 			}
 
+			if (!shapePushed) return;
 			shapePushed = false;
 			shapeGridCopyMode = true;
 
@@ -1662,7 +1597,6 @@ namespace ThePen
                 DrawingMode = DrawingModes.Draw;
             }
 
-		https://stackoverflow.com/questions/2421304/raising-wpf-mouseleftbuttondownevent-event-programmatically
 			CurrentBoard.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
 			{
 				RoutedEvent = Mouse.MouseUpEvent,

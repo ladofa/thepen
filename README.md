@@ -26,6 +26,7 @@ ThePen is a software for drawing on screen in Windows. It started just for my on
  * Stamp : Just push a key to put your stamps. (One Key Shortcut Only)
  * Arrow : Add arrow on free drawings or any shapes.
  * Overlay - Display current time, text messages and images. (It is not in maintenance yet)
+ * Background and overlay files (`back1.png`, `overlay1.txt`, ...) are read from `Documents\ThePen`, or from the program folder.
  * Right click and move to erase.
  * Color palette swap (shortcut : number key 7(&) )
  * Multi Board (shortcut : F1, F2, F3)
@@ -33,11 +34,18 @@ ThePen is a software for drawing on screen in Windows. It started just for my on
 ## Reference
  * Epic Pen : https://epic-pen.com/
  * Panser Pen : https://kinfolksoft.com/%EB%B8%8C%EB%A6%AC%ED%95%91%ED%8E%9Cbriefing-pen-2/
- * And others : I refered them in source codes.
+
+## Acknowledgements
+These articles helped me to learn the techniques. Their code is not included in this project.
+ * Low level mouse hook : https://poorman.tistory.com/297
+ * Global hot keys in WPF : https://social.technet.microsoft.com/wiki/contents/articles/30568.wpf-implementing-global-hot-keys.aspx
+ * Moving a window without title bar : https://gigong.tistory.com/99
+ * Undo/redo for InkCanvas : https://stackoverflow.com/questions/6368517
+ * Raising a mouse event : https://stackoverflow.com/questions/2421304
 
 ## Development Environment
- * WPF C# on .NET 6.0
- * PixiEditor.colorPicker (3.1.0) - MIT License
+ * WPF C# on .NET 10
+ * PixiEditor.ColorPicker (3.4.1) - MIT License
 
 ## Release Notes
  * 2024-05-26 (Alpha 12)
@@ -71,7 +79,15 @@ ThePen is a software for drawing on screen in Windows. It started just for my on
  * Offering Background To Draw
  * Temporary hide
 
-## Copyright
-This includes quite a lot of people's source codes and I haven't been able to look at all of their copyrights. This project may not be used for commercial purposes (if I have the right to claim it)
+## License
+Copyright (c) 2021-2026 ladofa
 
-My plan is to upload this project to Microsoft Store for free. (if I can afford it, and if this program is worth it)
+ThePen is free and will stay free. It is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE.md).
+ * You may use, modify and redistribute it for any noncommercial purpose.
+ * You must pass on the license and the `Required Notice` lines in [NOTICE](NOTICE) when you redistribute it.
+ * Additional permission : you may run and use ThePen for any purpose, including at work, in paid lectures and in other commercial activities.
+ * You may not sell ThePen, charge a fee for copies of it, or include it in a product or service that is sold or offered for a fee.
+
+Third-party components and their licenses are listed in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+
+My plan is to upload this project to Microsoft Store for free.

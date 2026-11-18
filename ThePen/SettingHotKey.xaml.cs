@@ -38,27 +38,16 @@ namespace ThePen
             {
 
                 uint mod = value.Item1;
-                if ((mod & Hotkey.MOD_CTRL) > 0)
-                {
-                    CtrlCheckBox.IsChecked = true;
-                }
+                //must also uncheck, otherwise "Default" keeps old modifiers
+                CtrlCheckBox.IsChecked = (mod & Hotkey.MOD_CTRL) > 0;
+                AltCheckBox.IsChecked = (mod & Hotkey.MOD_ALT) > 0;
+                ShiftCheckBox.IsChecked = (mod & Hotkey.MOD_SHIFT) > 0;
+                WinCheckBox.IsChecked = (mod & Hotkey.MOD_WIN) > 0;
 
-                if ((mod & Hotkey.MOD_ALT) > 0)
+                if (!Hotkey.TrigKeysInv.TryGetValue(value.Item2, out string trigStr))
                 {
-                    AltCheckBox.IsChecked = true;
+                    trigStr = "None";
                 }
-
-                if ((mod & Hotkey.MOD_SHIFT) > 0)
-                {
-                    ShiftCheckBox.IsChecked = true;
-                }
-
-                if ((mod & Hotkey.MOD_WIN) > 0)
-                {
-                    WinCheckBox.IsChecked = true;
-                }
-
-                string trigStr = Hotkey.TrigKeysInv[value.Item2];
                 TriggerComboBox.SelectedValue = trigStr;
             }
 
@@ -83,7 +72,11 @@ namespace ThePen
                 }
 
                 string trigStr = (string)TriggerComboBox.SelectedValue;
-                uint trig = Hotkey.TrigKeys[trigStr];
+                uint trig = 0;
+                if (trigStr != null)
+                {
+                    Hotkey.TrigKeys.TryGetValue(trigStr, out trig);
+                }
 
                 return (mod, trig);
 			}

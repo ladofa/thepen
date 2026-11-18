@@ -18,44 +18,6 @@ namespace ThePen
 			rootKey = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("SOFTWARE\\ThePen");
 		}
 
-		//-- 2. make your own property like below
-		//--    copy, paste and just modify type, name, and defaultValue
-		public static int TestInt
-		{
-			get
-			{
-				var defaultValue = 0;
-				var info = System.Reflection.MethodBase.GetCurrentMethod() as System.Reflection.MethodInfo;
-				var name = info.Name.Substring(4);
-				string str = rootKey.GetValue(name, defaultValue.ToString()) as string;
-				return (dynamic)Convert.ChangeType(str, info.ReturnType);
-			}
-
-			set
-			{
-				var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Substring(4);
-				rootKey.SetValue(name, value.ToString());
-			}
-		}
-
-		public static double TestDouble
-		{
-			get
-			{
-				var defaultValue = 0;
-				var info = System.Reflection.MethodBase.GetCurrentMethod() as System.Reflection.MethodInfo;
-				var name = info.Name.Substring(4);
-				string str = rootKey.GetValue(name, defaultValue.ToString()) as string;
-				return (dynamic)Convert.ChangeType(str, info.ReturnType);
-			}
-
-			set
-			{
-				var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Substring(4);
-				rootKey.SetValue(name, value.ToString());
-			}
-		}
-
 		public static void Write(string key, bool val)
 		{
 			rootKey.SetValue(key, val, Microsoft.Win32.RegistryValueKind.DWord);
