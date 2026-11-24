@@ -1,24 +1,42 @@
 # ThePen
-ThePen is a software for drawing on screen in Windows. It started just for my online lectures. I don't have any specific plan to push this work. But I really hope it used widely and be helpful for you.
+ThePen is a program for drawing on the screen in Windows. I started it for my own online lectures. It is free, and I hope it will be widely used and helpful to you.
 
-## Download the Latest Version
- * Alpha12 : https://github.com/ladofa/thepen/releases/download/%23thepenalpha/ThePen-alpha12.zip
- * It is not allowed by Windows SmartScreen. It is **not officially authorized** for Windows yet. You have to check the advanced option.
-  - Virus warning can be shown
-    
+![Stamps and shapes](store/screenshots/1-stamps-and-shapes.png)
+
+## Download
+ThePen is on Microsoft Store. It is free.
+
+<a href="https://apps.microsoft.com/detail/9P2S4QXB0ZFX">
+  <img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200" alt="Download from Microsoft Store">
+</a>
+
+ * Store page : https://apps.microsoft.com/detail/9P2S4QXB0ZFX
+ * Or search for "ThePen" in the Microsoft Store app.
+ * The store version is signed by Microsoft, so there is no SmartScreen or Smart App Control warning, and it updates by itself.
+
+<details>
+<summary>Old zip version (Alpha12)</summary>
+
+ * https://github.com/ladofa/thepen/releases/download/%23thepenalpha/ThePen-alpha12.zip
+ * The zip version is not signed. Windows SmartScreen can show a warning and you have to select the advanced option. Smart App Control can block it completely.
+
 <img src="images/w1.jpg" width="40%" height="40%">
-  - For installation, you need to select advanced option
 <img src="images/w2.jpg" width="40%" height="40%">
 <img src="images/w3.jpg" width="40%" height="40%">
+</details>
 
+## Screenshots
+| Grid | Settings |
+|---|---|
+| ![Grid](store/screenshots/2-grid.png) | ![Settings](store/screenshots/3-settings.png) |
 
 
 ## Important Features
- * One Key Sourtcut : Push only one keyboard button to change your pen type and color.
+ * One Key Shortcut : Push only one keyboard button to change your pen type and color.
    
  ![alt text](images/onekey.jpg "Title")
  * Easy Switch : Just by lifting the stylus pen, it switches to drawing mode. And just move your mouse to escape drawing mode.
-   - It doesn't work on some applications(Chrome, Edge, VSCode, etc.). In this case, move your pen to edges of the monitor to switch mode.
+   - It doesn't work on some applications (Chrome, Edge, VSCode, etc.). In this case, move your pen to the edges of the monitor to switch mode. You can also put the mouse pointer on the hat icon.
      
    ![alt text](images/edgearea.jpg "Title")
  * Shaking gesture to clear all drawing.
@@ -48,12 +66,16 @@ These articles helped me to learn the techniques. Their code is not included in 
  * PixiEditor.ColorPicker (3.4.1) - MIT License
 
 ## Release Notes
+ * 2026-11-24 (1.0.0)
+   - First release on Microsoft Store
+   - Bug fixes (hot keys, stamps, shapes, grid, settings)
+   - Changed to .NET 10
  * 2024-05-26 (Alpha 12)
    - Fix Undo/redo bug
    - Shaking gesture was readopted.
-   - Main contron window is always on drawing.
+   - Main control window is always on drawing.
  * 2024-03-23 (Alpha 11)
-   - Fix Eraser Bug (from Alpah10)
+   - Fix Eraser Bug (from Alpha10)
    - Fix Arrow Bug (arrow tip will not split with body)
    - Fix Background Bug (back1.png, back2.png will be possible)
    - New gesture (in eraser mode, touch left screen edge and right -> clear all)
@@ -67,7 +89,7 @@ These articles helped me to learn the techniques. Their code is not included in 
    - The taskbar is always visible when you press alt+tab between fullscreen applications.
  * 2024-01-18 (Alpha 7)
    - The eraser got bigger, you can change the size.
-   - Draw arrow on the tip of your line with the shotcut (default : Left Shift)
+   - Draw arrow on the tip of your line with the shortcut (default : Left Shift)
    - Bug Fixed : mouse effects are available from now.
    - Changed to .Net 6.0
  * 2023-03-14 (Alpha 6)
@@ -89,5 +111,3 @@ ThePen is free and will stay free. It is licensed under the [PolyForm Noncommerc
  * You may not sell ThePen, charge a fee for copies of it, or include it in a product or service that is sold or offered for a fee.
 
 Third-party components and their licenses are listed in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
-
-My plan is to upload this project to Microsoft Store for free.
