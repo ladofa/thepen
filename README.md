@@ -1,3 +1,5 @@
+**English** | [한국어](README.ko.md)
+
 # ThePen
 ThePen is a program for drawing on the screen in Windows. I started it for my own online lectures. It is free, and I hope it will be widely used and helpful to you.
 
