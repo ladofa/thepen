@@ -11,7 +11,7 @@ param(
 	[string]$IdentityName = "Ladofa9.ThePen",
 	[string]$Publisher = "CN=EDF078A0-D60C-4C7A-A4B3-963B926AEAA5",
 	[string]$PublisherDisplayName = "Ladofa9",
-	[string]$Version = "1.0.0.0",
+	[string]$Version = "1.0.1.0",
 	[ValidateSet("x64", "arm64")]
 	[string]$Architecture = "x64"
 )

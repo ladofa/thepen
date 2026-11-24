@@ -68,6 +68,10 @@ These articles helped me to learn the techniques. Their code is not included in 
  * PixiEditor.ColorPicker (3.4.1) - MIT License
 
 ## Release Notes
+ * 2026-11-24 (1.0.1)
+   - Korean user interface (follows the Windows display language)
+   - Tooltips for the tool buttons
+   - Fix typos in the setting window
  * 2026-11-24 (1.0.0)
    - First release on Microsoft Store
    - Bug fixes (hot keys, stamps, shapes, grid, settings)

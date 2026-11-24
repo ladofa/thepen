@@ -24,6 +24,7 @@ namespace ThePen
 		public Setting()
 		{
 			InitializeComponent();
+			Lang.Apply(this);
 		}
 
 		public SettingData Value
@@ -156,7 +157,7 @@ namespace ThePen
 				}
 				catch(Exception e)
 				{
-					MessageBox.Show("Error occured while load settings from registry.");
+					MessageBox.Show(Lang.T("An error occurred while loading the settings from the registry."));
 				}
 			}
 
@@ -265,7 +266,7 @@ namespace ThePen
 		{
 			if (exitWithoutDialog) return;
 
-			var result = MessageBox.Show("You may lose not saved data.", "Warning", MessageBoxButton.OKCancel);
+			var result = MessageBox.Show(Lang.T("Unsaved changes will be lost."), Lang.T("Warning"), MessageBoxButton.OKCancel);
 			if (result != MessageBoxResult.OK)
 			{
 				e.Cancel = true;

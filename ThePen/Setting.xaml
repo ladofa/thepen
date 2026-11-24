@@ -107,7 +107,7 @@
                         <TextBlock Style="{StaticResource HotKey}" Text="Stamp X"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Stamp ○"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Stamp △"/>
-                        <TextBlock Style="{StaticResource HotKey}" Text="Stamp ㅁ"/>
+                        <TextBlock Style="{StaticResource HotKey}" Text="Stamp □"/>
                         <Rectangle Height="1" Fill="LightGray" Margin="0 5 0 5"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Guided Line"/>
                         <TextBlock Style="{StaticResource HotKey}" Text="Free Line"/>
@@ -224,8 +224,8 @@
 
                 <StackPanel Orientation="Horizontal" Height="30">
                     <TextBlock Text="One Key Shortcut mode :  " VerticalAlignment="Center"/>
-                    <RadioButton GroupName="ShortcutMode" x:Name="ImmeRadioButton" Content="Immediatly change    or    " VerticalAlignment="Center"/>
-                    <RadioButton GroupName="ShortcutMode" x:Name="TempRadioButton" Content="Temporally change while pressed" VerticalAlignment="Center"/>
+                    <RadioButton GroupName="ShortcutMode" x:Name="ImmeRadioButton" Content="Change immediately    or    " VerticalAlignment="Center"/>
+                    <RadioButton GroupName="ShortcutMode" x:Name="TempRadioButton" Content="Change only while pressed" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <TextBlock Style="{StaticResource Title}" Text="Easy Switch and Gesture"/>
@@ -286,7 +286,7 @@
 
                 <TextBlock Style="{StaticResource Title}" Text="Overlay"/>
                 <Grid Height="30" VerticalAlignment="Center">
-                    <TextBlock Text="Comming Soon... ??"/>
+                    <TextBlock Text="Coming soon..."/>
                 </Grid>
 
                 

@@ -48,7 +48,7 @@
                    MouseLeftButtonDown="Hat_MouseLeftButtonDown" MouseLeftButtonUp="Hat_MouseLeftButtonUp"
                    MouseRightButtonDown="Hat_MouseRightButtonDown" MouseRightButtonUp="Hat_MouseRightButtonUp">
                 <Image.ToolTip >
-                    <TextBlock Text="Drag to MOVE,Click to open OPTION MENU."/>
+                    <TextBlock Text="Drag to move, click to open the option menu."/>
                 </Image.ToolTip>
             </Image>
             <StackPanel x:Name="MainButtonsStackPanel">
@@ -60,38 +60,38 @@
                         <TextBlock Text="Normal mode"/>
                     </local:MainButton.ToolTip>
                 </local:MainButton>
-                <local:MainButton x:Name="DrawButton" Click="DrawButton_Click">
+                <local:MainButton x:Name="DrawButton" ToolTip="Draw" Click="DrawButton_Click">
                     <local:MainButton.Image>
                         <Image Source="/Images/pen.png"/>
                     </local:MainButton.Image>
                 </local:MainButton>
-                <local:MainButton x:Name="EraseButon" Click="EraseButon_Click">
+                <local:MainButton x:Name="EraseButon" ToolTip="Erase" Click="EraseButon_Click">
                     <local:MainButton.Image>
                         <Image Source="/images/eraser.png"/>
                     </local:MainButton.Image>
                 </local:MainButton>
-                <local:MainButton x:Name="ClearButton" Click="ClearButton_Click">
+                <local:MainButton x:Name="ClearButton" ToolTip="Clear all" Click="ClearButton_Click">
                     <local:MainButton.Image>
                         <Image Source="images/clear.png"/>
                     </local:MainButton.Image>
                 </local:MainButton>
-                <local:MainButton x:Name="OverlayButton" Click="OverlayButton_Click">
+                <local:MainButton x:Name="OverlayButton" ToolTip="Overlay" Click="OverlayButton_Click">
                     <local:MainButton.Image>
                         <Image Source="images/overlay.png"/>
                     </local:MainButton.Image>
                 </local:MainButton>
 
-                <local:MainButton x:Name="ShapeButton" Click="ShapeButton_Click">
+                <local:MainButton x:Name="ShapeButton" ToolTip="Shapes" Click="ShapeButton_Click">
                     <local:MainButton.Image>
                         <Image Source="images/shape.png"/>
                     </local:MainButton.Image>
                 </local:MainButton>
-                <local:MainButton x:Name="StampButton" Click="StampButton_Click">
+                <local:MainButton x:Name="StampButton" ToolTip="Stamps" Click="StampButton_Click">
                     <local:MainButton.Image>
                         <Image Source="images/stamp.png"/>
                     </local:MainButton.Image>
                 </local:MainButton>
-                <local:MainButton x:Name="ColorButton" Click="ColorButton_Click">
+                <local:MainButton x:Name="ColorButton" ToolTip="Colors" Click="ColorButton_Click">
                     <local:MainButton.Image>
                         <Rectangle Width="20" Height="20" Fill="Orange" Stroke="Black" StrokeThickness="2"/>
                     </local:MainButton.Image>
@@ -115,17 +115,17 @@
         </StackPanel>
 
         <StackPanel x:Name="HatPopup" Margin="192 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <local:MainButton x:Name="HatSettingButton" Click="HatSettingButton_Click">
+            <local:MainButton x:Name="HatSettingButton" ToolTip="Settings" Click="HatSettingButton_Click">
                 <local:MainButton.Image>
                     <Image Source="/Images/setting.png"/>
                 </local:MainButton.Image>
             </local:MainButton>
-            <local:MainButton x:Name="HatInfoButton" Click="HatInfoButton_Click">
+            <local:MainButton x:Name="HatInfoButton" ToolTip="About" Click="HatInfoButton_Click">
                 <local:MainButton.Image>
                     <Image Source="/Images/info.png"/>
                 </local:MainButton.Image>
             </local:MainButton>
-            <local:MainButton x:Name="HatExitButton" Click="HatExitButton_Click">
+            <local:MainButton x:Name="HatExitButton" ToolTip="Exit" Click="HatExitButton_Click">
                 <local:MainButton.Image>
                     <Image Source="/Images/exit.png"/>
                 </local:MainButton.Image>

@@ -28,6 +28,7 @@
 
   <Resources>
     <Resource Language="en-us" />
+    <Resource Language="ko-kr" />
   </Resources>
 
   <Applications>

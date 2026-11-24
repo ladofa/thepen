@@ -30,6 +30,7 @@ namespace ThePen
 		public MainWindow()
 		{
             InitializeComponent();
+            Lang.Apply(this);
 
 			HideAllPopup();
 
@@ -703,11 +704,11 @@ namespace ThePen
 		{
 			HideAllPopup();
 			string info =
-				"ThePen alpha12\n" +
+				"ThePen " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(3) + "\n" +
 				"Copyright (c) 2021-2026 ladofa\n" +
 				"https://github.com/ladofa/thepen\n\n" +
-				"Free to use for any purpose, including at work and in paid lectures.\n" +
-				"Selling it or including it in a paid product is not allowed.\n" +
+				Lang.T("Free to use for any purpose, including at work and in paid lectures.") + "\n" +
+				Lang.T("Selling it or including it in a paid product is not allowed.") + "\n" +
 				"PolyForm Noncommercial License 1.0.0\n" +
 				"https://polyformproject.org/licenses/noncommercial/1.0.0\n\n" +
 				"Includes PixiEditor.ColorPicker (MIT License)\n" +

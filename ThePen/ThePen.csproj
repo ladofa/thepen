@@ -9,6 +9,7 @@
 		<StartupObject>ThePen.App</StartupObject>
 		<Win32Resource />
 		<Platforms>AnyCPU</Platforms>
+		<Version>1.0.1</Version>
 
 	</PropertyGroup>
 

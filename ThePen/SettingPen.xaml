@@ -20,7 +20,7 @@
             <local:SettingColor VerticalAlignment="Center" Height="20" Margin="0 0 10 0" x:Name="Picker"  Width="25"/>
             <CheckBox Content="FitToCurve" Name="FitToCurve"/>
             <CheckBox Content="Highlighter" Name="Highlighter"/>
-            <CheckBox Content="Ignore Presure" Name="IgnorePresure"/>
+            <CheckBox Content="Ignore Pressure" Name="IgnorePresure"/>
             <TextBlock Text="Width : " VerticalAlignment="Center"/>
             <local:NumericTextBox Width="40" Text="3" x:Name="Width" Margin="0 0 10 0"/>
             <TextBlock Text="Height : " VerticalAlignment="Center"/>
